@@ -52,6 +52,53 @@
       text-transform: uppercase;
     }
 
+    /* Draft switcher — native <select> so phones get the OS picker */
+    .draft-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0.75rem auto 0;
+      padding-left: 0.9rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .draft-picker[hidden] { display: none; }
+    .draft-picker-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .draft-picker select {
+      appearance: none;
+      -webkit-appearance: none;
+      min-width: 0;
+      min-height: 40px;
+      padding: 0 2rem 0 0.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 16px; /* ≥16px stops iOS zooming on focus */
+      font-weight: 600;
+      letter-spacing: inherit;
+      color: var(--fire);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .draft-picker select:focus-visible { outline: 2px solid var(--fire); outline-offset: 2px; }
+    .draft-picker::after {
+      content: '▾';
+      position: absolute;
+      right: 0.85rem;
+      color: var(--fire);
+      pointer-events: none;
+    }
+
     /* ── Layout ──────────────────────────────────────────────── */
     main {
       max-width: 1400px;
@@ -617,13 +664,17 @@
 
 <header>
   <img src="images/logos/51.png" alt="Survivor 51" class="header-logo" id="page-title" onerror="handleLogoError(this)">
+  <label class="draft-picker" id="draft-picker" hidden>
+    <span class="draft-picker-label">Draft</span>
+    <select id="draft-select" aria-label="Draft"></select>
+  </label>
 </header>
 
 <div id="loading">🔥 Loading draft data…</div>
 <div id="error-msg">
   <h2>⚠️ Failed to load draft data</h2>
   <p id="error-detail"></p>
-  <p>Make sure the Google Sheet is set to <strong>"Anyone with the link can view"</strong> and the Sheet ID in <code>config.js</code> is correct.</p>
+  <p>Make sure the Google Sheet is set to <strong>"Anyone with the link can view"</strong> and the sheet ID in <code>config.js</code> and the URLs in the Drafts sheet are correct.</p>
 </div>
 
 <div id="app" style="display:none">
@@ -747,7 +798,61 @@ function isPhone() {
 }
 
 // Google Sheets CSV endpoint
-const SHEET_BASE = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
+function sheetUrl(spreadsheetId, sheetName) {
+  return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+}
+
+// Draft spreadsheets — listed in the Drafts sheet (columns: Draft name, Draft sheet URL)
+const DRAFT_STORAGE_KEY = 'survivor.draft';
+
+async function loadDrafts() {
+  const res = await fetch(sheetUrl(CONFIG.SHEET_ID, CONFIG.SHEETS.drafts)).catch(() => null);
+  if (!res || !res.ok) {
+    throw new Error(`HTTP ${res ? res.status : '—'} — check that the "${CONFIG.SHEETS.drafts}" sheet is publicly shared.`);
+  }
+  const rows = parseCSV(await res.text());
+  const headers = rows[0].map(h => h.trim().toLowerCase());
+  const nameIdx = headers.indexOf('draft name');
+  const urlIdx = headers.indexOf('draft sheet url');
+  const drafts = [];
+  for (let r = 1; r < rows.length; r++) {
+    const name = (rows[r][nameIdx] || '').trim();
+    const url = (rows[r][urlIdx] || '').trim();
+    const id = (url.match(/\/spreadsheets\/d\/([\w-]+)/) || [])[1];
+    if (name && id) drafts.push({ name, id });
+  }
+  if (!drafts.length) throw new Error(`No drafts found in the "${CONFIG.SHEETS.drafts}" sheet.`);
+  return drafts;
+}
+
+// ?draft=<Draft name>, then the viewer's last choice, then the first listed draft
+function pickDraft(drafts) {
+  const byName = name => drafts.find(d => d.name.toLowerCase() === name.trim().toLowerCase());
+
+  const requested = new URLSearchParams(window.location.search).get('draft');
+  if (requested) {
+    const draft = byName(requested);
+    if (!draft) throw new Error(`Unknown draft "${requested}" — add it to the "${CONFIG.SHEETS.drafts}" sheet.`);
+    return draft;
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem(DRAFT_STORAGE_KEY); } catch (_) {}
+  return (saved && byName(saved)) || drafts[0];
+}
+
+function renderDraftPicker(drafts, current) {
+  const select = document.getElementById('draft-select');
+  select.innerHTML = '';
+  if (!current) select.add(new Option('Choose…', '', true, true));
+  drafts.forEach(d => select.add(new Option(d.name, d.name, false, current === d)));
+  select.onchange = () => {
+    if (!select.value) return;
+    try { localStorage.setItem(DRAFT_STORAGE_KEY, select.value); } catch (_) {}
+    window.location.search = '?draft=' + encodeURIComponent(select.value);
+  };
+  document.getElementById('draft-picker').hidden = drafts.length < 2;
+}
 
 // Scoring rules — loaded from "Scoring" sheet
 let scoringRules = [];
@@ -865,29 +970,51 @@ function parseCSV(text) {
 }
 
 // ── Event-Based Data Processing ───────────────────────────────────────────
-function processEventData(rosterRows, eventRows, teamPicks, tribeColorConfig) {
+function processEventData(rosterRows, draftRows, eventRows, teamPicks, tribeColorConfig) {
   const rHeaders = rosterRows[0].map(h => h.trim().toLowerCase());
   const rCol = name => rHeaders.indexOf(name.toLowerCase());
+
+  // Parse draft assignments (Castaways sheet: Castaway, Team) — name → teams
+  const draftTeams = new Map();
+  if (draftRows.length) {
+    const dHeaders = draftRows[0].map(h => h.trim().toLowerCase());
+    const castawayIdx = dHeaders.indexOf('castaway');
+    const teamIdx = dHeaders.indexOf('team');
+    for (let r = 1; r < draftRows.length; r++) {
+      const name = (draftRows[r][castawayIdx] || '').trim().toLowerCase();
+      const team = (draftRows[r][teamIdx] || '').trim();
+      if (!name || !team) continue;
+      if (!draftTeams.has(name)) draftTeams.set(name, []);
+      if (!draftTeams.get(name).includes(team)) draftTeams.get(name).push(team);
+    }
+  }
 
   // Parse roster — castawayMap maps name → array of instances (one per team)
   const castaways = [];
   const castawayMap = new Map();
+  const seenNames = new Set();
   function addToMap(key, c) {
     if (!castawayMap.has(key)) castawayMap.set(key, []);
     castawayMap.get(key).push(c);
   }
 
+  // Tribe columns are the 3 after "Castaway"; their headers (e.g. "Starting tribe") are the labels
+  const castawayCol = rCol('castaway');
+  const tribeCols = [1, 2, 3]
+    .map(o => ({ field: (rosterRows[0][castawayCol + o] || '').trim(), idx: castawayCol + o }))
+    .filter(t => t.field);
+
   for (let r = 1; r < rosterRows.length; r++) {
     const row = rosterRows[r];
-    const name = (row[rCol('contestant')] || '').trim();
-    if (!name) continue;
+    const name = (row[castawayCol] || '').trim();
+    if (!name || seenNames.has(name.toLowerCase())) continue;
+    seenNames.add(name.toLowerCase());
 
-    const tribes = ['tribe 1', 'tribe 2']
-      .map(t => ({ field: t, value: (row[rCol(t)] || '').trim() }))
+    const tribes = tribeCols
+      .map(({ field, idx }) => ({ field, value: (row[idx] || '').trim() }))
       .filter(t => t.value);
 
-    const teamStr = (row[rCol('team')] || '').trim();
-    const teams = teamStr.split(',').map(t => t.trim()).filter(Boolean);
+    const teams = draftTeams.get(name.toLowerCase()) || [];
     if (!teams.length) teams.push('');
 
     const shared = {
@@ -1281,9 +1408,8 @@ function openSheet(name) {
       </div>`).join('');
   }
 
-  const tribeLabels = ['Tribe 1', 'Tribe 2'];
-  const tribesHtml = c.tribes.map((t, i) => `<div class="sheet-section">
-      <div class="sheet-section-header">${tribeLabels[i] || t.field} ${tribeBadge(t.value)}</div>
+  const tribesHtml = c.tribes.map(t => `<div class="sheet-section">
+      <div class="sheet-section-header">${t.field} ${tribeBadge(t.value)}</div>
       ${tribemateRows(t.value, t.field)}
     </div>`).join('');
 
@@ -1396,15 +1522,31 @@ async function main() {
   logoEl.alt = CONFIG.SEASON_TITLE;
   document.title = CONFIG.SEASON_TITLE;
 
-  const [teamsRes, contestantsRes, eventsRes, scoringRes, configRes] = await Promise.all([
-    fetch(SHEET_BASE + encodeURIComponent(CONFIG.SHEETS.teams)).catch(() => null),
-    fetch(SHEET_BASE + encodeURIComponent(CONFIG.SHEETS.contestants)).catch(() => null),
-    fetch(SHEET_BASE + encodeURIComponent(CONFIG.SHEETS.events)).catch(() => null),
-    fetch(SHEET_BASE + encodeURIComponent(CONFIG.SHEETS.scoring)).catch(() => null),
-    fetch(SHEET_BASE + encodeURIComponent(CONFIG.SHEETS.config)).catch(() => null),
+  let draftSheetId;
+  try {
+    const drafts = await loadDrafts();
+    renderDraftPicker(drafts, null); // usable even if the requested draft is unknown
+    const draft = pickDraft(drafts);
+    renderDraftPicker(drafts, draft);
+    try { localStorage.setItem(DRAFT_STORAGE_KEY, draft.name); } catch (_) {}
+    draftSheetId = draft.id;
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-detail').textContent = err.message;
+    return;
+  }
+
+  const [teamsRes, draftRes, contestantsRes, eventsRes, scoringRes, configRes] = await Promise.all([
+    fetch(sheetUrl(draftSheetId, CONFIG.DRAFT_SHEETS.teams)).catch(() => null),
+    fetch(sheetUrl(draftSheetId, CONFIG.DRAFT_SHEETS.castaways)).catch(() => null),
+    fetch(sheetUrl(CONFIG.SHEET_ID, CONFIG.SHEETS.castaways)).catch(() => null),
+    fetch(sheetUrl(CONFIG.SHEET_ID, CONFIG.SHEETS.events)).catch(() => null),
+    fetch(sheetUrl(CONFIG.SHEET_ID, CONFIG.SHEETS.scoring)).catch(() => null),
+    fetch(sheetUrl(CONFIG.SHEET_ID, CONFIG.SHEETS.tribeColors)).catch(() => null),
   ]);
 
-  // Parse tribe colors from Config sheet (columns: Tribe, Color)
+  // Parse tribe colors from Tribe colors sheet (columns: Tribe, Color)
   const tribeColorConfig = {};
   try {
     if (configRes && configRes.ok) {
@@ -1437,10 +1579,13 @@ async function main() {
 
   try {
     if (!contestantsRes || !contestantsRes.ok) {
-      throw new Error(`HTTP ${contestantsRes ? contestantsRes.status : '—'} — check that the "${CONFIG.SHEETS.contestants}" sheet is publicly shared.`);
+      throw new Error(`HTTP ${contestantsRes ? contestantsRes.status : '—'} — check that the "${CONFIG.SHEETS.castaways}" sheet is publicly shared.`);
     }
     if (!eventsRes || !eventsRes.ok) {
       throw new Error(`HTTP ${eventsRes ? eventsRes.status : '—'} — check that the "${CONFIG.SHEETS.events}" sheet is publicly shared.`);
+    }
+    if (!draftRes || !draftRes.ok) {
+      throw new Error(`HTTP ${draftRes ? draftRes.status : '—'} — check that the draft's "${CONFIG.DRAFT_SHEETS.castaways}" sheet is publicly shared.`);
     }
 
     // Parse team names & winner picks from Teams sheet (columns: Name, Winner pick)
@@ -1458,8 +1603,9 @@ async function main() {
     }
 
     const contestantsRows = parseCSV(await contestantsRes.text());
+    const draftRows = parseCSV(await draftRes.text());
     const eventsRows = parseCSV(await eventsRes.text());
-    appData = processEventData(contestantsRows, eventsRows, teamPicks, tribeColorConfig);
+    appData = processEventData(contestantsRows, draftRows, eventsRows, teamPicks, tribeColorConfig);
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';

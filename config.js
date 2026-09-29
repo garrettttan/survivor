@@ -4,10 +4,15 @@ const CONFIG = {
   LOGO: "images/logos/51.png",
 
   SHEETS: {
-    teams: "Teams",
-    contestants: "Contestants",
+    castaways: "Castaways",
     events: "Events",
     scoring: "Scoring",
-    config: "Config",
+    tribeColors: "Tribe colors",
+    drafts: "Drafts",
+  },
+
+  DRAFT_SHEETS: {
+    teams: "Teams",
+    castaways: "Castaways",
   },
 };
