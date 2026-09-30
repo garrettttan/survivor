@@ -1401,7 +1401,17 @@ function openSheet(name) {
     const all = appData.castaways.filter(x => x.tribes.some(t => t.field === tribeField && t.value === tribeName) && x.name !== name);
     const byName = new Map();
     all.forEach(m => { if (!byName.has(m.name)) byName.set(m.name, m); });
-    const mates = [...byName.values()].sort((a, b) => a.eliminated - b.eliminated || b.total - a.total);
+    const cmp = (x, y) => x.localeCompare(y, undefined, { sensitivity: 'base' });
+    const splitName = n => {
+      const [first, ...rest] = n.split(' ');
+      return [first, rest.join(' ')];
+    };
+    // Active first, then by first name, then last name
+    const mates = [...byName.values()].sort((a, b) => {
+      const [aFirst, aLast] = splitName(a.name);
+      const [bFirst, bLast] = splitName(b.name);
+      return a.eliminated - b.eliminated || cmp(aFirst, bFirst) || cmp(aLast, bLast);
+    });
     if (!mates.length) return '<div style="font-size:0.8rem;color:var(--muted)">No tribemates found</div>';
     return mates.map(m => `<div class="sheet-row ${m.eliminated ? 'out' : ''}">
         <span class="sheet-row-name clickable" data-castaway="${m.name.replace(/"/g, '&quot;')}">${m.name}</span>
