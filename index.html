@@ -287,68 +287,92 @@
       background: var(--active);
     }
 
-    /* ── Roster Cards ────────────────────────────────────────── */
-    .rosters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 1.5rem;
+    /* ── Expandable team rows (standings) ────────────────────── */
+    .team-row { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .expand-cell { width: 1%; text-align: right; }
+    .expand-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
     }
-    .roster-card {
+    .expand-btn svg { transition: transform 0.2s; }
+    .team-row.open .expand-btn { background: var(--team); border-color: var(--team); color: #fff; }
+    .team-row.open .expand-btn svg { transform: rotate(180deg); }
+    @media (hover: hover) {
+      .team-row:not(.open):hover .expand-btn { color: var(--fire); border-color: rgba(194,65,12,0.4); }
+    }
+    .standings-table tr.team-row.open td { border-bottom: none; }
+    .standings-table tr.team-detail > td {
+      padding: 0;
+      border-bottom: none;
       background: var(--card-bg);
+    }
+    .standings-table tr.team-row.open + tr.team-detail > td { border-bottom: 1px solid var(--card-border); }
+    /* Animate the card's height by transitioning the grid row from 0fr to 1fr */
+    .detail-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.25s ease;
+    }
+    .team-row.open + .team-detail .detail-wrap { grid-template-rows: 1fr; }
+    .detail-inner {
+      min-height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      transition: visibility 0s 0.25s;
+    }
+    .team-row.open + .team-detail .detail-inner { visibility: visible; transition: visibility 0s; }
+    .detail-pad { padding: 0 1.25rem 0.85rem; }
+    @media (prefers-reduced-motion: reduce) {
+      .detail-wrap, .detail-inner { transition: none; }
+    }
+    @media (hover: hover) {
+      .standings-table tr.team-detail:hover > td { background: var(--card-bg); }
+    }
+    .team-card {
+      background: var(--surface-2);
       border: 1px solid var(--card-border);
       border-radius: 8px;
       overflow: hidden;
     }
-    .roster-header {
-      padding: 0.7rem 1rem 0.6rem;
-      border-bottom: 1px solid var(--card-border);
-    }
-    .roster-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 0.5rem;
-    }
-    .roster-player {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .roster-pts {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      line-height: 1;
-      flex-shrink: 0;
-    }
     .roster-guess {
       font-size: 0.75rem;
       color: var(--muted);
-      margin-top: 0.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--card-border);
     }
-
-    .castaway-list { padding: 0.25rem 0; }
     .castaway-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      padding: 0.55rem 1.25rem;
-      border-bottom: 1px solid rgba(61,42,15,0.15);
+      align-items: center;
+      padding: 0.5rem 0.75rem 0.5rem 1rem;
+      border-bottom: 1px solid rgba(61,42,15,0.1);
       transition: background-color 0.15s;
     }
     .castaway-row:active { background-color: rgba(61,42,15,0.1); transition: none; }
     .castaway-row:last-child { border-bottom: none; }
     .castaway-row.out { opacity: 0.38; }
     .castaway-row.out .castaway-name { text-decoration: line-through; }
-
     .castaway-name { font-size: 0.875rem; font-weight: 500; }
+    .castaway-pts {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding-left: 0.5rem;
+    }
+    .castaway-end { display: flex; align-items: center; gap: 0.4rem; }
+    .row-chevron { color: var(--muted); flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
+    .castaway-row:active .row-chevron { color: var(--fire); }
+    @media (hover: hover) {
+      .castaway-row:hover .row-chevron { color: var(--fire); transform: translateX(2px); }
+    }
 
     .badge {
       display: inline-block;
@@ -360,15 +384,6 @@
     }
     .badge-tribe { border: 1px solid; } /* color set inline per tribe */
     .badge-adv   { background: rgba(168,85,247,0.15); color: #7e22ce; border: 1px solid rgba(168,85,247,0.25); }
-
-    .castaway-pts {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      min-width: 2.5rem;
-      text-align: right;
-      padding-left: 0.5rem;
-    }
 
 
     .scoring-grid {
@@ -410,7 +425,7 @@
       gap: 0.3rem;
     }
     #overview-table .points-cell { font-size: 1.1rem; }
-    /* Tap feedback matching the roster castaway rows. Opaque so the sticky
+    /* Tap feedback matching the standings castaway rows. Opaque so the sticky
        name column doesn't show content scrolling beneath it. */
     #overview-table td { transition: background-color 0.15s; }
     #overview-table tr:active td { background-color: #eceae7; transition: none; }
@@ -608,14 +623,11 @@
 
       .scoring-grid { grid-template-columns: 1fr; gap: 1rem; }
 
-      .rosters-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
-
-      .roster-header { padding: 0.6rem 0.7rem 0.5rem; }
-      .roster-player { font-size: 1.05rem; }
-      .roster-pts { font-size: 1.25rem; }
-      .castaway-row { padding: 0.4rem 0.7rem; }
+      .detail-pad { padding: 0 0.75rem 0.6rem; }
+      .castaway-row { padding: 0.4rem 0.6rem 0.4rem 0.75rem; }
+      .roster-guess { padding: 0.4rem 0.75rem; }
       .castaway-name { font-size: 0.82rem; }
-      .castaway-pts { font-size: 0.95rem; min-width: 2rem; }
+      .castaway-pts { font-size: 0.95rem; }
 
       .badge { font-size: 0.7rem; }
       .team-chart-inner { height: 260px; }
@@ -682,7 +694,6 @@
   <a href="#standings">⚔️ Standings</a>
   <a href="#chart">📈 Chart</a>
   <a href="#overview">🧭 Overview</a>
-  <a href="#rosters">🏝️ Rosters</a>
   <a href="#scoring">📋 Scoring</a>
 </nav>
 <main>
@@ -690,13 +701,15 @@
   <!-- STANDINGS -->
   <section id="standings">
     <h2 class="section-title">⚔️ STANDINGS</h2>
+    <p class="section-hint">Tap a team to see its castaways</p>
     <div class="table-scroll">
     <table class="standings-table">
       <thead>
         <tr>
           <th>Rank</th>
-          <th>Player</th>
+          <th>Team</th>
           <th>Points</th>
+          <th></th>
         </tr>
       </thead>
       <tbody id="standings-body"></tbody>
@@ -737,13 +750,6 @@
       <tbody id="overview-body"></tbody>
     </table>
     </div>
-  </section>
-
-  <!-- ROSTERS -->
-  <section id="rosters">
-    <h2 class="section-title">🏝️ TEAM ROSTERS</h2>
-    <p class="section-hint">Tap any castaway for details</p>
-    <div class="rosters-grid" id="rosters-grid"></div>
   </section>
 
   <!-- SCORING -->
@@ -1137,18 +1143,49 @@ function baseChartOptions() {
 }
 
 // ── Render: Standings ──────────────────────────────────────────────────────
-function renderStandings({ teams, teamNames }) {
+function renderStandings({ teams, teamNames, activeNames }) {
   const sorted = [...teamNames].sort((a, b) => teams[b].totalPoints - teams[a].totalPoints);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
     const tm = teams[t];
     const rank = i + 1;
-    return `<tr>
+    const guess = tm.survivorGuess;
+    const guessAlive = guess && activeNames.has(guess);
+
+    const guessSection = guess ? `
+      <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${guess}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
+
+    const castawayRows = [...tm.castaways]
+      .sort((a, b) => a.eliminated - b.eliminated || b.total - a.total)
+      .map(c => `<div class="castaway-row clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${c.name.replace(/"/g, '&quot;')}">
+          <div class="castaway-name clickable">${c.name}</div>
+          <div class="castaway-end">
+            <div class="castaway-pts" style="color:${c.eliminated ? 'var(--muted)' : tm.color}">${fmt(c.total)}</div>
+            <svg class="row-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </div>
+        </div>`).join('');
+
+    return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
       <td><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${t}</span></td>
       <td><span class="points-cell" style="color:${tm.color}">${fmt(tm.totalPoints)}</span></td>
+      <td class="expand-cell"><span class="expand-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></td>
+    </tr>
+    <tr class="team-detail" aria-hidden="true">
+      <td colspan="4"><div class="detail-wrap"><div class="detail-inner"><div class="detail-pad">
+        <div class="team-card" style="border-left:3px solid ${tm.color}">${guessSection}${castawayRows}</div>
+      </div></div></div></td>
     </tr>`;
   }).join('');
 }
+
+// Toggle a team row to show its castaways
+document.getElementById('standings-body').addEventListener('click', e => {
+  const row = e.target.closest('tr.team-row');
+  if (!row) return;
+  const open = row.classList.toggle('open');
+  row.setAttribute('aria-expanded', open);
+  row.nextElementSibling.setAttribute('aria-hidden', !open);
+});
 
 // ── Render: Team Chart ─────────────────────────────────────────────────────
 function renderTeamChart({ teams, teamNames, activeWeeks }) {
@@ -1304,39 +1341,6 @@ function toggleOverviewActiveOnly() {
 function toggleOverviewMultiSort() {
   overviewMultiSort = !overviewMultiSort;
   renderOverviewFilters();
-}
-
-// ── Render: Roster Cards ───────────────────────────────────────────────────
-function renderRosters({ teams, teamNames, activeNames }) {
-  const sorted = [...teamNames].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-  document.getElementById('rosters-grid').innerHTML = sorted.map(t => {
-    const tm = teams[t];
-    const guess = tm.survivorGuess;
-    const guessAlive = guess && activeNames.has(guess);
-
-    const castawayRows = [...tm.castaways]
-      .sort((a, b) => a.eliminated - b.eliminated || b.total - a.total)
-      .map(c => {
-        return `<div class="castaway-row clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${c.name.replace(/"/g, '&quot;')}">
-          <div class="castaway-name clickable">${c.name}</div>
-          <div class="castaway-pts" style="color:${c.eliminated ? 'var(--muted)' : tm.color}">${fmt(c.total)}</div>
-        </div>`;
-      }).join('');
-
-    const guessSection = guess ? `
-      <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${guess}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
-
-    return `<div class="roster-card" style="border-top:3px solid ${tm.color}">
-      <div class="roster-header">
-        <div class="roster-top">
-          <div class="roster-player" style="color:${tm.color}">${t}</div>
-          <div class="roster-pts" style="color:${tm.color}">${fmt(tm.totalPoints)}</div>
-        </div>
-        ${guessSection}
-      </div>
-      <div class="castaway-list">${castawayRows}</div>
-    </div>`;
-  }).join('');
 }
 
 // ── Render: Scoring ───────────────────────────────────────────────────────
@@ -1624,7 +1628,6 @@ async function main() {
     renderTeamChart(appData);
     renderOverviewFilters();
     renderOverviewTable(appData);
-    renderRosters(appData);
     initSectionTabs();
 
   } catch (err) {
