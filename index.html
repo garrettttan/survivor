@@ -1060,7 +1060,7 @@ function processEventData(rosterRows, draftRows, eventRows, teamPicks, tribeColo
     const week = parseInt((row[eCol('week')] || '').trim()) || 0;
     const contestant = (row[eCol('contestant')] || '').trim();
     const event = (row[eCol('event')] || '').trim();
-    const idol = (row[eCol('idol or advantage')] || '').trim();
+    const details = (row[eCol('details')] || '').trim();
     const otherPlayer = (row[eCol('other player')] || '').trim();
     const eventLower = event.toLowerCase();
 
@@ -1076,7 +1076,7 @@ function processEventData(rosterRows, draftRows, eventRows, teamPicks, tribeColo
     }
 
     if (!contestant) continue;
-    expandedEvents.push({ week, contestant, event, idol, otherPlayer });
+    expandedEvents.push({ week, contestant, event, details, otherPlayer });
   }
 
   // Compute points per contestant (assign to all team instances)
@@ -1085,7 +1085,7 @@ function processEventData(rosterRows, draftRows, eventRows, teamPicks, tribeColo
     if (!instances.length) continue;
     const pts = scoringLookup[e.event.toLowerCase()] ?? 0;
     instances.forEach(c => {
-      c.events.push({ week: e.week, event: e.event, points: pts, idol: e.idol, otherPlayer: e.otherPlayer });
+      c.events.push({ week: e.week, event: e.event, points: pts, details: e.details, otherPlayer: e.otherPlayer });
       c.total += pts;
     });
   }
@@ -1441,7 +1441,7 @@ function openSheet(name) {
         <div class="sheet-week">
           <div style="font-size:0.7rem;color:var(--muted);letter-spacing:1px;font-family:Oswald;margin-bottom:0.2rem">WEEK ${week}</div>
           ${events.map(e => `<div class="sheet-row">
-            <span class="sheet-row-name">${e.event}${e.idol ? ` <span style="color:var(--muted)">(${e.idol})</span>` : ''}${e.otherPlayer ? ` <span style="color:var(--muted)">— ${e.otherPlayer}</span>` : ''}</span>
+            <span class="sheet-row-name">${e.event}${e.details ? ` <span style="color:var(--muted)">(${e.details})</span>` : ''}${e.otherPlayer ? ` <span style="color:var(--muted)">— ${e.otherPlayer}</span>` : ''}</span>
             <span style="color:var(--fire);font-weight:600">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>
           </div>`).join('')}
         </div>
