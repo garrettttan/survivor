@@ -15,10 +15,11 @@ function openSheet(name) {
     ...splitList(c.usedAdvantages).map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
   ].join(' ');
 
-  const tribesHtml = c.tribes.map(t => `<div class="sheet-section">
-      <div class="sheet-section-header">${escapeHtml(t.field)} ${tribeBadge(t.value)}</div>
-      ${tribemateRows(name, t.value, t.field, t.week)}
-    </div>`).join('');
+  // Only the latest phase starts expanded
+  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.value).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
+      <summary class="sheet-section-header">${escapeHtml(t.field)} ${tribeBadge(t.value)}</summary>
+      ${tribemateRows(tribemates(name, t.value, t.field, t.week))}
+    </details>`).join('');
 
   document.getElementById('sheet-body').innerHTML = `
     <div class="sheet-top">
@@ -49,7 +50,7 @@ function tribeAsOf(x, w) {
 
 // Everyone else on the tribe at that week who was still in the game. A column whose
 // swap/merge row isn't entered yet (week Infinity) falls back to matching that column.
-function tribemateRows(name, tribeName, tribeField, week) {
+function tribemates(name, tribeName, tribeField, week) {
   const all = appData.castaways.filter(x => x.name !== name && (week === Infinity
     ? x.tribes.some(t => t.field === tribeField && t.value === tribeName)
     : tribeAsOf(x, week) === tribeName && (!x.eliminated || x.eliminatedWeek >= week)));
@@ -61,11 +62,14 @@ function tribemateRows(name, tribeName, tribeField, week) {
     return [first, rest.join(' ')];
   };
   // Active first, then by first name, then last name
-  const mates = [...byName.values()].sort((a, b) => {
+  return [...byName.values()].sort((a, b) => {
     const [aFirst, aLast] = splitName(a.name);
     const [bFirst, bLast] = splitName(b.name);
     return a.eliminated - b.eliminated || cmp(aFirst, bFirst) || cmp(aLast, bLast);
   });
+}
+
+function tribemateRows(mates) {
   if (!mates.length) return '<div class="empty-note">No tribemates found</div>';
   return mates.map(m => `<div class="sheet-row ${m.eliminated ? 'out' : ''}">
       <span class="sheet-row-name clickable" data-castaway="${escapeHtml(m.name)}">${escapeHtml(m.name)}</span>

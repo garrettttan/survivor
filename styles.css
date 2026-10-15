@@ -577,8 +577,34 @@ html { scroll-behavior: smooth; }
   color: var(--text);
   margin-bottom: 0.25rem;
 }
-.sheet-tribes .sheet-section:first-child { margin-top: 0.5rem; }
-.sheet-row {
+/* Each tribe phase is a card, accented on the left in its tribe color */
+.tribe-phase {
+  margin-top: 0.5rem;
+  background: rgba(61,42,15,0.05);
+  border: 1px solid rgba(61,42,15,0.2);
+  border-left-width: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tribe-phase > summary {
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 0;
+  padding: 0.6rem 0.75rem;
+  user-select: none;
+}
+.tribe-phase > summary:hover { background: rgba(61,42,15,0.05); }
+.tribe-phase > :not(summary) { margin: 0 0.75rem; }
+.tribe-phase > :last-child:not(summary) { margin-bottom: 0.4rem; }
+.tribe-phase > summary::-webkit-details-marker { display: none; }
+.tribe-phase > summary::before {
+  content: '▸';
+  display: inline-block;
+  width: 0.7em;
+  transition: transform 0.15s;
+}
+.tribe-phase[open] > summary::before { transform: rotate(90deg); }
+.tribe-phase[open] > summary { border-bottom: 1px solid rgba(61,42,15,0.15); }.sheet-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 0.4rem 0;
   border-bottom: 1px solid rgba(61,42,15,0.15);
