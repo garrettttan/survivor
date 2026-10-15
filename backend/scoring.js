@@ -145,12 +145,13 @@ function buildTeams(castaways, seasonPicks) {
 
   const teams = {};
   teamNames.forEach(t => {
-    teams[t] = { name: t, totalPoints: 0, castaways: [], survivorGuess: null };
+    teams[t] = { name: t, totalPoints: 0, activeCount: 0, castaways: [], survivorGuess: null };
   });
   castaways.forEach(c => {
     if (!teams[c.team]) return;
     teams[c.team].totalPoints += c.total;
     teams[c.team].castaways.push(c);
+    if (!c.eliminated) teams[c.team].activeCount++;
   });
 
   seasonPicks.forEach(([tName, guess]) => {

@@ -25,10 +25,11 @@ function renderStandings({ teams, teamNames, activeNames }) {
       <td><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
       <td><span class="points-cell" style="color:${tm.color}">${fmt(tm.totalPoints)}</span></td>
+      <td><span class="active-count">${tm.activeCount}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>
     </tr>
     <tr class="team-detail" aria-hidden="true">
-      <td colspan="4"><div class="detail-wrap"><div class="detail-inner"><div class="detail-pad">
+      <td colspan="5"><div class="detail-wrap"><div class="detail-inner"><div class="detail-pad">
         <div class="team-card" style="border-left:3px solid ${tm.color}">${guessSection}${castawayRows}</div>
       </div></div></div></td>
     </tr>`;

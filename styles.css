@@ -197,6 +197,12 @@ html { scroll-behavior: smooth; }
   font-size: 1.4rem;
   font-weight: 700;
 }
+.active-count {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
 .active-badge {
   display: inline-block;
   background: rgba(34,197,94,0.12);
