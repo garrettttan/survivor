@@ -150,6 +150,7 @@ html { scroll-behavior: smooth; }
 /* ── Standings ───────────────────────────────────────────── */
 .standings-table {
   --cell-x: 1.25rem; /* horizontal cell padding; castaway rows align against it */
+  --cell-y: 0.85rem; /* vertical cell padding */
   width: 100%;
   border-collapse: collapse;
   background: var(--card-bg);
@@ -168,7 +169,7 @@ html { scroll-behavior: smooth; }
   text-align: left;
 }
 .standings-table td {
-  padding: 0.85rem var(--cell-x);
+  padding: var(--cell-y) var(--cell-x);
   border-bottom: 1px solid var(--card-border);
   vertical-align: middle;
 }
@@ -329,7 +330,9 @@ html { scroll-behavior: smooth; }
   transition: visibility 0s 0.25s;
 }
 .team-row.open + .team-detail .detail-inner { visibility: visible; transition: visibility 0s; }
-.detail-pad { padding: 0 var(--cell-x) 0.85rem; }
+/* Same vertical padding on both sides: the team row's bottom padding sits above the card and the
+   next row's top padding sits below it, so the card is centered between the two rows' content */
+.detail-pad { padding: max(0px, var(--cell-x) - var(--cell-y)) var(--cell-x); }
 @media (prefers-reduced-motion: reduce) {
   .detail-wrap, .detail-inner { transition: none; }
 }
