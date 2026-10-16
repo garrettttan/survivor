@@ -22,10 +22,10 @@ function renderStandings({ teams, teamNames, activeNames }) {
         </div>`).join('');
 
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
-      <td><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
+      <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
-      <td><span class="points-cell" style="color:${tm.color}">${fmt(tm.totalPoints)}</span></td>
-      <td><span class="active-count">${tm.activeCount}</span></td>
+      <td class="fit-col"><span class="active-count">${tm.activeCount}</span></td>
+      <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.totalPoints)}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>
     </tr>
     <tr class="team-detail" aria-hidden="true">

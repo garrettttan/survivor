@@ -15,6 +15,8 @@ const OVERVIEW_SORTS = {
 };
 
 function renderOverviewTable({ castaways, merged }) {
+  // Built from every castaway, not the filtered subset, so short names don't change when filtering
+  const short = shortNames(castaways);
   let subset = castaways;
   if (overviewActiveOnly) subset = subset.filter(c => !c.eliminated);
 
@@ -55,7 +57,7 @@ function renderOverviewTable({ castaways, merged }) {
       : '🟢';
 
     return `<tr class="clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${escapeHtml(c.name)}">
-      <td><span class="castaway-name-cell clickable">${escapeHtml(c.name)}</span></td>
+      <td><span class="castaway-name-cell clickable"><span class="name-full">${escapeHtml(c.name)}</span><span class="name-short">${escapeHtml(short.get(c.name))}</span></span></td>
       <td><div class="overview-badges">${tribeHtml}</div></td>
       <td><span class="points-cell">${fmt(c.total)}</span></td>
       <td><div class="overview-badges">${advHtml}</div></td>

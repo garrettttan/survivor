@@ -86,7 +86,7 @@ function parseDraftTeams(rows) {
   return draftTeams;
 }
 
-// Events sheet (columns: Week, Contestant, Event, Details, Other player)
+// Events sheet (columns: Week, Contestant, Event, Details, Other player, Tribe)
 function parseEvents(rows) {
   return sheetRecords(rows).map(r => ({
     week: parseInt(r.week) || 0,
@@ -94,6 +94,7 @@ function parseEvents(rows) {
     event: r.event || '',
     details: r.details || '',
     otherPlayer: r['other player'] || '',
+    tribe: r.tribe || '',
   }));
 }
 

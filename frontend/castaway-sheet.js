@@ -18,7 +18,7 @@ function openSheet(name) {
   // Only the latest phase starts expanded
   const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.value).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
       <summary class="sheet-section-header">${escapeHtml(t.field)} ${tribeBadge(t.value)}</summary>
-      ${tribemateRows(tribemates(name, t.value, t.field, t.week))}
+      ${tribemateRows(tribemates(name, t.value, t.week))}
     </details>`).join('');
 
   document.getElementById('sheet-body').innerHTML = `
@@ -48,12 +48,10 @@ function tribeAsOf(x, w) {
   return entry ? entry.value : '';
 }
 
-// Everyone else on the tribe at that week who was still in the game. A column whose
-// swap/merge row isn't entered yet (week Infinity) falls back to matching that column.
-function tribemates(name, tribeName, tribeField, week) {
-  const all = appData.castaways.filter(x => x.name !== name && (week === Infinity
-    ? x.tribes.some(t => t.field === tribeField && t.value === tribeName)
-    : tribeAsOf(x, week) === tribeName && (!x.eliminated || x.eliminatedWeek >= week)));
+// Everyone else on the tribe at that week who was still in the game
+function tribemates(name, tribeName, week) {
+  const all = appData.castaways.filter(x => x.name !== name &&
+    tribeAsOf(x, week) === tribeName && (!x.eliminated || x.eliminatedWeek >= week));
   const byName = new Map();
   all.forEach(m => { if (!byName.has(m.name)) byName.set(m.name, m); });
   const cmp = (x, y) => x.localeCompare(y, undefined, { sensitivity: 'base' });

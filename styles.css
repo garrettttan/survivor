@@ -149,6 +149,7 @@ html { scroll-behavior: smooth; }
 
 /* ── Standings ───────────────────────────────────────────── */
 .standings-table {
+  --cell-x: 1.25rem; /* horizontal cell padding; castaway rows align against it */
   width: 100%;
   border-collapse: collapse;
   background: var(--card-bg);
@@ -163,15 +164,20 @@ html { scroll-behavior: smooth; }
   font-size: 0.75rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem var(--cell-x);
   text-align: left;
 }
 .standings-table td {
-  padding: 0.85rem 1.25rem;
+  padding: 0.85rem var(--cell-x);
   border-bottom: 1px solid var(--card-border);
   vertical-align: middle;
 }
 .standings-table tr:last-child td { border-bottom: none; }
+.standings-table .points-col { text-align: right; }
+/* Shrink-wrap the number columns so the Team column takes any extra width */
+.standings-table .fit-col { width: 1%; white-space: nowrap; }
+/* Keep the standings compact and centered on wide screens instead of stretching across the page */
+#standings .table-scroll { max-width: 560px; margin: 0 auto; }
 @media (hover: hover) {
   .standings-table tr:hover td { background: rgba(194,65,12,0.06); }
 }
@@ -323,7 +329,7 @@ html { scroll-behavior: smooth; }
   transition: visibility 0s 0.25s;
 }
 .team-row.open + .team-detail .detail-inner { visibility: visible; transition: visibility 0s; }
-.detail-pad { padding: 0 1.25rem 0.85rem; }
+.detail-pad { padding: 0 var(--cell-x) 0.85rem; }
 @media (prefers-reduced-motion: reduce) {
   .detail-wrap, .detail-inner { transition: none; }
 }
@@ -346,7 +352,8 @@ html { scroll-behavior: smooth; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
+  /* 6px right padding centers the 14px chevron under the 28px expand button (after the card's 1px border) */
+  padding: 0.5rem 6px 0.5rem 1rem;
   border-bottom: 1px solid rgba(61,42,15,0.1);
   transition: background-color 0.15s;
 }
@@ -361,7 +368,9 @@ html { scroll-behavior: smooth; }
   font-weight: 600;
   padding-left: 0.5rem;
 }
-.castaway-end { display: flex; align-items: center; gap: 0.4rem; }
+/* Gap spans the points and expand cells' padding plus the leftover button width, so castaway
+   points line up with the team's right-aligned points */
+.castaway-end { display: flex; align-items: center; gap: calc(2 * var(--cell-x) + 7px); }
 .row-chevron { color: var(--muted); flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
 .castaway-row:active .row-chevron { color: var(--fire); }
 @media (hover: hover) {
@@ -425,6 +434,7 @@ html { scroll-behavior: smooth; }
 #overview-table tr:active td { background-color: #eceae7; transition: none; }
 .standings-table tr.out td { opacity: 0.4; }
 .standings-table tr.out .castaway-name-cell { text-decoration: line-through; }
+.name-short { display: none; }
 
 /* Sortable table headers */
 .standings-table th.sortable {
@@ -633,8 +643,9 @@ html { scroll-behavior: smooth; }
   .section-title { font-size: 1.1rem; margin-bottom: 1rem; }
   .section-hint { margin: -0.6rem 0 0.75rem; }
 
+  .standings-table { --cell-x: 0.75rem; }
   .standings-table th,
-  .standings-table td { padding: 0.6rem 0.75rem; }
+  .standings-table td { padding: 0.6rem var(--cell-x); }
   .points-cell { font-size: 1.1rem; }
   .rank-num { font-size: 1rem; }
   .player-name { font-size: 0.95rem; }
@@ -643,8 +654,8 @@ html { scroll-behavior: smooth; }
 
   .scoring-grid { grid-template-columns: 1fr; gap: 1rem; }
 
-  .detail-pad { padding: 0 0.75rem 0.6rem; }
-  .castaway-row { padding: 0.4rem 0.6rem 0.4rem 0.75rem; }
+  .detail-pad { padding: 0 var(--cell-x) 0.6rem; }
+  .castaway-row { padding: 0.4rem 6px 0.4rem 0.75rem; }
   .roster-guess { padding: 0.4rem 0.75rem; }
   .castaway-name { font-size: 0.82rem; }
   .castaway-pts { font-size: 0.95rem; }
@@ -670,6 +681,8 @@ html { scroll-behavior: smooth; }
   #overview-table th,
   #overview-table td { padding: 0.35rem 0.6rem; }
   #overview-table .points-cell { font-size: 0.95rem; }
+  #overview-table .name-full { display: none; }
+  #overview-table .name-short { display: inline; }
   /* Only the current tribe; full tribe history is in the detail sheet */
   #overview-table td:nth-child(2) .badge-tribe:not(:first-child) { display: none; }
 }
@@ -697,4 +710,4 @@ html { scroll-behavior: smooth; }
 .eliminated-label { color: var(--ember); font-size: 0.8rem; }
 .adv-used { opacity: 0.5; text-decoration: line-through; }
 .week-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; font-family: Oswald; margin-bottom: 0.2rem; }
-.event-pts { color: var(--fire); font-weight: 600; }
+.event-pts { color: var(--fire); font-weight: 600; padding-left: 0.75rem; white-space: nowrap; }
