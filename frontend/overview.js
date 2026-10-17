@@ -42,7 +42,7 @@ function renderOverviewTable({ castaways, merged }) {
   });
 
   document.getElementById('overview-body').innerHTML = unique.map(c => {
-    const tribeValues = [...new Set(c.tribes.map(t => t.value))].reverse();
+    const tribeValues = c.tribes.map(t => t.value).reverse();
     const tribeHtml = tribeValues
       .map((v, i) => tribeBadge(v, merged || i > 0))
       .join(' ');
