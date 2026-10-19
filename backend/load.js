@@ -33,7 +33,7 @@ async function fetchSeasonData() {
     roster: castaways.map(c => ({
       name: [c.first_name, c.last_name].filter(Boolean).join(' '),
       firstName: c.first_name,
-      startingTribe: c.starting_tribe,
+      startingTribe: c.starting_tribe?.name,
     })),
   };
 }
