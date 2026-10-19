@@ -11,11 +11,6 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
-// "Idol, Extra vote" → ['Idol', 'Extra vote']
-function splitList(s) {
-  return s ? s.split(',').map(a => a.trim()).filter(Boolean) : [];
-}
-
 // Short display names, keyed by full name: the "Short name" column if set, else the first word.
 // Adds a last initial when short names clash ("John A.", "John C."), and the full name if that still clashes.
 function shortNames(castaways) {

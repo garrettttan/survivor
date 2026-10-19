@@ -9,6 +9,12 @@ const PHASE_EVENTS = new Set([SWAP_EVENT, MERGE_EVENT]); // tribe changes that d
 const ELIMINATION_EVENTS = new Set(['voted out', 'medivacked', 'quit']);
 const SAT_OUT_EVENT = 'sat out of challenge'; // excludes the castaway from the nearest tribe-wide row above it
 
+// Idol/advantage rows name the item in Details. A received row takes it from the Other player;
+// played rows ("...that saved self or ally", "...that did not save anyone") mark it used.
+const GAINED_ADV_EVENT = 'gained an idol or advantage';
+const RECEIVED_ADV_EVENT = 'received an idol or advantage from someone else';
+const PLAYED_ADV_PREFIX = 'played an idol or advantage';
+
 function processEventData(rosterRows, draftRows, eventRows, teamPicks, scoringLookup) {
   const events = parseEvents(eventRows);
   const { castaways, lookupCastaways } = buildCastaways(rosterRows, parseDraftTeams(draftRows));
@@ -53,8 +59,9 @@ function buildCastaways(rosterRows, draftTeams) {
     const teams = draftTeams.get(name.toLowerCase()) || [];
     if (!teams.length) teams.push('');
 
-    const advantages = (row[rCol('advantages')] || '').trim();
-    const usedAdvantages = (row[rCol('used advantages')] || '').trim();
+    // Filled in from idol/advantage rows in the Events sheet (applyGameEvents)
+    const advantages = [];
+    const usedAdvantages = [];
     const shortName = (row[rCol('short name')] || '').trim(); // optional, e.g. "Thien An" or a nickname
 
     for (const team of teams) {
@@ -70,8 +77,15 @@ function buildCastaways(rosterRows, draftTeams) {
   return { castaways, lookupCastaways };
 }
 
-// Applies eliminations and tribe changes; returns the events that can score points
+// Applies eliminations, tribe changes and idols/advantages; returns the events that can score points
 function applyGameEvents(events, castaways, lookupCastaways) {
+  // Team instances of a castaway share advantage arrays, so act on one instance per castaway
+  const holders = name => [...new Map(lookupCastaways(name).map(c => [c.advantages, c])).values()];
+  const removeAdvantage = (list, item) => {
+    const i = list.findIndex(a => a.toLowerCase() === item.toLowerCase());
+    if (i >= 0) list.splice(i, 1);
+  };
+
   let merged = false;
   const scoredEvents = [];
   let lastTribeRow = null; // most recent tribe-wide row, for attaching sit-outs
@@ -93,6 +107,19 @@ function applyGameEvents(events, castaways, lookupCastaways) {
       lookupCastaways(e.contestant).forEach(c => {
         c.eliminated = true;
         c.eliminatedWeek = e.week;
+      });
+    }
+
+    if ((eventLower === GAINED_ADV_EVENT || eventLower === RECEIVED_ADV_EVENT) && e.details) {
+      if (eventLower === RECEIVED_ADV_EVENT && e.otherPlayer) {
+        holders(e.otherPlayer).forEach(c => removeAdvantage(c.advantages, e.details));
+      }
+      holders(e.contestant).forEach(c => c.advantages.push(e.details));
+    }
+    if (eventLower.startsWith(PLAYED_ADV_PREFIX) && e.details) {
+      holders(e.contestant).forEach(c => {
+        removeAdvantage(c.advantages, e.details);
+        c.usedAdvantages.push(e.details);
       });
     }
 

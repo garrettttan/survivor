@@ -47,7 +47,7 @@ function renderOverviewTable({ castaways, merged }) {
       .map((v, i) => tribeBadge(v, merged || i > 0))
       .join(' ');
 
-    const advValues = splitList(c.advantages);
+    const advValues = c.advantages;
     const advHtml = advValues.length
       ? advValues.map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`).join(' ')
       : '<span class="muted">—</span>';

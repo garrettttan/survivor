@@ -11,8 +11,8 @@ function openSheet(name) {
     : '<span class="active-badge">Active</span>';
 
   const advHtml = [
-    ...splitList(c.advantages).map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`),
-    ...splitList(c.usedAdvantages).map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
+    ...c.advantages.map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`),
+    ...c.usedAdvantages.map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
   ].join(' ');
 
   // Only the latest phase starts expanded
