@@ -64,15 +64,6 @@ function parseTeamPicks(rows) {
     .map(r => [r.name, r['winner pick'] || '']);
 }
 
-// Tribe colors sheet (columns: Tribe, Color) → tribe → color
-function parseTribeColorConfig(rows) {
-  const tribeColorConfig = {};
-  sheetRecords(rows).forEach(({ tribe, color }) => {
-    if (tribe && color) tribeColorConfig[tribe] = color;
-  });
-  return tribeColorConfig;
-}
-
 // Draft's Castaways sheet (columns: Castaway, Team) → lowercased name → teams
 function parseDraftTeams(rows) {
   const draftTeams = new Map();
@@ -101,6 +92,6 @@ function parseEvents(rows) {
 if (typeof module !== 'undefined') {
   module.exports = {
     parseCSV, sheetRecords, parseDrafts, parseScoringRules, parseTeamPicks,
-    parseTribeColorConfig, parseDraftTeams, parseEvents,
+    parseDraftTeams, parseEvents,
   };
 }

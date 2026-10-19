@@ -1,4 +1,4 @@
-// Backend: fetches the Google Sheets and runs them through parse.js and scoring.js.
+// Backend: fetches the Google Sheets and Supabase tables and runs them through parse.js and scoring.js.
 // The frontend only calls loadDrafts() and loadSeason().
 
 // Google Sheets CSV endpoint
@@ -16,6 +16,25 @@ async function fetchSheet(spreadsheetId, sheetName, { required = true, label = `
   return parseCSV(await res.text());
 }
 
+// Rows of a Supabase table via its REST API. `query` is PostgREST syntax, e.g. "select=name&season=eq.51".
+async function fetchTable(table, query) {
+  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${table}?${query}`, {
+    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}` },
+  }).catch(() => null);
+  if (!res || !res.ok) throw new Error(`HTTP ${res ? res.status : '—'} fetching the "${table}" table.`);
+  return res.json();
+}
+
+// This season's tribe → color, from the tribes table. Optional: falls back to palette colors.
+async function fetchTribeColors() {
+  try {
+    const rows = await fetchTable('tribes', `select=name,color&season=eq.${CONFIG.SEASON}`);
+    return Object.fromEntries(rows.map(r => [r.name, r.color]));
+  } catch (_) {
+    return {};
+  }
+}
+
 // Parse an optional sheet, falling back if it's missing or malformed
 function parseOptional(rows, parse, fallback) {
   if (!rows) return fallback;
@@ -31,13 +50,13 @@ async function loadDrafts() {
 
 // Everything the frontend needs for one draft: scored castaways and teams, plus the scoring rules
 async function loadSeason(draftSheetId) {
-  const [teamRows, draftRows, rosterRows, eventRows, scoringRows, tribeColorRows] = await Promise.all([
+  const [teamRows, draftRows, rosterRows, eventRows, scoringRows, tribeColorConfig] = await Promise.all([
     fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.teams, { required: false }),
     fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.castaways, { label: `the draft's "${CONFIG.DRAFT_SHEETS.castaways}" sheet` }),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.castaways),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.events),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.scoring, { required: false }),
-    fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.tribeColors, { required: false }),
+    fetchTribeColors(),
   ]);
 
   // Without a Scoring sheet every event scores 0
@@ -48,10 +67,10 @@ async function loadSeason(draftSheetId) {
     data: processEventData(rosterRows, draftRows, eventRows, teamPicks, scoring.lookup),
     scoringRules: scoring.rules,
     hiddenEvents: scoring.hidden,
-    tribeColorConfig: parseOptional(tribeColorRows, parseTribeColorConfig, {}),
+    tribeColorConfig,
   };
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { sheetUrl, fetchSheet, loadDrafts, loadSeason };
+  module.exports = { sheetUrl, fetchSheet, fetchTable, fetchTribeColors, loadDrafts, loadSeason };
 }
