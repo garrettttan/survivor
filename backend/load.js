@@ -30,7 +30,11 @@ async function fetchSeasonData() {
 
   return {
     tribeColorConfig: Object.fromEntries(tribes.map(t => [t.name, t.color])),
-    roster: castaways.map(c => ({ name: c.name, firstName: c.first_name, startingTribe: c.starting_tribe })),
+    roster: castaways.map(c => ({
+      name: [c.first_name, c.last_name].filter(Boolean).join(' '),
+      firstName: c.first_name,
+      startingTribe: c.starting_tribe,
+    })),
   };
 }
 
