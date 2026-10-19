@@ -9,7 +9,6 @@ const CONFIG = {
   LOGO: "logos/51.png",
 
   SHEETS: {
-    castaways: "Castaways",
     events: "Events",
     scoring: "Scoring",
     drafts: "Drafts",

@@ -15,9 +15,9 @@ const GAINED_ADV_EVENT = 'gained an idol or advantage';
 const RECEIVED_ADV_EVENT = 'received an idol or advantage from someone else';
 const PLAYED_ADV_PREFIX = 'played an idol or advantage';
 
-function processEventData(rosterRows, draftRows, eventRows, teamPicks, scoringLookup) {
+function processEventData(roster, draftRows, eventRows, teamPicks, scoringLookup) {
   const events = parseEvents(eventRows);
-  const { castaways, lookupCastaways } = buildCastaways(rosterRows, parseDraftTeams(draftRows));
+  const { castaways, lookupCastaways } = buildCastaways(roster, parseDraftTeams(draftRows));
   const { scoredEvents, merged } = applyGameEvents(events, castaways, lookupCastaways);
   scoreEvents(scoredEvents, lookupCastaways, scoringLookup);
 
@@ -33,7 +33,7 @@ function processEventData(rosterRows, draftRows, eventRows, teamPicks, scoringLo
 }
 
 // One castaway object per (castaway, drafting team); lookupCastaways finds them by full or first name
-function buildCastaways(rosterRows, draftTeams) {
+function buildCastaways(roster, draftTeams) {
   const castaways = [];
   const castawayMap = new Map();
   const seenNames = new Set();
@@ -42,18 +42,13 @@ function buildCastaways(rosterRows, draftTeams) {
     castawayMap.get(key).push(c);
   }
 
-  const rHeaders = rosterRows[0].map(h => h.trim().toLowerCase());
-  const rCol = name => rHeaders.indexOf(name.toLowerCase());
-  const castawayCol = rCol('castaway');
-
-  for (let r = 1; r < rosterRows.length; r++) {
-    const row = rosterRows[r];
-    const name = (row[castawayCol] || '').trim();
+  for (const entry of roster) {
+    const name = (entry.name || '').trim();
     if (!name || seenNames.has(name.toLowerCase())) continue;
     seenNames.add(name.toLowerCase());
 
     // Later tribes come from swap/switch/merge rows in the Events sheet (applyGameEvents)
-    const startingTribe = (row[rCol('starting tribe')] || '').trim();
+    const startingTribe = (entry.startingTribe || '').trim();
     const tribes = startingTribe ? [{ field: 'Starting tribe', value: startingTribe, week: 0 }] : [];
 
     const teams = draftTeams.get(name.toLowerCase()) || [];
@@ -62,14 +57,14 @@ function buildCastaways(rosterRows, draftTeams) {
     // Filled in from idol/advantage rows in the Events sheet (applyGameEvents)
     const advantages = [];
     const usedAdvantages = [];
-    const shortName = (row[rCol('short name')] || '').trim(); // optional, e.g. "Thien An" or a nickname
+    const shortName = (entry.firstName || '').trim(); // e.g. "Thien An", which the first word alone would cut off
 
+    // Events can name a castaway by full name, first word, or full first name
+    const keys = new Set([name, name.split(' ')[0], shortName].filter(Boolean).map(k => k.toLowerCase()));
     for (const team of teams) {
       const c = { name, shortName, team, tribes, eliminated: false, advantages, usedAdvantages, events: [], weekPoints: [], total: 0 };
       castaways.push(c);
-      addToMap(name.toLowerCase(), c);
-      const firstName = name.split(' ')[0].toLowerCase();
-      if (firstName !== name.toLowerCase()) addToMap(firstName, c);
+      keys.forEach(k => addToMap(k, c));
     }
   }
 

@@ -1,4 +1,4 @@
-// Backend: fetches the Google Sheets and Supabase tables and runs them through parse.js and scoring.js.
+// Backend: fetches the Google Sheets and Supabase season data and runs them through parse.js and scoring.js.
 // The frontend only calls loadDrafts() and loadSeason().
 
 // Google Sheets CSV endpoint
@@ -16,23 +16,22 @@ async function fetchSheet(spreadsheetId, sheetName, { required = true, label = `
   return parseCSV(await res.text());
 }
 
-// Rows of a Supabase table via its REST API. `query` is PostgREST syntax, e.g. "select=name&season=eq.51".
-async function fetchTable(table, query) {
-  const res = await fetch(`${CONFIG.SUPABASE_URL}/rest/v1/${table}?${query}`, {
-    headers: { apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: `Bearer ${CONFIG.SUPABASE_ANON_KEY}` },
-  }).catch(() => null);
-  if (!res || !res.ok) throw new Error(`HTTP ${res ? res.status : '—'} fetching the "${table}" table.`);
-  return res.json();
-}
-
-// This season's tribe → color, from the tribes table. Optional: falls back to palette colors.
-async function fetchTribeColors() {
-  try {
-    const rows = await fetchTable('tribes', `select=name,color&season=eq.${CONFIG.SEASON}`);
-    return Object.fromEntries(rows.map(r => [r.name, r.color]));
-  } catch (_) {
-    return {};
+// This season's tribes and castaways, from the get-tribes-and-castaways edge function.
+// Tribes become tribe → color; castaways become the roster buildCastaways expects.
+async function fetchSeasonData() {
+  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-tribes-and-castaways?season=${CONFIG.SEASON}`;
+  const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
+  const body = res ? await res.json().catch(() => ({})) : {};
+  if (!res || !res.ok || body.error) {
+    throw new Error(`HTTP ${res ? res.status : '—'} loading season data${body.error ? `: ${body.error}` : ''}`);
   }
+  const { tribes = [], castaways = [] } = body;
+  if (!castaways.length) throw new Error(`No castaways found for season ${CONFIG.SEASON}.`);
+
+  return {
+    tribeColorConfig: Object.fromEntries(tribes.map(t => [t.name, t.color])),
+    roster: castaways.map(c => ({ name: c.name, firstName: c.first_name, startingTribe: c.starting_tribe })),
+  };
 }
 
 // Parse an optional sheet, falling back if it's missing or malformed
@@ -50,13 +49,12 @@ async function loadDrafts() {
 
 // Everything the frontend needs for one draft: scored castaways and teams, plus the scoring rules
 async function loadSeason(draftSheetId) {
-  const [teamRows, draftRows, rosterRows, eventRows, scoringRows, tribeColorConfig] = await Promise.all([
+  const [teamRows, draftRows, { tribeColorConfig, roster }, eventRows, scoringRows] = await Promise.all([
     fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.teams, { required: false }),
     fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.castaways, { label: `the draft's "${CONFIG.DRAFT_SHEETS.castaways}" sheet` }),
-    fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.castaways),
+    fetchSeasonData(),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.events),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.scoring, { required: false }),
-    fetchTribeColors(),
   ]);
 
   // Without a Scoring sheet every event scores 0
@@ -64,7 +62,7 @@ async function loadSeason(draftSheetId) {
   const teamPicks = parseOptional(teamRows, parseTeamPicks, []);
 
   return {
-    data: processEventData(rosterRows, draftRows, eventRows, teamPicks, scoring.lookup),
+    data: processEventData(roster, draftRows, eventRows, teamPicks, scoring.lookup),
     scoringRules: scoring.rules,
     hiddenEvents: scoring.hidden,
     tribeColorConfig,
@@ -72,5 +70,5 @@ async function loadSeason(draftSheetId) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { sheetUrl, fetchSheet, fetchTable, fetchTribeColors, loadDrafts, loadSeason };
+  module.exports = { sheetUrl, fetchSheet, fetchSeasonData, loadDrafts, loadSeason };
 }
