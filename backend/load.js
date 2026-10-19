@@ -1,4 +1,4 @@
-// Backend: fetches the Google Sheets and Supabase season data and runs them through parse.js and scoring.js.
+// Backend: fetches the Google Sheets and Supabase draft data and runs them through parse.js and scoring.js.
 // The frontend only calls loadDrafts() and loadSeason().
 
 // Google Sheets CSV endpoint
@@ -16,16 +16,16 @@ async function fetchSheet(spreadsheetId, sheetName, { required = true, label = `
   return parseCSV(await res.text());
 }
 
-// This season's tribes and castaways, from the get-tribes-and-castaways edge function.
-// Tribes become tribe → color; castaways become the roster buildCastaways expects.
-async function fetchSeasonData() {
-  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-tribes-and-castaways?season=${CONFIG.SEASON}`;
+// This season's tribes and castaways plus the draft's teams, from the get-draft-data edge function.
+// Tribes become tribe → color; castaways become the roster buildCastaways expects; teams become [name, winner pick] pairs.
+async function fetchDraftData(draftId) {
+  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-draft-data?season=${CONFIG.SEASON}&draft_id=${draftId}`;
   const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
   const body = res ? await res.json().catch(() => ({})) : {};
   if (!res || !res.ok || body.error) {
-    throw new Error(`HTTP ${res ? res.status : '—'} loading season data${body.error ? `: ${body.error}` : ''}`);
+    throw new Error(`HTTP ${res ? res.status : '—'} loading draft data${body.error ? `: ${body.error}` : ''}`);
   }
-  const { tribes = [], castaways = [] } = body;
+  const { tribes = [], castaways = [], teams = [] } = body;
   if (!castaways.length) throw new Error(`No castaways found for season ${CONFIG.SEASON}.`);
 
   return {
@@ -35,6 +35,7 @@ async function fetchSeasonData() {
       firstName: c.first_name,
       startingTribe: c.starting_tribe?.name,
     })),
+    teamPicks: teams.map(t => [t.name, t.winner_pick?.name || '']),
   };
 }
 
@@ -53,17 +54,15 @@ async function loadDrafts() {
 
 // Everything the frontend needs for one draft: scored castaways and teams, plus the scoring rules
 async function loadSeason(draftSheetId) {
-  const [teamRows, draftRows, { tribeColorConfig, roster }, eventRows, scoringRows] = await Promise.all([
-    fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.teams, { required: false }),
+  const [draftRows, { tribeColorConfig, roster, teamPicks }, eventRows, scoringRows] = await Promise.all([
     fetchSheet(draftSheetId, CONFIG.DRAFT_SHEETS.castaways, { label: `the draft's "${CONFIG.DRAFT_SHEETS.castaways}" sheet` }),
-    fetchSeasonData(),
+    fetchDraftData(CONFIG.DRAFT_ID),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.events),
     fetchSheet(CONFIG.SHEET_ID, CONFIG.SHEETS.scoring, { required: false }),
   ]);
 
   // Without a Scoring sheet every event scores 0
   const scoring = parseOptional(scoringRows, parseScoringRules, { lookup: {}, rules: [], hidden: new Set() });
-  const teamPicks = parseOptional(teamRows, parseTeamPicks, []);
 
   return {
     data: processEventData(roster, draftRows, eventRows, teamPicks, scoring.lookup),
@@ -74,5 +73,5 @@ async function loadSeason(draftSheetId) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { sheetUrl, fetchSheet, fetchSeasonData, loadDrafts, loadSeason };
+  module.exports = { sheetUrl, fetchSheet, fetchDraftData, loadDrafts, loadSeason };
 }

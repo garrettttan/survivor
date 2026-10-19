@@ -57,13 +57,6 @@ function parseScoringRules(rows) {
   return { lookup, rules, hidden };
 }
 
-// Teams sheet (columns: Name, Winner pick) → [name, pick] pairs
-function parseTeamPicks(rows) {
-  return sheetRecords(rows)
-    .filter(r => r.name)
-    .map(r => [r.name, r['winner pick'] || '']);
-}
-
 // Draft's Castaways sheet (columns: Castaway, Team) → lowercased name → teams
 function parseDraftTeams(rows) {
   const draftTeams = new Map();
@@ -91,7 +84,7 @@ function parseEvents(rows) {
 
 if (typeof module !== 'undefined') {
   module.exports = {
-    parseCSV, sheetRecords, parseDrafts, parseScoringRules, parseTeamPicks,
+    parseCSV, sheetRecords, parseDrafts, parseScoringRules,
     parseDraftTeams, parseEvents,
   };
 }

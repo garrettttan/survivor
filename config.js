@@ -5,6 +5,7 @@ const CONFIG = {
   SUPABASE_URL: "https://zhwtgahrpnlywjaqmhjt.supabase.co",
   SUPABASE_ANON_KEY: "sb_publishable_d_we7LacUwrG62LXVT9KZw_eWJl-iLI",
   SEASON: 51,
+  DRAFT_ID: 1, // get-draft-data's draft_id; only one draft in Supabase so far
   SEASON_TITLE: "Season 51",
   LOGO: "logos/51.png",
 
@@ -15,7 +16,6 @@ const CONFIG = {
   },
 
   DRAFT_SHEETS: {
-    teams: "Teams",
     castaways: "Castaways",
   },
 };
