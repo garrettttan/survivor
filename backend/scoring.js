@@ -15,9 +15,9 @@ const GAINED_ADV_EVENT = 'gained an idol or advantage';
 const RECEIVED_ADV_EVENT = 'received an idol or advantage from someone else';
 const PLAYED_ADV_PREFIX = 'played an idol or advantage';
 
-function processEventData(roster, draftRows, eventRows, teamPicks, scoringLookup) {
+function processEventData(roster, draftTeams, eventRows, teamPicks, scoringLookup) {
   const events = parseEvents(eventRows);
-  const { castaways, lookupCastaways } = buildCastaways(roster, parseDraftTeams(draftRows));
+  const { castaways, lookupCastaways } = buildCastaways(roster, draftTeams);
   const { scoredEvents, merged } = applyGameEvents(events, castaways, lookupCastaways);
   scoreEvents(scoredEvents, lookupCastaways, scoringLookup);
 

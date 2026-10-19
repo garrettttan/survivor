@@ -33,17 +33,6 @@ function sheetRecords(rows) {
   });
 }
 
-// Drafts sheet (columns: Draft name, Draft sheet URL) → [{ name, id }]
-function parseDrafts(rows) {
-  const drafts = [];
-  sheetRecords(rows).forEach(r => {
-    const name = r['draft name'] || '';
-    const id = ((r['draft sheet url'] || '').match(/\/spreadsheets\/d\/([\w-]+)/) || [])[1];
-    if (name && id) drafts.push({ name, id });
-  });
-  return drafts;
-}
-
 // Scoring sheet (columns: Category, Event, Points)
 function parseScoringRules(rows) {
   const lookup = {};        // lowercased event → points
@@ -55,19 +44,6 @@ function parseScoringRules(rows) {
     if (category && event && points !== '0') rules.push({ category, event, points });
   });
   return { lookup, rules, hidden };
-}
-
-// Draft's Castaways sheet (columns: Castaway, Team) → lowercased name → teams
-function parseDraftTeams(rows) {
-  const draftTeams = new Map();
-  sheetRecords(rows).forEach(r => {
-    const name = (r.castaway || '').toLowerCase();
-    const team = r.team || '';
-    if (!name || !team) return;
-    if (!draftTeams.has(name)) draftTeams.set(name, []);
-    if (!draftTeams.get(name).includes(team)) draftTeams.get(name).push(team);
-  });
-  return draftTeams;
 }
 
 // Events sheet (columns: Week, Contestant, Event, Details, Other player, Tribe)
@@ -84,7 +60,6 @@ function parseEvents(rows) {
 
 if (typeof module !== 'undefined') {
   module.exports = {
-    parseCSV, sheetRecords, parseDrafts, parseScoringRules,
-    parseDraftTeams, parseEvents,
+    parseCSV, sheetRecords, parseScoringRules, parseEvents,
   };
 }

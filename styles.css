@@ -40,53 +40,6 @@ header {
   text-transform: uppercase;
 }
 
-/* Draft switcher — native <select> so phones get the OS picker */
-.draft-picker {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0.75rem auto 0;
-  padding-left: 0.9rem;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 9999px;
-  font-family: 'Oswald', sans-serif;
-  letter-spacing: 0.5px;
-}
-.draft-picker[hidden] { display: none; }
-.draft-picker-label {
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-.draft-picker select {
-  appearance: none;
-  -webkit-appearance: none;
-  min-width: 0;
-  min-height: 40px;
-  padding: 0 2rem 0 0.5rem;
-  background: transparent;
-  border: none;
-  border-radius: 9999px;
-  font-family: inherit;
-  font-size: 16px; /* ≥16px stops iOS zooming on focus */
-  font-weight: 600;
-  letter-spacing: inherit;
-  color: var(--fire);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.draft-picker select:focus-visible { outline: 2px solid var(--fire); outline-offset: 2px; }
-.draft-picker::after {
-  content: '▾';
-  position: absolute;
-  right: 0.85rem;
-  color: var(--fire);
-  pointer-events: none;
-}
-
 /* ── Layout ──────────────────────────────────────────────── */
 main {
   max-width: 1400px;

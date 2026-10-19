@@ -1,40 +1,8 @@
-// Frontend: page setup — picks the draft, asks the backend for its data, then renders every section.
+// Frontend: page setup — asks the backend for the draft's data, then renders every section.
 
 let appData = null;          // backend result for the current draft, plus colors from assignColors
 let scoringRules = [];       // shown on the scoring tab
 let hiddenEvents = new Set(); // lowercased events left out of the castaway event log
-
-// ── Draft picker ──────────────────────────────────────────────────────────
-const DRAFT_STORAGE_KEY = 'survivor.draft';
-
-// ?draft=<Draft name>, then the viewer's last choice, then the first listed draft
-function pickDraft(drafts) {
-  const byName = name => drafts.find(d => d.name.toLowerCase() === name.trim().toLowerCase());
-
-  const requested = new URLSearchParams(window.location.search).get('draft');
-  if (requested) {
-    const draft = byName(requested);
-    if (!draft) throw new Error(`Unknown draft "${requested}" — add it to the "${CONFIG.SHEETS.drafts}" sheet.`);
-    return draft;
-  }
-
-  let saved = null;
-  try { saved = localStorage.getItem(DRAFT_STORAGE_KEY); } catch (_) {}
-  return (saved && byName(saved)) || drafts[0];
-}
-
-function renderDraftPicker(drafts, current) {
-  const select = document.getElementById('draft-select');
-  select.innerHTML = '';
-  if (!current) select.add(new Option('Choose…', '', true, true));
-  drafts.forEach(d => select.add(new Option(d.name, d.name, false, current === d)));
-  select.onchange = () => {
-    if (!select.value) return;
-    try { localStorage.setItem(DRAFT_STORAGE_KEY, select.value); } catch (_) {}
-    window.location.search = '?draft=' + encodeURIComponent(select.value);
-  };
-  document.getElementById('draft-picker').hidden = drafts.length < 2;
-}
 
 // ── Scoring tab ───────────────────────────────────────────────────────────
 function renderScoring() {
@@ -104,13 +72,7 @@ function showError(message) {
 async function main() {
   setUpLogo();
   try {
-    const drafts = await loadDrafts();
-    renderDraftPicker(drafts, null); // usable even if the requested draft is unknown
-    const draft = pickDraft(drafts);
-    renderDraftPicker(drafts, draft);
-    try { localStorage.setItem(DRAFT_STORAGE_KEY, draft.name); } catch (_) {}
-
-    const season = await loadSeason(draft.id);
+    const season = await loadSeason();
     appData = season.data;
     scoringRules = season.scoringRules;
     hiddenEvents = season.hiddenEvents;
