@@ -11,8 +11,7 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script defer src="config.js"></script>
-  <!-- Backend: load the sheets and calculate castaways, points and teams (no DOM) -->
-  <script defer src="backend/parse.js"></script>
+  <!-- Backend: load the draft data and calculate castaways, points and teams (no DOM) -->
   <script defer src="backend/scoring.js"></script>
   <script defer src="backend/load.js"></script>
   <!-- Frontend: render the backend's results and handle interaction -->
@@ -34,7 +33,7 @@
 <div id="error-msg">
   <h2>⚠️ Failed to load draft data</h2>
   <p id="error-detail"></p>
-  <p>Make sure the Google Sheet is set to <strong>"Anyone with the link can view"</strong> and the sheet ID in <code>config.js</code> and the URLs in the Drafts sheet are correct.</p>
+  <p>Check that <code>SUPABASE_URL</code>, <code>SEASON</code> and <code>DRAFT_ID</code> in <code>config.js</code> are correct.</p>
 </div>
 
 <div id="app" style="display:none">
@@ -49,7 +48,6 @@
   <!-- STANDINGS -->
   <section id="standings">
     <h2 class="section-title">⚔️ STANDINGS</h2>
-    <p class="section-hint">Tap a team to see its castaways</p>
     <div class="table-scroll">
     <table class="standings-table">
       <thead>

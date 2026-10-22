@@ -74,13 +74,12 @@ function tribemateRows(mates) {
     </div>`).join('');
 }
 
-// Scoring breakdown by week, leaving out events in the "Hidden" scoring category
+// Scoring breakdown by week (tribe changes are already left out of c.events)
 function eventLogHtml(c) {
-  const loggedEvents = c.events.filter(e => !hiddenEvents.has(e.event.toLowerCase()));
-  if (!loggedEvents.length) return '';
+  if (!c.events.length) return '';
 
   const byWeek = new Map();
-  loggedEvents.forEach(e => {
+  c.events.forEach(e => {
     if (!byWeek.has(e.week)) byWeek.set(e.week, []);
     byWeek.get(e.week).push(e);
   });

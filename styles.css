@@ -94,11 +94,6 @@ html { scroll-behavior: smooth; }
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
-.section-hint {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin: -1rem 0 1rem;
-}
 
 /* ── Standings ───────────────────────────────────────────── */
 .standings-table {
@@ -366,8 +361,44 @@ html { scroll-behavior: smooth; }
   border-bottom: 1px solid rgba(61,42,15,0.15);
   gap: 0.5rem;
 }
-.scoring-row:last-child { border-bottom: none; }
+.scoring-cat > :last-child { border-bottom: none; }
 .scoring-pts { font-family: 'Oswald', sans-serif; color: var(--fire); font-weight: 600; white-space: nowrap; }
+
+/* Rules with a description: tap the row to slide it open underneath.
+   The rule (not the button) carries the divider, so it stays below the description while it animates. */
+.scoring-rule { border-bottom: 1px solid rgba(61,42,15,0.15); }
+.scoring-rule > .scoring-row {
+  width: 100%;
+  border: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* Animate the height the same way as the standings cards: grid row 0fr → 1fr */
+.scoring-desc-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.scoring-rule.open .scoring-desc-wrap { grid-template-rows: 1fr; }
+.scoring-desc-inner {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s 0.25s;
+}
+.scoring-rule.open .scoring-desc-inner { visibility: visible; transition: visibility 0s; }
+.scoring-desc {
+  padding: 0 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scoring-desc-wrap, .scoring-desc-inner { transition: none; }
+}
 
 .team-chart-scroll {
   overflow-x: auto;
@@ -597,7 +628,6 @@ html { scroll-behavior: smooth; }
   main { padding: 1rem 0.75rem; }
   section { margin-bottom: 2rem; }
   .section-title { font-size: 1.1rem; margin-bottom: 1rem; }
-  .section-hint { margin: -0.6rem 0 0.75rem; }
 
   .standings-table { --cell-x: 0.75rem; }
   .standings-table th,

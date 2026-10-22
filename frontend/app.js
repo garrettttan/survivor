@@ -1,29 +1,35 @@
 // Frontend: page setup — asks the backend for the draft's data, then renders every section.
 
 let appData = null;          // backend result for the current draft, plus colors from assignColors
-let scoringRules = [];       // shown on the scoring tab
-let hiddenEvents = new Set(); // lowercased events left out of the castaway event log
+let scoringRules = [];       // [{ category, rules }] shown on the scoring tab
 
 // ── Scoring tab ───────────────────────────────────────────────────────────
 function renderScoring() {
-  // Group rules by category, preserving order
-  const categories = [];
-  const catMap = {};
-  scoringRules.forEach(r => {
-    if (!catMap[r.category]) {
-      catMap[r.category] = [];
-      categories.push(r.category);
-    }
-    catMap[r.category].push(r);
-  });
-
-  document.getElementById('scoring-grid').innerHTML = categories.map(cat => `
+  document.getElementById('scoring-grid').innerHTML = scoringRules.map(({ category, rules }) => `
     <div class="scoring-cat">
-      <h4>${escapeHtml(cat)}</h4>
-      ${catMap[cat].map(r => `<div class="scoring-row"><span>${escapeHtml(r.event)}</span><span class="scoring-pts">${escapeHtml(r.points)}</span></div>`).join('')}
+      <h4>${escapeHtml(category)}</h4>
+      ${rules.map(scoringRuleHtml).join('')}
     </div>
   `).join('');
 }
+
+// A rule with a description opens on tap to show it underneath
+function scoringRuleHtml(r) {
+  const pts = `<span class="scoring-pts">${fmt(r.points)}</span>`;
+  if (!r.description) return `<div class="scoring-row"><span>${escapeHtml(r.event)}</span>${pts}</div>`;
+  return `<div class="scoring-rule">
+      <button type="button" class="scoring-row" aria-expanded="false"><span>${escapeHtml(r.event)}</span>${pts}</button>
+      <div class="scoring-desc-wrap"><div class="scoring-desc-inner"><div class="scoring-desc">${escapeHtml(r.description)}</div></div></div>
+    </div>`;
+}
+
+// Toggle a rule to show its description
+document.getElementById('scoring-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.scoring-rule > .scoring-row');
+  if (!btn) return;
+  const open = btn.parentElement.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+});
 
 // ── Section tabs ──────────────────────────────────────────────────────────
 // Highlight the tab for the section currently in view
@@ -75,7 +81,6 @@ async function main() {
     const season = await loadSeason();
     appData = season.data;
     scoringRules = season.scoringRules;
-    hiddenEvents = season.hiddenEvents;
     assignColors(appData, season.tribeColorConfig);
 
     document.getElementById('loading').style.display = 'none';

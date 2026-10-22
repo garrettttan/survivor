@@ -1,27 +1,21 @@
-// Backend: turns parsed sheet data into castaways, points and teams. No DOM, colors or browser state.
+// Backend: turns the draft's roster and game log into castaways, points and teams. No DOM, colors or browser state.
 
-// Tribe changes put the new tribe in the Tribe column. Swap/switch rows name a castaway;
-// a merge row has no contestant and moves everyone still in the game.
-const SWAP_EVENT = 'tribe swap';
-const SWITCH_EVENT = 'switched tribes'; // like a swap, but for one castaway mid-phase
-const MERGE_EVENT = 'merge';
-const PHASE_EVENTS = new Set([SWAP_EVENT, MERGE_EVENT]); // tribe changes that don't score points
-const ELIMINATION_EVENTS = new Set(['voted out', 'medivacked', 'quit']);
-const SAT_OUT_EVENT = 'sat out of challenge'; // excludes the castaway from the nearest tribe-wide row above it
+// Log rows that only record a tribe change: they set the castaway's tribe history and stay out of the event log
+const STARTING_TRIBE_EVENT = 'starting tribe';
+const TRIBE_EVENTS = new Set([STARTING_TRIBE_EVENT, 'swapped tribe', 'merged']);
+const ELIMINATION_EVENTS = new Set(['voted out', 'medically evacuated', 'quit']);
 
-// Idol/advantage rows name the item in Details. A received row takes it from the Other player;
-// played rows ("...that saved self or ally", "...that did not save anyone") mark it used.
-const GAINED_ADV_EVENT = 'gained an idol or advantage';
-const RECEIVED_ADV_EVENT = 'received an idol or advantage from someone else';
-const PLAYED_ADV_PREFIX = 'played an idol or advantage';
+// Idol/advantage rows name the item in Advantage; a row without one shows as a generic badge
+const GAINED_ADV_EVENTS = new Set(['found idol or advantage', 'received idol or advantage']);
+const GAVE_ADV_EVENT = 'gave away idol or advantage';
+const PLAYED_ADV_EVENTS = new Set(['played idol or advantage successfully', 'wasted idol or advantage']);
+const GENERIC_ADV = 'Idol or advantage';
 
-function processEventData(roster, draftTeams, eventRows, teamPicks, scoringLookup) {
-  const events = parseEvents(eventRows);
-  const { castaways, lookupCastaways } = buildCastaways(roster, draftTeams);
-  const { scoredEvents, merged } = applyGameEvents(events, castaways, lookupCastaways);
-  scoreEvents(scoredEvents, lookupCastaways, scoringLookup);
+function processGameData(roster, draftTeams, game, teamPicks) {
+  const castaways = buildCastaways(roster, draftTeams, game);
+  const merged = castaways.some(c => c.tribes.some(t => t.field.endsWith('merge')));
 
-  const weekNums = [...new Set(scoredEvents.map(e => e.week))].sort((a, b) => a - b);
+  const weekNums = [...new Set(castaways.flatMap(c => c.events.map(e => e.week)))].sort((a, b) => a - b);
   const activeWeeks = weekNums.map(num => ({ num }));
   buildWeekPoints(castaways, weekNums);
 
@@ -32,137 +26,79 @@ function processEventData(roster, draftTeams, eventRows, teamPicks, scoringLooku
   return { castaways, teams, teamNames, activeWeeks, activeNames, merged };
 }
 
-// One castaway object per (castaway, drafting team); lookupCastaways finds them by full or first name
-function buildCastaways(roster, draftTeams) {
+// One castaway object per (castaway, drafting team), with game state read from game[castaway id].log
+function buildCastaways(roster, draftTeams, game) {
   const castaways = [];
-  const castawayMap = new Map();
   const seenNames = new Set();
-  function addToMap(key, c) {
-    if (!castawayMap.has(key)) castawayMap.set(key, []);
-    castawayMap.get(key).push(c);
-  }
 
   for (const entry of roster) {
     const name = (entry.name || '').trim();
     if (!name || seenNames.has(name.toLowerCase())) continue;
     seenNames.add(name.toLowerCase());
 
-    // Later tribes come from swap/switch/merge rows in the Events sheet (applyGameEvents)
-    const startingTribe = (entry.startingTribe || '').trim();
-    const tribes = startingTribe ? [{ field: 'Starting tribe', value: startingTribe, week: 0 }] : [];
+    const state = readGameLog(game[entry.id]?.log || []);
+    // Fall back to the roster's starting tribe when the log has no tribe rows yet
+    if (!state.tribes.length && entry.startingTribe) {
+      state.tribes.push({ field: 'Starting tribe', value: entry.startingTribe, week: 0 });
+    }
+    const total = state.events.reduce((sum, e) => sum + e.points, 0);
 
     const teams = draftTeams.get(name.toLowerCase()) || [];
     if (!teams.length) teams.push('');
 
-    // Filled in from idol/advantage rows in the Events sheet (applyGameEvents)
-    const advantages = [];
-    const usedAdvantages = [];
+    // Team instances of a castaway share the same tribes, events and advantage arrays
     const shortName = (entry.firstName || '').trim(); // e.g. "Thien An", which the first word alone would cut off
-
-    // Events can name a castaway by full name, first word, or full first name
-    const keys = new Set([name, name.split(' ')[0], shortName].filter(Boolean).map(k => k.toLowerCase()));
     for (const team of teams) {
-      const c = { name, shortName, team, tribes, eliminated: false, advantages, usedAdvantages, events: [], weekPoints: [], total: 0 };
-      castaways.push(c);
-      keys.forEach(k => addToMap(k, c));
+      castaways.push({ id: entry.id, name, shortName, team, ...state, weekPoints: [], total });
     }
   }
-
-  const lookupCastaways = nameStr => castawayMap.get(nameStr.toLowerCase()) || [];
-  return { castaways, lookupCastaways };
+  return castaways;
 }
 
-// Applies eliminations, tribe changes and idols/advantages; returns the events that can score points
-function applyGameEvents(events, castaways, lookupCastaways) {
-  // Team instances of a castaway share advantage arrays, so act on one instance per castaway
-  const holders = name => [...new Map(lookupCastaways(name).map(c => [c.advantages, c])).values()];
-  const removeAdvantage = (list, item) => {
-    const i = list.findIndex(a => a.toLowerCase() === item.toLowerCase());
-    if (i >= 0) list.splice(i, 1);
+// Tribe history, elimination, advantages and scored events from one castaway's game log
+function readGameLog(log) {
+  const tribes = [];
+  const events = [];
+  const advantages = [];
+  const usedAdvantages = [];
+  let eliminatedWeek;
+  const removeAdvantage = item => {
+    const i = advantages.findIndex(a => a.toLowerCase() === item.toLowerCase());
+    if (i >= 0) advantages.splice(i, 1);
   };
 
-  let merged = false;
-  const scoredEvents = [];
-  let lastTribeRow = null; // most recent tribe-wide row, for attaching sit-outs
-  for (const e of events) {
-    const eventLower = e.event.toLowerCase();
-    if (lastTribeRow && lastTribeRow.event.week !== e.week) lastTribeRow = null;
+  for (const e of log) {
+    const eventLower = e.name.toLowerCase();
+    const item = e.advantage || GENERIC_ADV;
 
-    if (eventLower === MERGE_EVENT) {
-      merged = true;
-      // Everyone still in the game at this point in the sheet joins the merged tribe
-      if (e.tribe) {
-        new Set(castaways.filter(c => !c.eliminated).map(c => c.tribes))
-          .forEach(tribes => tribes.push({ field: `Week ${e.week} merge`, value: e.tribe, week: e.week }));
-      }
+    if (TRIBE_EVENTS.has(eventLower)) {
+      if (!e.tribe) continue;
+      tribes.push(eventLower === STARTING_TRIBE_EVENT
+        ? { field: 'Starting tribe', value: e.tribe, week: 0 }
+        : { field: `Week ${e.episode} ${eventLower === 'merged' ? 'merge' : 'swap'}`, value: e.tribe, week: e.episode });
       continue;
     }
 
-    if (ELIMINATION_EVENTS.has(eventLower)) {
-      lookupCastaways(e.contestant).forEach(c => {
-        c.eliminated = true;
-        c.eliminatedWeek = e.week;
-      });
+    if (ELIMINATION_EVENTS.has(eventLower)) eliminatedWeek = e.episode;
+    if (GAINED_ADV_EVENTS.has(eventLower)) advantages.push(item);
+    if (eventLower === GAVE_ADV_EVENT) removeAdvantage(item);
+    if (PLAYED_ADV_EVENTS.has(eventLower)) {
+      removeAdvantage(item);
+      usedAdvantages.push(item);
     }
 
-    if ((eventLower === GAINED_ADV_EVENT || eventLower === RECEIVED_ADV_EVENT) && e.details) {
-      if (eventLower === RECEIVED_ADV_EVENT && e.otherPlayer) {
-        holders(e.otherPlayer).forEach(c => removeAdvantage(c.advantages, e.details));
-      }
-      holders(e.contestant).forEach(c => c.advantages.push(e.details));
-    }
-    if (eventLower.startsWith(PLAYED_ADV_PREFIX) && e.details) {
-      holders(e.contestant).forEach(c => {
-        removeAdvantage(c.advantages, e.details);
-        c.usedAdvantages.push(e.details);
-      });
-    }
-
-    // Team instances of a castaway share one tribes array, so add the change once per array
-    if ((eventLower === SWAP_EVENT || eventLower === SWITCH_EVENT) && e.tribe) {
-      const field = `Week ${e.week} ${eventLower === SWAP_EVENT ? 'swap' : 'switch'}`;
-      new Set(lookupCastaways(e.contestant).map(c => c.tribes))
-        .forEach(tribes => tribes.push({ field, value: e.tribe, week: e.week }));
-    }
-    if (PHASE_EVENTS.has(eventLower)) continue;
-
-    // A row with a Tribe but no contestant (e.g. "Won tribe immunity") scores for everyone on that
-    // tribe and still in the game at this point in the sheet, minus any sit-outs that follow it
-    if (!e.contestant && e.tribe) {
-      const members = new Set(castaways
-        .filter(c => !c.eliminated && c.tribes[c.tribes.length - 1]?.value === e.tribe)
-        .map(c => c.name));
-      lastTribeRow = { event: e, members, satOut: new Set() };
-      scoredEvents.push(lastTribeRow);
-      continue;
-    }
-
-    // Sit-outs right after a tribe-wide row (in the same week) skip that row's points
-    if (eventLower === SAT_OUT_EVENT && lastTribeRow) {
-      lookupCastaways(e.contestant).forEach(c => lastTribeRow.satOut.add(c.name));
-    }
-
-    if (e.contestant) scoredEvents.push(e);
-  }
-
-  // Order each tribe history chronologically (stable, so same-week changes keep their sheet order)
-  new Set(castaways.map(c => c.tribes)).forEach(tribes => tribes.sort((a, b) => a.week === b.week ? 0 : a.week - b.week));
-
-  // Expand each tribe-wide row into one row per member who didn't sit out
-  const expanded = scoredEvents.flatMap(e => !e.members ? [e]
-    : [...e.members].filter(name => !e.satOut.has(name)).map(name => ({ ...e.event, contestant: name })));
-  return { scoredEvents: expanded, merged };
-}
-
-// Adds each event's points to every team instance of its castaway
-function scoreEvents(scoredEvents, lookupCastaways, scoringLookup) {
-  for (const e of scoredEvents) {
-    const pts = scoringLookup[e.event.toLowerCase()] ?? 0;
-    lookupCastaways(e.contestant).forEach(c => {
-      c.events.push({ week: e.week, event: e.event, points: pts, details: e.details, otherPlayer: e.otherPlayer });
-      c.total += pts;
+    events.push({
+      week: e.episode,
+      event: e.name,
+      points: e.points,
+      details: e.details || e.advantage || '', // the event log shows the idol/advantage where Details would go
+      otherPlayer: e.other_castaway || '',
     });
   }
+
+  // Chronological, keeping log order within an episode
+  tribes.sort((a, b) => a.week - b.week);
+  return { tribes, events, advantages, usedAdvantages, eliminated: eliminatedWeek != null, eliminatedWeek };
 }
 
 // c.weekPoints[i] is the castaway's points in weekNums[i], or null if they had no events that week
@@ -221,7 +157,7 @@ function buildActiveNames(castaways) {
 
 if (typeof module !== 'undefined') {
   module.exports = {
-    processEventData, buildCastaways, applyGameEvents, scoreEvents,
+    processGameData, buildCastaways, readGameLog,
     buildWeekPoints, buildTeams, buildTeamCumulativePoints, buildActiveNames,
   };
 }
