@@ -23,7 +23,7 @@ function scoringRuleHtml(r) {
   if (!r.description) return `<div class="scoring-row"><span>${escapeHtml(r.name)}</span>${pts}</div>`;
   return `<div class="scoring-rule">
       <button type="button" class="scoring-row" aria-expanded="false"><span>${escapeHtml(r.name)}</span>${pts}</button>
-      <div class="scoring-desc-wrap"><div class="scoring-desc-inner"><div class="scoring-desc">${escapeHtml(r.description)}</div></div></div>
+      <div class="collapse-wrap"><div class="collapse-inner"><div class="scoring-desc">${escapeHtml(r.description)}</div></div></div>
     </div>`;
 }
 

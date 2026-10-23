@@ -14,12 +14,6 @@ function openSheet(name) {
     ...c.expiredAdvantages.map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
   ].join(' ');
 
-  // Only the latest phase starts expanded
-  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${tribeColor(t)}"${i === c.tribes.length - 1 ? ' open' : ''}>
-      <summary class="sheet-section-header">${tribeBadge(t)} (${escapeHtml(tribeLabel(t))})</summary>
-      ${tribemateRows(sortTribemates(t.members))}
-    </details>`).join('');
-
   document.getElementById('sheet-body').innerHTML = `
     <div class="sheet-top">
       <div class="sheet-hero-name">${escapeHtml(c.name)}</div>
@@ -30,22 +24,11 @@ function openSheet(name) {
       ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
     </div>
     ${timelineHtml(c)}
-    <div class="sheet-group">
-      <div class="sheet-section-header">Past Tribes</div>
-      ${tribesHtml}
-    </div>
   `;
 
   document.getElementById('sheet-overlay').classList.add('open');
   document.getElementById('bottom-sheet').classList.add('open');
   document.body.style.overflow = 'hidden';
-}
-
-// "Starting tribe", or the reason plus the episode the stint began ("Swapped tribes ep. 4")
-function tribeLabel(t) {
-  const reason = t.startReason || '';
-  if (reason.toLowerCase() === 'starting tribe') return reason;
-  return [reason, `ep. ${t.startEpisode}`].filter(Boolean).join(' ');
 }
 
 // Everyone else who was on the tribe during this stint (listed by the server)
@@ -63,50 +46,102 @@ function sortTribemates(members) {
   });
 }
 
-function tribemateRows(mates) {
-  if (!mates.length) return '<div class="empty-note">No tribemates found</div>';
-  return mates.map(m => `<div class="sheet-row ${m.active ? '' : 'out'}">
-      <span class="sheet-row-name clickable" data-castaway="${escapeHtml(m.name)}">${escapeHtml(m.name)}</span>
-    </div>`).join('');
+// A stint's tribemates as name chips (short names; out players dashed and struck through) in a panel tinted
+// with the tribe's color (the band's --tribe-tint). A chip opens that castaway's sheet.
+function tribematesHtml(stint, short) {
+  const mates = sortTribemates(stint.members);
+  const chips = mates.length
+    ? `<div class="tribemate-chips">${mates.map(m => `<button type="button" class="tribemate-chip${m.active ? '' : ' out'}" data-castaway="${escapeHtml(m.name)}">${escapeHtml(short.get(m.name) || m.name)}</button>`).join('')}</div>`
+    : '<div class="empty-note">No tribemates found</div>';
+  return `<div class="band-members">
+      <div class="band-members-label">Tribemates</div>
+      ${chips}
+    </div>`;
 }
 
-// The tribe as a badge (colored from the castaway's stint on it), details in parentheses, the idol/advantage
-// as a badge (its name can have its own parentheses, e.g. "Extra vote (Savu)"), then the other castaway
-// (tap to open their sheet)
-function eventDetailHtml(c, e) {
+// Details in parentheses, the idol/advantage as a badge (its name can have its own parentheses,
+// e.g. "Extra vote (Savu)"), then the other castaway (tap to open their sheet). The tribe is left out:
+// the band the row sits in already shows it.
+function eventDetailHtml(e) {
   const other = e.otherCastaway;
-  const stint = e.tribe && (c.tribes.find(t => t.tribeName === e.tribe) || { tribeName: e.tribe });
-  return (stint ? ` ${tribeBadge(stint)}` : '') +
-    (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
+  return (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
     (e.advantage ? ` <span class="badge badge-adv">${escapeHtml(e.advantage)}</span>` : '') +
     (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(other.name)}</span></span>` : '');
 }
 
-// Every log row, by episode
-function timelineHtml(c) {
-  if (!c.log.length) return '';
+// The log split into one band per tribe stint, in order. A stint's tribe-change row ("Swapped tribes" to that
+// tribe) starts its band and isn't listed, since the band header shows it. A stint without one starts once the
+// log moves past its start episode. Rows before the first stint go in a leading band with no stint.
+function timelineBands(c) {
+  const bands = [{ stint: null, rows: [] }];
+  let next = 0; // the next stint to start
+  [...c.log].sort((a, b) => a.episode - b.episode).forEach(e => {
+    let isChange = false;
+    while (next < c.tribes.length) {
+      const s = c.tribes[next];
+      isChange = e.tribe === s.tribeName && e.name.toLowerCase() === (s.startReason || '').toLowerCase();
+      if (!isChange && e.episode <= s.startEpisode) break;
+      bands.push({ stint: s, rows: [] });
+      next++;
+      if (isChange) break;
+    }
+    if (!isChange) bands[bands.length - 1].rows.push(e);
+  });
+  // Stints with no log rows after them still get a band, for the header and members
+  c.tribes.slice(next).forEach(s => bands.push({ stint: s, rows: [] }));
+  return bands.filter(b => b.stint || b.rows.length);
+}
 
+// Log rows grouped under an episode label, a line between episodes
+function episodesHtml(rows) {
   const byEpisode = new Map();
-  c.log.forEach(e => {
+  rows.forEach(e => {
     if (!byEpisode.has(e.episode)) byEpisode.set(e.episode, []);
     byEpisode.get(e.episode).push(e);
   });
-  const episodeEntries = [...byEpisode.entries()].sort((a, b) => a[0] - b[0]);
+  return [...byEpisode.entries()].map(([episode, events]) => `
+    <div class="sheet-episode">
+      <div class="episode-label">EPISODE ${episode}</div>
+      ${events.map(e => `<div class="sheet-row">
+        <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e)}</span>
+        ${e.points ? `<span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>` : ''}
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+// Every log row, in bands accented in each stint's tribe color. A band's header (the tribe badge, and
+// "N tribemates" and the round expand button on the right) opens to list the tribemates for that stint; all start closed.
+function timelineHtml(c) {
+  const bands = timelineBands(c);
+  if (!bands.length) return '';
+  const short = shortNames(appData.castaways);
+  const bandHtml = band => {
+    const episodes = band.rows.length ? `<div class="band-episodes">${episodesHtml(band.rows)}</div>` : '';
+    const s = band.stint;
+    if (!s) return `<div class="tribe-band">${episodes}</div>`;
+    const color = tribeColor(s);
+    return `<div class="tribe-band" style="border-left-color:${color};--tribe:${color};--tribe-contrast:${contrastText(color)};--tribe-tint:${hexToRgba(color, 0.14)};--tribe-tint-border:${hexToRgba(color, 0.4)}">
+      <button type="button" class="sheet-section-header band-header" aria-expanded="false">
+        ${tribeBadge(s)}
+        <span class="band-hint">${s.members.length} ${s.members.length === 1 ? 'tribemate' : 'tribemates'}<span class="expand-btn expand-btn-sm">${ICONS.chevronDown}</span></span>
+      </button>
+      <div class="collapse-wrap"><div class="collapse-inner">${tribematesHtml(s, short)}</div></div>
+      ${episodes}
+    </div>`;
+  };
   return `<div class="sheet-group">
       <div class="sheet-section-header">Timeline</div>
-      <div class="sheet-timeline">
-        ${episodeEntries.map(([episode, events]) => `
-          <div class="sheet-episode">
-            <div class="episode-label">EPISODE ${episode}</div>
-            ${events.map(e => `<div class="sheet-row">
-              <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(c, e)}</span>
-              ${e.points ? `<span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>` : ''}
-            </div>`).join('')}
-          </div>
-        `).join('')}
-      </div>
+      <div class="sheet-timeline">${bands.map(bandHtml).join('')}</div>
     </div>`;
 }
+
+// Toggle a timeline band to show its tribemates
+document.getElementById('sheet-body').addEventListener('click', e => {
+  const btn = e.target.closest('.band-header');
+  if (!btn) return;
+  const open = btn.parentElement.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+});
 
 function closeSheet() {
   const sheet = document.getElementById('bottom-sheet');
