@@ -1,15 +1,15 @@
 // Frontend: the standings table — one row per team, expanding to show its castaways.
 
-function renderStandings({ teams, teamNames, activeNames }) {
+function renderStandings({ teams, teamNames }) {
   const sorted = [...teamNames].sort((a, b) => teams[b].totalPoints - teams[a].totalPoints);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
     const tm = teams[t];
     const rank = i + 1;
-    const guess = tm.survivorGuess;
-    const guessAlive = guess && activeNames.has(guess);
+    const guess = tm.winnerPick;
+    const guessAlive = guess && !guess.eliminated;
 
     const guessSection = guess ? `
-      <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess)}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
+      <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
 
     const castawayRows = [...tm.castaways]
       .sort((a, b) => a.eliminated - b.eliminated || b.total - a.total)

@@ -7,7 +7,7 @@ let overviewSort = [{ key: 'points', dir: 'desc' }]; // ordered sort levels
 // Sortable columns: default direction and the value compared
 const OVERVIEW_SORTS = {
   name:   { dir: 'asc',  val: c => c.name },
-  tribe:  { dir: 'asc',  val: c => c.tribes.length ? c.tribes[c.tribes.length - 1].value : '' },
+  tribe:  { dir: 'asc',  val: c => c.tribes.length ? c.tribes[c.tribes.length - 1].name : '' },
   points: { dir: 'desc', val: c => c.total },
   teams:  { dir: 'asc',  val: c => c.teams.join(', ') },
   // Active castaways first, then eliminated in reverse order (last out first)
@@ -17,22 +17,8 @@ const OVERVIEW_SORTS = {
 function renderOverviewTable({ castaways, merged }) {
   // Built from every castaway, not the filtered subset, so short names don't change when filtering
   const short = shortNames(castaways);
-  let subset = castaways;
-  if (overviewActiveOnly) subset = subset.filter(c => !c.eliminated);
-
-  // Group by castaway name, collecting every team that drafted them
-  const byName = new Map();
-  subset.forEach(c => {
-    if (!byName.has(c.name)) {
-      byName.set(c.name, { ...c, teams: [c.team] });
-    } else {
-      const entry = byName.get(c.name);
-      if (!entry.teams.includes(c.team)) entry.teams.push(c.team);
-    }
-  });
-
-  let unique = [...byName.values()];
-  unique.sort((a, b) => {
+  const rows = overviewActiveOnly ? castaways.filter(c => !c.eliminated) : [...castaways];
+  rows.sort((a, b) => {
     for (const { key, dir } of overviewSort) {
       const va = OVERVIEW_SORTS[key].val(a), vb = OVERVIEW_SORTS[key].val(b);
       const cmp = typeof va === 'string' ? va.localeCompare(vb) : va - vb;
@@ -41,8 +27,8 @@ function renderOverviewTable({ castaways, merged }) {
     return a.name.localeCompare(b.name);
   });
 
-  document.getElementById('overview-body').innerHTML = unique.map(c => {
-    const tribeValues = c.tribes.map(t => t.value).reverse();
+  document.getElementById('overview-body').innerHTML = rows.map(c => {
+    const tribeValues = c.tribes.map(t => t.name).reverse();
     const tribeHtml = tribeValues
       .map((v, i) => tribeBadge(v, merged || i > 0))
       .join(' ');

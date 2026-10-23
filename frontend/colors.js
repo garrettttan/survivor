@@ -13,7 +13,7 @@ const PALETTE = [
 ];
 const FALLBACK_COLOR = '#64748b';
 
-// Team colors follow team order in the palette; tribe colors come from the Tribe colors sheet
+// Team colors follow team order in the palette; tribe colors come from the draft data's tribes
 function assignColors(data, tribeColorConfig) {
   data.teamColor = {};
   data.teamNames.forEach((t, i) => {
@@ -23,7 +23,7 @@ function assignColors(data, tribeColorConfig) {
 }
 
 function buildTribeColors(castaways, tribeColorConfig) {
-  const tribeNames = [...new Set(castaways.flatMap(c => c.tribes.map(t => t.value)))].sort();
+  const tribeNames = [...new Set(castaways.flatMap(c => c.tribes.map(t => t.name)))].sort();
   const tribeColor = {};
   let paletteIdx = 0;
   tribeNames.forEach(t => {

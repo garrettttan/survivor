@@ -4,8 +4,7 @@ function openSheet(name) {
   const c = appData.castaways.find(x => x.name === name);
   if (!c) return;
 
-  const draftedBy = [...new Set(appData.castaways.filter(x => x.name === name).map(x => x.team))];
-  const ownerColor = appData.teamColor[c.team] || FALLBACK_COLOR;
+  const ownerColor = appData.teamColor[c.teams[0]] || FALLBACK_COLOR;
   const statusBadge = c.eliminated
     ? '<span class="eliminated-label">☠️ Eliminated</span>'
     : '<span class="active-badge">Active</span>';
@@ -16,9 +15,9 @@ function openSheet(name) {
   ].join(' ');
 
   // Only the latest phase starts expanded
-  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.value).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
-      <summary class="sheet-section-header">${escapeHtml(t.field)} ${tribeBadge(t.value)}</summary>
-      ${tribemateRows(tribemates(name, t.value, t.episode))}
+  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.name).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
+      <summary class="sheet-section-header">${tribeBadge(t.name)} (${escapeHtml(tribeLabel(t))})</summary>
+      ${tribemateRows(sortTribemates(t.members))}
     </details>`).join('');
 
   document.getElementById('sheet-body').innerHTML = `
@@ -28,7 +27,7 @@ function openSheet(name) {
     </div>
     <div class="sheet-meta">
       ${statusBadge} ${advHtml}
-      <span class="sheet-owner">Drafted by ${draftedBy.map(teamNameHtml).join(', ')}</span>
+      ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
     </div>
     ${eventLogHtml(c)}
     <div class="sheet-tribes">
@@ -42,25 +41,21 @@ function openSheet(name) {
   document.body.style.overflow = 'hidden';
 }
 
-// Tribe x was on as of episode ep (their latest tribe entry at or before ep)
-function tribeAsOf(x, ep) {
-  const entry = x.tribes.filter(t => t.episode <= ep).pop();
-  return entry ? entry.value : '';
+// "Starting tribe", or the reason plus the episode the stint began ("Swapped tribes ep. 4")
+function tribeLabel(t) {
+  if (t.reason.toLowerCase() === 'starting tribe') return t.reason;
+  return [t.reason, `ep. ${t.startEpisode}`].filter(Boolean).join(' ');
 }
 
-// Everyone else on the tribe in that episode who was still in the game
-function tribemates(name, tribeName, episode) {
-  const all = appData.castaways.filter(x => x.name !== name &&
-    tribeAsOf(x, episode) === tribeName && (!x.eliminated || x.exitEpisode >= episode));
-  const byName = new Map();
-  all.forEach(m => { if (!byName.has(m.name)) byName.set(m.name, m); });
+// Everyone else who was on the tribe during this stint (listed by the server)
+function sortTribemates(members) {
   const cmp = (x, y) => x.localeCompare(y, undefined, { sensitivity: 'base' });
   const splitName = n => {
     const [first, ...rest] = n.split(' ');
     return [first, rest.join(' ')];
   };
   // Active first, then by first name, then last name
-  return [...byName.values()].sort((a, b) => {
+  return [...members].sort((a, b) => {
     const [aFirst, aLast] = splitName(a.name);
     const [bFirst, bLast] = splitName(b.name);
     return a.eliminated - b.eliminated || cmp(aFirst, bFirst) || cmp(aLast, bLast);
@@ -90,7 +85,7 @@ function eventLogHtml(c) {
         <div class="sheet-episode">
           <div class="episode-label">EPISODE ${episode}</div>
           ${events.map(e => `<div class="sheet-row">
-            <span class="sheet-row-name">${escapeHtml(e.event)}${e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : ''}${e.otherPlayer ? ` <span class="muted">— ${escapeHtml(e.otherPlayer)}</span>` : ''}</span>
+            <span class="sheet-row-name">${escapeHtml(e.event)}${e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : ''}${e.other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(e.other.name)}">${escapeHtml(e.other.name)}</span></span>` : ''}</span>
             <span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>
           </div>`).join('')}
         </div>

@@ -6,12 +6,12 @@ function fmt(n) {
   return s.endsWith('.0') ? s.slice(0, -2) : s;
 }
 
-// Sheet text is inserted with innerHTML, so escape it first
+// Data from the server is inserted with innerHTML, so escape it first
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
-// Short display names, keyed by full name: the "Short name" column if set, else the first word.
+// Short display names, keyed by full name: the castaway's first name if set, else the first word.
 // Adds a last initial when short names clash ("John A.", "John C."), and the full name if that still clashes.
 function shortNames(castaways) {
   const parts = new Map();
