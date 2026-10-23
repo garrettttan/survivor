@@ -1,22 +1,22 @@
 // Frontend: the standings table — one row per team, expanding to show its castaways.
 
 function renderStandings({ teams, teamNames }) {
-  const sorted = [...teamNames].sort((a, b) => teams[b].totalPoints - teams[a].totalPoints);
+  const sorted = [...teamNames].sort((a, b) => teams[b].points - teams[a].points);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
     const tm = teams[t];
     const rank = i + 1;
     const guess = tm.winnerPick;
-    const guessAlive = guess && !guess.eliminated;
+    const guessAlive = guess && guess.active;
 
     const guessSection = guess ? `
       <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
 
-    const castawayRows = [...tm.castaways]
-      .sort((a, b) => a.eliminated - b.eliminated || b.total - a.total)
-      .map(c => `<div class="castaway-row clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${escapeHtml(c.name)}">
+    const castawayRows = [...tm.members]
+      .sort((a, b) => b.active - a.active || b.points - a.points)
+      .map(c => `<div class="castaway-row clickable-row ${c.active ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
           <div class="castaway-name clickable">${escapeHtml(c.name)}</div>
           <div class="castaway-end">
-            <div class="castaway-pts" style="color:${c.eliminated ? 'var(--muted)' : tm.color}">${fmt(c.total)}</div>
+            <div class="castaway-pts" style="color:${c.active ? tm.color : 'var(--muted)'}">${fmt(c.points)}</div>
             ${ICONS.chevronRight}
           </div>
         </div>`).join('');
@@ -25,7 +25,7 @@ function renderStandings({ teams, teamNames }) {
       <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
       <td class="fit-col"><span class="active-count">${tm.activeCount}</span></td>
-      <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.totalPoints)}</span></td>
+      <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.points)}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>
     </tr>
     <tr class="team-detail" aria-hidden="true">

@@ -26,8 +26,8 @@ function baseChartOptions() {
   };
 }
 
-function renderTeamChart({ teams, teamNames, episodes }) {
-  const labels = episodes.map(ep => `Ep ${ep.num}`);
+function renderTeamChart({ teams, teamNames, episodeCount }) {
+  const labels = Array.from({ length: episodeCount }, (_, i) => `Ep ${i + 1}`);
   const datasets = teamNames.map(t => ({
     label: t,
     data: teams[t].cumulativePoints,

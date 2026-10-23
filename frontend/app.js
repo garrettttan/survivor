@@ -1,24 +1,28 @@
 // Frontend: page setup — asks the backend for the draft's data, then renders every section.
 
 let appData = null;          // backend result for the current draft, plus colors from assignColors
-let scoringRules = [];       // [{ category, rules }] shown on the scoring tab
+let scoring = {};            // category → [{ name, description, points }] shown on the scoring tab
 
 // ── Scoring tab ───────────────────────────────────────────────────────────
+// Leaves out 0-point rules, and categories with nothing left
 function renderScoring() {
-  document.getElementById('scoring-grid').innerHTML = scoringRules.map(({ category, rules }) => `
+  document.getElementById('scoring-grid').innerHTML = Object.entries(scoring).map(([category, rules]) => {
+    const scored = rules.filter(r => r.points !== 0);
+    return scored.length ? `
     <div class="scoring-cat">
       <h4>${escapeHtml(category)}</h4>
-      ${rules.map(scoringRuleHtml).join('')}
+      ${scored.map(scoringRuleHtml).join('')}
     </div>
-  `).join('');
+  ` : '';
+  }).join('');
 }
 
 // A rule with a description opens on tap to show it underneath
 function scoringRuleHtml(r) {
   const pts = `<span class="scoring-pts">${fmt(r.points)}</span>`;
-  if (!r.description) return `<div class="scoring-row"><span>${escapeHtml(r.event)}</span>${pts}</div>`;
+  if (!r.description) return `<div class="scoring-row"><span>${escapeHtml(r.name)}</span>${pts}</div>`;
   return `<div class="scoring-rule">
-      <button type="button" class="scoring-row" aria-expanded="false"><span>${escapeHtml(r.event)}</span>${pts}</button>
+      <button type="button" class="scoring-row" aria-expanded="false"><span>${escapeHtml(r.name)}</span>${pts}</button>
       <div class="scoring-desc-wrap"><div class="scoring-desc-inner"><div class="scoring-desc">${escapeHtml(r.description)}</div></div></div>
     </div>`;
 }
@@ -80,8 +84,8 @@ async function main() {
   try {
     const season = await loadSeason();
     appData = season.data;
-    scoringRules = season.scoringRules;
-    assignColors(appData, season.tribeColorConfig);
+    scoring = season.scoring;
+    assignColors(appData, season.tribes);
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';

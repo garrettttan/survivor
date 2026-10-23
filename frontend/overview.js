@@ -7,17 +7,17 @@ let overviewSort = [{ key: 'points', dir: 'desc' }]; // ordered sort levels
 // Sortable columns: default direction and the value compared
 const OVERVIEW_SORTS = {
   name:   { dir: 'asc',  val: c => c.name },
-  tribe:  { dir: 'asc',  val: c => c.tribes.length ? c.tribes[c.tribes.length - 1].name : '' },
-  points: { dir: 'desc', val: c => c.total },
+  tribe:  { dir: 'asc',  val: c => c.tribes.length ? c.tribes[c.tribes.length - 1].tribeName : '' },
+  points: { dir: 'desc', val: c => c.points },
   teams:  { dir: 'asc',  val: c => c.teams.join(', ') },
   // Active castaways first, then eliminated in reverse order (last out first)
-  status: { dir: 'desc', val: c => c.eliminated ? (c.exitEpisode ?? 999) : 9999 },
+  status: { dir: 'desc', val: c => c.active ? 9999 : (c.exitEpisode ?? 999) },
 };
 
 function renderOverviewTable({ castaways, merged }) {
   // Built from every castaway, not the filtered subset, so short names don't change when filtering
   const short = shortNames(castaways);
-  const rows = overviewActiveOnly ? castaways.filter(c => !c.eliminated) : [...castaways];
+  const rows = overviewActiveOnly ? castaways.filter(c => c.active) : [...castaways];
   rows.sort((a, b) => {
     for (const { key, dir } of overviewSort) {
       const va = OVERVIEW_SORTS[key].val(a), vb = OVERVIEW_SORTS[key].val(b);
@@ -28,7 +28,7 @@ function renderOverviewTable({ castaways, merged }) {
   });
 
   document.getElementById('overview-body').innerHTML = rows.map(c => {
-    const tribeValues = c.tribes.map(t => t.name).reverse();
+    const tribeValues = c.tribes.map(t => t.tribeName).reverse();
     const tribeHtml = tribeValues
       .map((v, i) => tribeBadge(v, merged || i > 0))
       .join(' ');
@@ -38,14 +38,14 @@ function renderOverviewTable({ castaways, merged }) {
       ? advValues.map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`).join(' ')
       : '<span class="muted">—</span>';
 
-    const statusHtml = c.eliminated
-      ? (c.exitEpisode != null ? `☠️ Ep ${c.exitEpisode}` : '☠️')
-      : '🟢';
+    const statusHtml = c.active
+      ? '🟢'
+      : (c.exitEpisode != null ? `☠️ Ep ${c.exitEpisode}` : '☠️');
 
-    return `<tr class="clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${escapeHtml(c.name)}">
+    return `<tr class="clickable-row ${c.active ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
       <td><span class="castaway-name-cell clickable"><span class="name-full">${escapeHtml(c.name)}</span><span class="name-short">${escapeHtml(short.get(c.name))}</span></span></td>
       <td><div class="overview-badges">${tribeHtml}</div></td>
-      <td><span class="points-cell">${fmt(c.total)}</span></td>
+      <td><span class="points-cell">${fmt(c.points)}</span></td>
       <td><div class="overview-badges">${advHtml}</div></td>
       <td>${c.teams.map(teamNameHtml).join(', ')}</td>
       <td>${statusHtml}</td>
