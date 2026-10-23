@@ -564,8 +564,13 @@ html { scroll-behavior: smooth; }
   border-radius: 8px;
   padding: 0.75rem;
 }
-.sheet-episode { margin-bottom: 0.5rem; }
-.sheet-episode:last-child { margin-bottom: 0; }
+/* Timeline: a line between episodes, none between the events within one */
+.sheet-episode + .sheet-episode {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(61,42,15,0.2);
+}
+.sheet-episode .sheet-row { border-bottom: none; }
 /* A titled section of the castaway sheet (Timeline, Past Tribes), divided from what's above it */
 .sheet-group {
   margin-top: 0.75rem;
