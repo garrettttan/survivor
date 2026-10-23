@@ -557,8 +557,8 @@ html { scroll-behavior: smooth; }
   margin-bottom: 0.5rem;
   display: flex; align-items: center; gap: 0.5rem;
 }
-.sheet-scoring {
-  margin-top: 0.75rem;
+.sheet-timeline {
+  margin-top: 0.5rem;
   background: rgba(61,42,15,0.05);
   border: 1px solid rgba(61,42,15,0.2);
   border-radius: 8px;
@@ -566,16 +566,13 @@ html { scroll-behavior: smooth; }
 }
 .sheet-episode { margin-bottom: 0.5rem; }
 .sheet-episode:last-child { margin-bottom: 0; }
-.sheet-scoring .sheet-section-header {
-  color: var(--fire);
-  margin-bottom: 0.5rem;
-}
-.sheet-tribes {
+/* A titled section of the castaway sheet (Timeline, Past Tribes), divided from what's above it */
+.sheet-group {
   margin-top: 0.75rem;
   border-top: 1px solid rgba(61,42,15,0.2);
   padding-top: 0.75rem;
 }
-.sheet-tribes > .sheet-section-header {
+.sheet-group > .sheet-section-header {
   font-size: 0.9rem;
   color: var(--text);
   margin-bottom: 0.25rem;
@@ -607,7 +604,8 @@ html { scroll-behavior: smooth; }
   transition: transform 0.15s;
 }
 .tribe-phase[open] > summary::before { transform: rotate(90deg); }
-.tribe-phase[open] > summary { border-bottom: 1px solid rgba(61,42,15,0.15); }.sheet-row {
+.tribe-phase[open] > summary { border-bottom: 1px solid rgba(61,42,15,0.15); }
+.sheet-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 0.4rem 0;
   border-bottom: 1px solid rgba(61,42,15,0.15);
@@ -617,6 +615,17 @@ html { scroll-behavior: smooth; }
 .sheet-row.out { opacity: 0.38; }
 .sheet-row.out .sheet-row-name { text-decoration: line-through; }
 .sheet-row-name { flex: 1; font-weight: 500; }
+/* Badges inside timeline rows: smaller than elsewhere, centered on the text line
+   (two classes, so this also wins over the phone-size .badge rule) */
+.sheet-episode .badge {
+  font-size: 0.58rem;
+  padding: 0 0.3rem;
+  line-height: 1.4;
+  border-radius: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -0.1em; /* middle still sits a little low next to the row text */
+}
 
 /* ── Mobile ──────────────────────────────────────────────── */
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border-radius: 8px; }

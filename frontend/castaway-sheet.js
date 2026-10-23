@@ -29,8 +29,8 @@ function openSheet(name) {
       ${statusBadge} ${advHtml}
       ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
     </div>
-    ${eventLogHtml(c)}
-    <div class="sheet-tribes">
+    ${timelineHtml(c)}
+    <div class="sheet-group">
       <div class="sheet-section-header">Past Tribes</div>
       ${tribesHtml}
     </div>
@@ -70,36 +70,41 @@ function tribemateRows(mates) {
     </div>`).join('');
 }
 
-// Details in parentheses, the idol/advantage as a badge (its name can have its own parentheses,
-// e.g. "Extra vote (Savu)"), then the other castaway (tap to open their sheet)
-function eventDetailHtml(e) {
+// The tribe as a badge (colored from the castaway's stint on it), details in parentheses, the idol/advantage
+// as a badge (its name can have its own parentheses, e.g. "Extra vote (Savu)"), then the other castaway
+// (tap to open their sheet)
+function eventDetailHtml(c, e) {
   const other = e.otherCastaway;
-  return (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
+  const stint = e.tribe && (c.tribes.find(t => t.tribeName === e.tribe) || { tribeName: e.tribe });
+  return (stint ? ` ${tribeBadge(stint)}` : '') +
+    (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
     (e.advantage ? ` <span class="badge badge-adv">${escapeHtml(e.advantage)}</span>` : '') +
     (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(other.name)}</span></span>` : '');
 }
 
-// Scoring breakdown by episode (tribe changes are already left out of c.events)
-function eventLogHtml(c) {
-  if (!c.events.length) return '';
+// Every log row, by episode
+function timelineHtml(c) {
+  if (!c.log.length) return '';
 
   const byEpisode = new Map();
-  c.events.forEach(e => {
+  c.log.forEach(e => {
     if (!byEpisode.has(e.episode)) byEpisode.set(e.episode, []);
     byEpisode.get(e.episode).push(e);
   });
   const episodeEntries = [...byEpisode.entries()].sort((a, b) => a[0] - b[0]);
-  return `<div class="sheet-scoring">
-      <div class="sheet-section-header">Scoring Breakdown</div>
-      ${episodeEntries.map(([episode, events]) => `
-        <div class="sheet-episode">
-          <div class="episode-label">EPISODE ${episode}</div>
-          ${events.map(e => `<div class="sheet-row">
-            <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e)}</span>
-            <span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>
-          </div>`).join('')}
-        </div>
-      `).join('')}
+  return `<div class="sheet-group">
+      <div class="sheet-section-header">Timeline</div>
+      <div class="sheet-timeline">
+        ${episodeEntries.map(([episode, events]) => `
+          <div class="sheet-episode">
+            <div class="episode-label">EPISODE ${episode}</div>
+            ${events.map(e => `<div class="sheet-row">
+              <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(c, e)}</span>
+              ${e.points ? `<span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>` : ''}
+            </div>`).join('')}
+          </div>
+        `).join('')}
+      </div>
     </div>`;
 }
 
