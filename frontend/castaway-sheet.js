@@ -70,11 +70,12 @@ function tribemateRows(mates) {
     </div>`).join('');
 }
 
-// The idol/advantage shows where details would go, then the other castaway (tap to open their sheet)
+// Details in parentheses, the idol/advantage as a badge (its name can have its own parentheses,
+// e.g. "Extra vote (Savu)"), then the other castaway (tap to open their sheet)
 function eventDetailHtml(e) {
-  const details = e.details || e.advantage;
   const other = e.otherCastaway;
-  return (details ? ` <span class="muted">(${escapeHtml(details)})</span>` : '') +
+  return (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
+    (e.advantage ? ` <span class="badge badge-adv">${escapeHtml(e.advantage)}</span>` : '') +
     (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(other.name)}</span></span>` : '');
 }
 
