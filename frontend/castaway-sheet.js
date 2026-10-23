@@ -15,8 +15,8 @@ function openSheet(name) {
   ].join(' ');
 
   // Only the latest phase starts expanded
-  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.tribeName).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
-      <summary class="sheet-section-header">${tribeBadge(t.tribeName)} (${escapeHtml(tribeLabel(t))})</summary>
+  const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${tribeColor(t)}"${i === c.tribes.length - 1 ? ' open' : ''}>
+      <summary class="sheet-section-header">${tribeBadge(t)} (${escapeHtml(tribeLabel(t))})</summary>
       ${tribemateRows(sortTribemates(t.members))}
     </details>`).join('');
 

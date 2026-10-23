@@ -13,13 +13,12 @@ const PALETTE = [
 ];
 const FALLBACK_COLOR = '#64748b';
 
-// Team colors follow team order in the palette; tribe colors come from the draft data's tribes
-function assignColors(data, tribes) {
+// Team colors follow team order in the palette (tribe colors come with each castaway's tribe stints)
+function assignColors(data) {
   data.teamColor = {};
   data.teamNames.forEach((t, i) => {
     data.teamColor[t] = data.teams[t].color = PALETTE[i % PALETTE.length];
   });
-  data.tribeColor = Object.fromEntries(tribes.map(t => [t.name, t.color]));
 }
 
 function hexToRgba(hex, alpha) {
@@ -35,18 +34,19 @@ function contrastText(hex) {
   return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#2b1d0e' : '#ffffff';
 }
 
-function getTribeColor(name) {
-  const hex = (appData && appData.tribeColor && appData.tribeColor[name]) || FALLBACK_COLOR;
-  return { color: hex, border: hexToRgba(hex, 0.35) };
+// A tribe stint's color
+function tribeColor(stint) {
+  return stint.tribeColor || FALLBACK_COLOR;
 }
 
-// Current tribe: solid fill. Former tribe: outline only, dimmed.
-function tribeBadge(name, faded = false) {
-  const t = getTribeColor(name);
+// A tribe stint's name in its color. Current tribe: solid fill. Former tribe: outline only, dimmed.
+function tribeBadge(stint, faded = false) {
+  const color = tribeColor(stint);
+  const name = escapeHtml(stint.tribeName);
   if (faded) {
-    return `<span class="badge badge-tribe" style="color:${t.color};background:transparent;border-color:${t.border};opacity:0.7">${escapeHtml(name)}</span>`;
+    return `<span class="badge badge-tribe" style="color:${color};background:transparent;border-color:${hexToRgba(color, 0.35)};opacity:0.7">${name}</span>`;
   }
-  return `<span class="badge badge-tribe" style="color:${contrastText(t.color)};background:${t.color};border-color:${t.color}">${escapeHtml(name)}</span>`;
+  return `<span class="badge badge-tribe" style="color:${contrastText(color)};background:${color};border-color:${color}">${name}</span>`;
 }
 
 // A team name in its team color

@@ -28,9 +28,8 @@ function renderOverviewTable({ castaways, merged }) {
   });
 
   document.getElementById('overview-body').innerHTML = rows.map(c => {
-    const tribeValues = c.tribes.map(t => t.tribeName).reverse();
-    const tribeHtml = tribeValues
-      .map((v, i) => tribeBadge(v, merged || i > 0))
+    const tribeHtml = [...c.tribes].reverse()
+      .map((t, i) => tribeBadge(t, merged || i > 0))
       .join(' ');
 
     const advValues = c.advantages;

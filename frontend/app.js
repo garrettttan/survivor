@@ -85,7 +85,7 @@ async function main() {
     const season = await loadSeason();
     appData = season.data;
     scoring = season.scoring;
-    assignColors(appData, season.tribes);
+    assignColors(appData);
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';
