@@ -69,26 +69,16 @@ function eventDetailHtml(e) {
     (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(other.name)}</span></span>` : '');
 }
 
-// The log split into one band per tribe stint, in order. A stint's tribe-change row ("Swapped tribes" to that
-// tribe) starts its band and isn't listed, since the band header shows it. A stint without one starts once the
-// log moves past its start episode. Rows before the first stint go in a leading band with no stint.
+// The log split into one band per tribe stint, in order: each row goes to the latest stint that started on or
+// before its episode, so a swap episode's rows all sit with the new tribe. Rows before the first stint go in a
+// leading band with no stint.
 function timelineBands(c) {
-  const bands = [{ stint: null, rows: [] }];
-  let next = 0; // the next stint to start
+  const bands = [{ stint: null, rows: [] }, ...c.tribes.map(stint => ({ stint, rows: [] }))];
   [...c.log].sort((a, b) => a.episode - b.episode).forEach(e => {
-    let isChange = false;
-    while (next < c.tribes.length) {
-      const s = c.tribes[next];
-      isChange = e.tribe === s.tribeName && e.name.toLowerCase() === (s.startReason || '').toLowerCase();
-      if (!isChange && e.episode <= s.startEpisode) break;
-      bands.push({ stint: s, rows: [] });
-      next++;
-      if (isChange) break;
-    }
-    if (!isChange) bands[bands.length - 1].rows.push(e);
+    let i = 0;
+    c.tribes.forEach((t, j) => { if (t.startEpisode <= e.episode) i = j + 1; });
+    bands[i].rows.push(e);
   });
-  // Stints with no log rows after them still get a band, for the header and members
-  c.tribes.slice(next).forEach(s => bands.push({ stint: s, rows: [] }));
   return bands.filter(b => b.stint || b.rows.length);
 }
 
