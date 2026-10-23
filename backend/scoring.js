@@ -3,7 +3,6 @@
 // Log rows that only record a tribe change: they set the castaway's tribe history and stay out of the event log
 const STARTING_TRIBE_EVENT = 'starting tribe';
 const TRIBE_EVENTS = new Set([STARTING_TRIBE_EVENT, 'swapped tribe', 'merged']);
-const ELIMINATION_EVENTS = new Set(['voted out', 'medically evacuated', 'quit']);
 
 // Idol/advantage rows name the item in Advantage; a row without one shows as a generic badge
 const GAINED_ADV_EVENTS = new Set(['found idol or advantage', 'received idol or advantage']);
@@ -15,18 +14,20 @@ function processGameData(roster, draftTeams, game, teamPicks) {
   const castaways = buildCastaways(roster, draftTeams, game);
   const merged = castaways.some(c => c.tribes.some(t => t.field.endsWith('merge')));
 
-  const weekNums = [...new Set(castaways.flatMap(c => c.events.map(e => e.week)))].sort((a, b) => a - b);
-  const activeWeeks = weekNums.map(num => ({ num }));
-  buildWeekPoints(castaways, weekNums);
+  // pointsByEpisode[i] is episode i + 1, so the episodes run 1..the longest list
+  const episodeCount = Math.max(0, ...castaways.map(c => c.episodePoints.length));
+  const episodes = Array.from({ length: episodeCount }, (_, i) => ({ num: i + 1 }));
+  castaways.forEach(c => { while (c.episodePoints.length < episodeCount) c.episodePoints.push(0); });
 
   const { teamNames, teams } = buildTeams(castaways, teamPicks);
-  buildTeamCumulativePoints(teams, teamNames, activeWeeks);
+  buildTeamCumulativePoints(teams, teamNames, episodes);
   const activeNames = buildActiveNames(castaways);
 
-  return { castaways, teams, teamNames, activeWeeks, activeNames, merged };
+  return { castaways, teams, teamNames, episodes, activeNames, merged };
 }
 
-// One castaway object per (castaway, drafting team), with game state read from game[castaway id].log
+// One castaway object per (castaway, drafting team). Points and exits come from game[castaway id];
+// tribes, advantages and the event log are read from its log.
 function buildCastaways(roster, draftTeams, game) {
   const castaways = [];
   const seenNames = new Set();
@@ -36,32 +37,37 @@ function buildCastaways(roster, draftTeams, game) {
     if (!name || seenNames.has(name.toLowerCase())) continue;
     seenNames.add(name.toLowerCase());
 
-    const state = readGameLog(game[entry.id]?.log || []);
+    const g = game[entry.id] || {};
+    const state = readGameLog(g.log || []);
     // Fall back to the roster's starting tribe when the log has no tribe rows yet
     if (!state.tribes.length && entry.startingTribe) {
-      state.tribes.push({ field: 'Starting tribe', value: entry.startingTribe, week: 0 });
+      state.tribes.push({ field: 'Starting tribe', value: entry.startingTribe, episode: 0 });
     }
-    const total = state.events.reduce((sum, e) => sum + e.points, 0);
+    const status = {
+      eliminated: g.active === false,
+      exitEpisode: g.exitEpisode ?? undefined,
+      total: g.points || 0,
+    };
 
     const teams = draftTeams.get(name.toLowerCase()) || [];
     if (!teams.length) teams.push('');
 
-    // Team instances of a castaway share the same tribes, events and advantage arrays
+    // Team instances of a castaway share the same tribes, events, advantage and episode point arrays
+    const episodePoints = [...(g.pointsByEpisode || [])];
     const shortName = (entry.firstName || '').trim(); // e.g. "Thien An", which the first word alone would cut off
     for (const team of teams) {
-      castaways.push({ id: entry.id, name, shortName, team, ...state, weekPoints: [], total });
+      castaways.push({ id: entry.id, name, shortName, team, ...state, ...status, episodePoints });
     }
   }
   return castaways;
 }
 
-// Tribe history, elimination, advantages and scored events from one castaway's game log
+// Tribe history, advantages and scored events from one castaway's game log
 function readGameLog(log) {
   const tribes = [];
   const events = [];
   const advantages = [];
   const usedAdvantages = [];
-  let eliminatedWeek;
   const removeAdvantage = item => {
     const i = advantages.findIndex(a => a.toLowerCase() === item.toLowerCase());
     if (i >= 0) advantages.splice(i, 1);
@@ -74,12 +80,11 @@ function readGameLog(log) {
     if (TRIBE_EVENTS.has(eventLower)) {
       if (!e.tribe) continue;
       tribes.push(eventLower === STARTING_TRIBE_EVENT
-        ? { field: 'Starting tribe', value: e.tribe, week: 0 }
-        : { field: `Week ${e.episode} ${eventLower === 'merged' ? 'merge' : 'swap'}`, value: e.tribe, week: e.episode });
+        ? { field: 'Starting tribe', value: e.tribe, episode: 0 }
+        : { field: `Episode ${e.episode} ${eventLower === 'merged' ? 'merge' : 'swap'}`, value: e.tribe, episode: e.episode });
       continue;
     }
 
-    if (ELIMINATION_EVENTS.has(eventLower)) eliminatedWeek = e.episode;
     if (GAINED_ADV_EVENTS.has(eventLower)) advantages.push(item);
     if (eventLower === GAVE_ADV_EVENT) removeAdvantage(item);
     if (PLAYED_ADV_EVENTS.has(eventLower)) {
@@ -88,7 +93,7 @@ function readGameLog(log) {
     }
 
     events.push({
-      week: e.episode,
+      episode: e.episode,
       event: e.name,
       points: e.points,
       details: e.details || e.advantage || '', // the event log shows the idol/advantage where Details would go
@@ -97,19 +102,8 @@ function readGameLog(log) {
   }
 
   // Chronological, keeping log order within an episode
-  tribes.sort((a, b) => a.week - b.week);
-  return { tribes, events, advantages, usedAdvantages, eliminated: eliminatedWeek != null, eliminatedWeek };
-}
-
-// c.weekPoints[i] is the castaway's points in weekNums[i], or null if they had no events that week
-function buildWeekPoints(castaways, weekNums) {
-  castaways.forEach(c => {
-    c.weekPoints = weekNums.map(w => {
-      const weekEvents = c.events.filter(e => e.week === w);
-      if (weekEvents.length === 0) return null;
-      return weekEvents.reduce((sum, e) => sum + e.points, 0);
-    });
-  });
+  tribes.sort((a, b) => a.episode - b.episode);
+  return { tribes, events, advantages, usedAdvantages };
 }
 
 function buildTeams(castaways, seasonPicks) {
@@ -133,13 +127,11 @@ function buildTeams(castaways, seasonPicks) {
   return { teamNames, teams };
 }
 
-function buildTeamCumulativePoints(teams, teamNames, activeWeeks) {
+function buildTeamCumulativePoints(teams, teamNames, episodes) {
   teamNames.forEach(t => {
     let cum = 0;
-    teams[t].cumulativePoints = activeWeeks.map((w, wi) => {
-      teams[t].castaways.forEach(c => {
-        if (c.weekPoints[wi] !== null) cum += c.weekPoints[wi];
-      });
+    teams[t].cumulativePoints = episodes.map((ep, i) => {
+      teams[t].castaways.forEach(c => { cum += c.episodePoints[i]; });
       return cum;
     });
   });
@@ -158,6 +150,6 @@ function buildActiveNames(castaways) {
 if (typeof module !== 'undefined') {
   module.exports = {
     processGameData, buildCastaways, readGameLog,
-    buildWeekPoints, buildTeams, buildTeamCumulativePoints, buildActiveNames,
+    buildTeams, buildTeamCumulativePoints, buildActiveNames,
   };
 }

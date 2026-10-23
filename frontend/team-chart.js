@@ -26,8 +26,8 @@ function baseChartOptions() {
   };
 }
 
-function renderTeamChart({ teams, teamNames, activeWeeks }) {
-  const labels = activeWeeks.map(w => `Wk ${w.num}`);
+function renderTeamChart({ teams, teamNames, episodes }) {
+  const labels = episodes.map(ep => `Ep ${ep.num}`);
   const datasets = teamNames.map(t => ({
     label: t,
     data: teams[t].cumulativePoints,
@@ -38,10 +38,10 @@ function renderTeamChart({ teams, teamNames, activeWeeks }) {
     pointHoverRadius: 6,
     tension: 0.3,
   }));
-  // Set min-width so the chart is scrollable on mobile for many weeks
+  // Set min-width so the chart is scrollable on mobile for many episodes
   const inner = document.querySelector('.team-chart-inner');
-  const perWeek = isPhone() ? 40 : 50;
-  inner.style.minWidth = Math.max(labels.length * perWeek, 300) + 'px';
+  const perEpisode = isPhone() ? 40 : 50;
+  inner.style.minWidth = Math.max(labels.length * perEpisode, 300) + 'px';
 
   const ctx = document.getElementById('team-chart').getContext('2d');
   if (teamChartInst) teamChartInst.destroy();

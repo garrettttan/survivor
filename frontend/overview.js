@@ -11,7 +11,7 @@ const OVERVIEW_SORTS = {
   points: { dir: 'desc', val: c => c.total },
   teams:  { dir: 'asc',  val: c => c.teams.join(', ') },
   // Active castaways first, then eliminated in reverse order (last out first)
-  status: { dir: 'desc', val: c => c.eliminated ? (c.eliminatedWeek ?? 999) : 9999 },
+  status: { dir: 'desc', val: c => c.eliminated ? (c.exitEpisode ?? 999) : 9999 },
 };
 
 function renderOverviewTable({ castaways, merged }) {
@@ -53,7 +53,7 @@ function renderOverviewTable({ castaways, merged }) {
       : '<span class="muted">—</span>';
 
     const statusHtml = c.eliminated
-      ? (c.eliminatedWeek != null ? `☠️ Wk ${c.eliminatedWeek}` : '☠️')
+      ? (c.exitEpisode != null ? `☠️ Ep ${c.exitEpisode}` : '☠️')
       : '🟢';
 
     return `<tr class="clickable-row ${c.eliminated ? 'out' : ''}" data-castaway="${escapeHtml(c.name)}">

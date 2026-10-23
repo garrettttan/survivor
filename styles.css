@@ -564,8 +564,8 @@ html { scroll-behavior: smooth; }
   border-radius: 8px;
   padding: 0.75rem;
 }
-.sheet-week { margin-bottom: 0.5rem; }
-.sheet-week:last-child { margin-bottom: 0; }
+.sheet-episode { margin-bottom: 0.5rem; }
+.sheet-episode:last-child { margin-bottom: 0; }
 .sheet-scoring .sheet-section-header {
   color: var(--fire);
   margin-bottom: 0.5rem;
@@ -695,5 +695,5 @@ html { scroll-behavior: smooth; }
 .empty-note { font-size: 0.8rem; color: var(--muted); }
 .eliminated-label { color: var(--ember); font-size: 0.8rem; }
 .adv-used { opacity: 0.5; text-decoration: line-through; }
-.week-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; font-family: Oswald; margin-bottom: 0.2rem; }
+.episode-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; font-family: Oswald; margin-bottom: 0.2rem; }
 .event-pts { color: var(--fire); font-weight: 600; padding-left: 0.75rem; white-space: nowrap; }

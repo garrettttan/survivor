@@ -18,7 +18,7 @@ function openSheet(name) {
   // Only the latest phase starts expanded
   const tribesHtml = c.tribes.map((t, i) => `<details class="sheet-section tribe-phase" style="border-left-color:${getTribeColor(t.value).color}"${i === c.tribes.length - 1 ? ' open' : ''}>
       <summary class="sheet-section-header">${escapeHtml(t.field)} ${tribeBadge(t.value)}</summary>
-      ${tribemateRows(tribemates(name, t.value, t.week))}
+      ${tribemateRows(tribemates(name, t.value, t.episode))}
     </details>`).join('');
 
   document.getElementById('sheet-body').innerHTML = `
@@ -42,16 +42,16 @@ function openSheet(name) {
   document.body.style.overflow = 'hidden';
 }
 
-// Tribe x was on as of week w (their latest tribe entry at or before w)
-function tribeAsOf(x, w) {
-  const entry = x.tribes.filter(t => t.week <= w).pop();
+// Tribe x was on as of episode ep (their latest tribe entry at or before ep)
+function tribeAsOf(x, ep) {
+  const entry = x.tribes.filter(t => t.episode <= ep).pop();
   return entry ? entry.value : '';
 }
 
-// Everyone else on the tribe at that week who was still in the game
-function tribemates(name, tribeName, week) {
+// Everyone else on the tribe in that episode who was still in the game
+function tribemates(name, tribeName, episode) {
   const all = appData.castaways.filter(x => x.name !== name &&
-    tribeAsOf(x, week) === tribeName && (!x.eliminated || x.eliminatedWeek >= week));
+    tribeAsOf(x, episode) === tribeName && (!x.eliminated || x.exitEpisode >= episode));
   const byName = new Map();
   all.forEach(m => { if (!byName.has(m.name)) byName.set(m.name, m); });
   const cmp = (x, y) => x.localeCompare(y, undefined, { sensitivity: 'base' });
@@ -74,21 +74,21 @@ function tribemateRows(mates) {
     </div>`).join('');
 }
 
-// Scoring breakdown by week (tribe changes are already left out of c.events)
+// Scoring breakdown by episode (tribe changes are already left out of c.events)
 function eventLogHtml(c) {
   if (!c.events.length) return '';
 
-  const byWeek = new Map();
+  const byEpisode = new Map();
   c.events.forEach(e => {
-    if (!byWeek.has(e.week)) byWeek.set(e.week, []);
-    byWeek.get(e.week).push(e);
+    if (!byEpisode.has(e.episode)) byEpisode.set(e.episode, []);
+    byEpisode.get(e.episode).push(e);
   });
-  const weekEntries = [...byWeek.entries()].sort((a, b) => a[0] - b[0]);
+  const episodeEntries = [...byEpisode.entries()].sort((a, b) => a[0] - b[0]);
   return `<div class="sheet-scoring">
       <div class="sheet-section-header">Scoring Breakdown</div>
-      ${weekEntries.map(([week, events]) => `
-        <div class="sheet-week">
-          <div class="week-label">WEEK ${week}</div>
+      ${episodeEntries.map(([episode, events]) => `
+        <div class="sheet-episode">
+          <div class="episode-label">EPISODE ${episode}</div>
           ${events.map(e => `<div class="sheet-row">
             <span class="sheet-row-name">${escapeHtml(e.event)}${e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : ''}${e.otherPlayer ? ` <span class="muted">— ${escapeHtml(e.otherPlayer)}</span>` : ''}</span>
             <span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>
