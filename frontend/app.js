@@ -60,16 +60,43 @@ function handleLogoError(img) {
   const h1 = document.createElement('h1');
   h1.id = 'page-title';
   h1.className = 'header-logo-text';
-  h1.textContent = img.alt || CONFIG.SEASON_TITLE;
+  h1.textContent = img.alt;
   img.replaceWith(h1);
 }
 
-function setUpLogo() {
+function setUpLogo(entry) {
   const logoEl = document.getElementById('page-title');
   logoEl.addEventListener('error', () => handleLogoError(logoEl));
-  logoEl.alt = CONFIG.SEASON_TITLE;
-  logoEl.src = CONFIG.LOGO;
-  document.title = CONFIG.SEASON_TITLE;
+  logoEl.alt = entry.title;
+  logoEl.src = entry.logo;
+  document.title = entry.title;
+}
+
+// ── Season picker ─────────────────────────────────────────────────────────
+// The season in the URL (?season=N), or the first in CONFIG.SEASONS
+function currentSeason() {
+  const param = new URLSearchParams(location.search).get('season');
+  return CONFIG.SEASONS.find(s => String(s.season) === param) || CONFIG.SEASONS[0];
+}
+
+// A small "S51 ▾" pill in the header's top left. The native select sits invisibly over it, so tapping opens
+// the platform picker; choosing a season reloads the page with it in the URL (dropped for the default).
+function setUpSeasonPicker(entry) {
+  if (CONFIG.SEASONS.length < 2) return;
+  const picker = document.getElementById('season-picker');
+  picker.innerHTML = `
+    S${entry.season}${ICONS.chevronDown}
+    <select aria-label="Season">
+      ${CONFIG.SEASONS.map(s => `<option value="${s.season}"${s === entry ? ' selected' : ''}>${escapeHtml(s.title)}</option>`).join('')}
+    </select>
+  `;
+  picker.hidden = false;
+  picker.querySelector('select').addEventListener('change', e => {
+    const url = new URL(location.href);
+    if (e.target.value === String(CONFIG.SEASONS[0].season)) url.searchParams.delete('season');
+    else url.searchParams.set('season', e.target.value);
+    location.href = url.href;
+  });
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
@@ -80,9 +107,11 @@ function showError(message) {
 }
 
 async function main() {
-  setUpLogo();
+  const entry = currentSeason();
+  setUpLogo(entry);
+  setUpSeasonPicker(entry);
   try {
-    const season = await loadSeason();
+    const season = await loadSeason(entry);
     appData = season.data;
     scoring = season.scoring;
     assignColors(appData);

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#faf6ee">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
-  <title>Survivor 51</title>
+  <title>Survivor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -26,14 +26,15 @@
 <body>
 
 <header>
-  <img src="logos/51.png" alt="Survivor 51" class="header-logo" id="page-title">
+  <label class="season-picker" id="season-picker" hidden></label>
+  <img alt="" class="header-logo" id="page-title">
 </header>
 
 <div id="loading">🔥 Loading draft data…</div>
 <div id="error-msg">
   <h2>⚠️ Failed to load draft data</h2>
   <p id="error-detail"></p>
-  <p>Check that <code>SUPABASE_URL</code>, <code>SEASON</code> and <code>DRAFT_ID</code> in <code>config.js</code> are correct.</p>
+  <p>Check that <code>SUPABASE_URL</code> and <code>SEASONS</code> in <code>config.js</code> are correct.</p>
 </div>
 
 <div id="app" style="display:none">

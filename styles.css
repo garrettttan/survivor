@@ -31,6 +31,42 @@ header {
   max-height: 120px;
   width: auto;
 }
+/* Season picker: a pill in the top left with the native select stretched invisibly over it (16px so iOS
+   doesn't zoom on focus) */
+.season-picker {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.55rem 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid rgba(194,65,12,0.4);
+  color: var(--fire);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.season-picker[hidden] { display: none; }
+.season-picker svg { width: 12px; height: 12px; }
+.season-picker select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+.season-picker:active { background: var(--surface-2); }
+.season-picker:has(select:focus-visible) { outline: 2px solid var(--fire); outline-offset: 2px; }
+@media (hover: hover) {
+  .season-picker:hover { border-color: var(--fire); }
+}
 .header-logo-text {
   font-family: 'Oswald', sans-serif;
   font-size: 2rem;

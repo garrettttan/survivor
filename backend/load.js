@@ -3,21 +3,22 @@
 
 // This season's castaways (keyed by id, with their tribe stints, points and game log), the draft's teams
 // (keyed by name, with member ids) and the scoring rules (category → rules), from the get-draft-data edge function
-async function fetchDraftData(draftId) {
-  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-draft-data?season=${CONFIG.SEASON}&draft_id=${draftId}`;
+async function fetchDraftData(season, draftId) {
+  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-draft-data?season=${season}&draft_id=${draftId}`;
   const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
   const body = res ? await res.json().catch(() => ({})) : {};
   if (!res || !res.ok || body.error) {
     throw new Error(`HTTP ${res ? res.status : '—'} loading draft data${body.error ? `: ${body.error}` : ''}`);
   }
   const { castaways = {}, teams = {}, scoring = {} } = body;
-  if (!Object.keys(castaways).length) throw new Error(`No castaways found for season ${CONFIG.SEASON}.`);
+  if (!Object.keys(castaways).length) throw new Error(`No castaways found for season ${season}.`);
   return { castaways, teams, scoring };
 }
 
-// Everything the frontend needs for one draft: linked castaways and teams, plus the scoring rules
-async function loadSeason() {
-  const { castaways, teams, scoring } = await fetchDraftData(CONFIG.DRAFT_ID);
+// Everything the frontend needs for one draft: linked castaways and teams, plus the scoring rules.
+// `entry` is one of CONFIG.SEASONS.
+async function loadSeason(entry) {
+  const { castaways, teams, scoring } = await fetchDraftData(entry.season, entry.draftId);
   return { data: processDraftData(castaways, teams), scoring };
 }
 
