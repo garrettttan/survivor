@@ -115,5 +115,6 @@ document.getElementById('overview-filters').addEventListener('click', e => {
   } else {
     overviewMultiSort = !overviewMultiSort;
   }
-  renderOverviewFilters();
+  // Flip the class rather than re-rendering, so the switch's thumb and colors animate (styles.css .toggle-*)
+  toggle.classList.toggle('on');
 });

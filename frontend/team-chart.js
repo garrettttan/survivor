@@ -32,13 +32,14 @@ function ordinal(n) {
   return n + suffix;
 }
 
-// Two-option selector above the chart: scores (default) or ranks
+// Two-option selector above the chart: scores (default) or ranks. Rendered once; a choice only updates its
+// attributes, so the highlight can slide across (styles.css .segmented::before).
 function renderTeamChartControls() {
   const option = (rank, label) =>
     `<button type="button" data-rank="${rank}" aria-pressed="${teamChartShowRank === rank}">${label}</button>`;
   document.getElementById('team-chart-controls').innerHTML = `
-    <div class="segmented" role="group" aria-label="Chart view">
-      ${option(false, 'Show scores')}${option(true, 'Show ranks')}
+    <div class="segmented" role="group" aria-label="Chart view" data-selected="${teamChartShowRank ? 1 : 0}">
+      ${option(false, 'Scores')}${option(true, 'Ranks')}
     </div>`;
 }
 
@@ -46,7 +47,9 @@ document.getElementById('team-chart-controls').addEventListener('click', e => {
   const btn = e.target.closest('[data-rank]');
   if (!btn || (btn.dataset.rank === 'true') === teamChartShowRank) return;
   teamChartShowRank = btn.dataset.rank === 'true';
-  renderTeamChartControls();
+  const group = btn.parentElement;
+  group.dataset.selected = teamChartShowRank ? 1 : 0;
+  group.querySelectorAll('[data-rank]').forEach(b => b.setAttribute('aria-pressed', b === btn));
   renderTeamChart(appData);
 });
 

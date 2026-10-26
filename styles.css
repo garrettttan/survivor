@@ -228,35 +228,50 @@ html { scroll-behavior: smooth; }
   flex-wrap: wrap;
 }
 
-/* Segmented selector (standings chart: scores / ranks) */
+/* Segmented selector (standings chart: scores / ranks). Two equal columns; the white highlight is a ::before that
+   slides under the chosen one, like an iOS segmented control. */
 .segmented {
-  display: inline-flex;
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
   padding: 2px;
   border-radius: 999px;
   background: var(--surface-2);
   border: 1px solid var(--card-border);
 }
+.segmented::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  border-radius: 999px;
+  background: var(--card-bg);
+  box-shadow: 0 1px 3px rgba(61,42,15,0.15);
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+.segmented[data-selected="1"]::before { transform: translateX(100%); }
 .segmented button {
+  position: relative; /* above the highlight */
   font-family: 'Oswald', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
   color: var(--muted);
   background: none;
-  border: 1px solid transparent;
+  border: none;
   border-radius: 999px;
   padding: 0.3rem 0.85rem;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.15s, color 0.15s;
+  transition: color 0.2s;
 }
-.segmented button[aria-pressed="true"] {
-  background: var(--card-bg);
-  border-color: var(--card-border);
-  color: var(--fire);
-  box-shadow: 0 1px 2px rgba(61,42,15,0.08);
-}
+.segmented button[aria-pressed="true"] { color: var(--fire); }
 @media (hover: hover) {
   .segmented button[aria-pressed="false"]:hover { color: var(--text); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .segmented::before, .segmented button { transition: none; }
 }
 
 /* Toggle switch */
@@ -266,6 +281,7 @@ html { scroll-behavior: smooth; }
   gap: 0.5rem;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .toggle-label {
   font-family: 'Oswald', sans-serif;
@@ -296,11 +312,14 @@ html { scroll-behavior: smooth; }
   height: 14px;
   border-radius: 50%;
   background: var(--muted);
-  transition: transform 0.2s, background 0.2s;
+  transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.4, 1), background 0.2s;
 }
 .toggle-wrap.on .toggle-thumb {
   transform: translateX(16px);
   background: var(--active);
+}
+@media (prefers-reduced-motion: reduce) {
+  .toggle-label, .toggle-track, .toggle-thumb { transition: none; }
 }
 
 /* ── Expandable team rows (standings) ────────────────────── */
