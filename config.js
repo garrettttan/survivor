@@ -6,6 +6,7 @@ const CONFIG = {
   // draftId is get-draft-data's draft_id; a missing logo falls back to the title as text.
   SEASONS: [
     { season: 51, draftId: 1, title: "Season 51", logo: "logos/51.png" },
+    { season: 48, draftId: 4, title: "Season 48", logo: "logos/48.webp" },
     { season: 47, draftId: 3, title: "Season 47", logo: "logos/47.webp" },
   ],
 };
