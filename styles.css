@@ -737,7 +737,6 @@ html { scroll-behavior: smooth; }
 }
 .tribemate-chip.out {
   background: transparent;
-  border-style: dashed;
   border-color: rgba(122,106,79,0.5);
   color: var(--muted);
   text-decoration: line-through;
