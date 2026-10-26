@@ -60,13 +60,13 @@ function tribematesHtml(stint, short) {
 }
 
 // Details in parentheses, the idol/advantage as a badge (its name can have its own parentheses,
-// e.g. "Extra vote (Savu)"), then the other castaway (tap to open their sheet). The tribe is left out:
+// e.g. "Extra vote (Savu)"), then the other castaway by short name (tap to open their sheet). The tribe is left out:
 // the band the row sits in already shows it.
-function eventDetailHtml(e) {
+function eventDetailHtml(e, short) {
   const other = e.otherCastaway;
   return (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
     (e.advantage ? ` <span class="badge badge-adv">${escapeHtml(e.advantage)}</span>` : '') +
-    (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(other.name)}</span></span>` : '');
+    (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(short.get(other.name) || other.name)}</span></span>` : '');
 }
 
 // The log split into one band per tribe stint, in order: each row goes to the latest stint that started on or
@@ -83,7 +83,7 @@ function timelineBands(c) {
 }
 
 // Log rows grouped under an episode label, a line between episodes
-function episodesHtml(rows) {
+function episodesHtml(rows, short) {
   const byEpisode = new Map();
   rows.forEach(e => {
     if (!byEpisode.has(e.episode)) byEpisode.set(e.episode, []);
@@ -93,7 +93,7 @@ function episodesHtml(rows) {
     <div class="sheet-episode">
       <div class="episode-label">EPISODE ${episode}</div>
       ${events.map(e => `<div class="sheet-row">
-        <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e)}</span>
+        <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e, short)}</span>
         ${e.points ? `<span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>` : ''}
       </div>`).join('')}
     </div>`).join('');
@@ -106,7 +106,7 @@ function timelineHtml(c) {
   if (!bands.length) return '';
   const short = shortNames(appData.castaways);
   const bandHtml = band => {
-    const episodes = band.rows.length ? `<div class="band-episodes">${episodesHtml(band.rows)}</div>` : '';
+    const episodes = band.rows.length ? `<div class="band-episodes">${episodesHtml(band.rows, short)}</div>` : '';
     const s = band.stint;
     if (!s) return `<div class="tribe-band">${episodes}</div>`;
     const color = tribeColor(s);
