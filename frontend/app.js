@@ -120,6 +120,7 @@ async function main() {
     document.getElementById('app').style.display = 'block';
 
     renderStandings(appData);
+    renderTeamChartControls();
     renderTeamChart(appData);
     renderOverviewFilters();
     renderOverviewTable(appData);

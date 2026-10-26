@@ -12,6 +12,7 @@ function processDraftData(rawCastaways, rawTeams) {
     teams[name] = addTeamFields(name, rawTeams[name], byId);
     teams[name].members.forEach(c => c.teams.push(name));
   });
+  addRankByEpisode(teamNames.map(name => teams[name]));
 
   // pointsByEpisode[i] is episode i + 1, so the episodes run 1..the longest list
   const episodeCount = Math.max(0, ...castaways.map(c => (c.pointsByEpisode || []).length));
@@ -47,6 +48,14 @@ function addTeamFields(name, raw, byId) {
   };
 }
 
+// Each team's place after every episode; tied teams share a place and the next skips (1, 1, 3)
+function addRankByEpisode(teams) {
+  teams.forEach(tm => {
+    tm.rankByEpisode = tm.cumulativePoints.map((p, i) =>
+      1 + teams.filter(other => other.cumulativePoints[i] > p).length);
+  });
+}
+
 if (typeof module !== 'undefined') {
-  module.exports = { processDraftData, addCastawayFields, addTeamFields };
+  module.exports = { processDraftData, addCastawayFields, addTeamFields, addRankByEpisode };
 }
