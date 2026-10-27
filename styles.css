@@ -67,6 +67,42 @@ header {
 @media (hover: hover) {
   .season-picker:hover { border-color: var(--fire); }
 }
+/* Admin lock: the season picker's pill mirrored into the top right; icon-only until an admin signs in */
+.admin-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.45rem;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid rgba(194,65,12,0.4);
+  color: var(--fire);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.admin-button[hidden] { display: none; }
+.admin-button:not(.signed-in) { width: 28px; height: 28px; padding: 0; justify-content: center; }
+.admin-button.signed-in { padding: 0.25rem 0.65rem 0.25rem 0.55rem; }
+.admin-button svg { width: 13px; height: 13px; flex-shrink: 0; }
+/* Long emails are cut off so the pill stays clear of the centered logo; phones show just the lock circle */
+.admin-email { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 640px) {
+  .admin-email { display: none; }
+  .admin-button.signed-in { width: 28px; height: 28px; padding: 0; justify-content: center; }
+}
+.admin-button:active { background: var(--surface-2); }
+.admin-button:focus-visible { outline: 2px solid var(--fire); outline-offset: 2px; }
+@media (hover: hover) {
+  .admin-button:hover { border-color: var(--fire); }
+}
+
 .header-logo-text {
   font-family: 'Oswald', sans-serif;
   font-size: 2rem;
@@ -613,6 +649,81 @@ html { scroll-behavior: smooth; }
   }
   .sheet-handle { display: none; }
   .sheet-scroll { padding: 1rem 1.25rem 1.25rem; }
+}
+
+/* Admin sign-in and menu, shown in the detail panel (inputs at 16px so iOS doesn't zoom on focus) */
+.admin-form { display: flex; flex-direction: column; gap: 0.6rem; }
+.admin-form input {
+  font: inherit;
+  font-size: 16px;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+}
+.admin-form input:focus { outline: 2px solid var(--fire); outline-offset: -1px; border-color: transparent; }
+.admin-note { color: var(--muted); font-size: 0.85rem; margin: 0.3rem 0 0.9rem; }
+.admin-error { color: var(--ember); font-size: 0.85rem; }
+.admin-submit {
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--fire);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.admin-submit:disabled { opacity: 0.6; cursor: default; }
+.admin-submit:active { filter: brightness(0.92); }
+.admin-link { display: block; text-align: center; text-decoration: none; margin-bottom: 0.5rem; }
+.admin-secondary { background: var(--surface-2); color: var(--fire); }
+.admin-text-button {
+  font: inherit;
+  color: var(--fire);
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* Admin page: the sign-in form in a card, and a back pill in the header's top left */
+.admin-card {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-top: 2px solid var(--fire);
+  border-radius: 12px;
+}
+.back-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.25rem 0.65rem 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid rgba(194,65,12,0.4);
+  color: var(--fire);
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-link svg { width: 12px; height: 12px; }
+.back-link:active { background: var(--surface-2); }
+@media (hover: hover) {
+  .back-link:hover { border-color: var(--fire); }
 }
 
 .sheet-top {

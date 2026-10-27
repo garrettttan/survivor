@@ -36,7 +36,15 @@ function chevronIcon(points, className = '') {
 const ICONS = {
   chevronRight: chevronIcon('9 6 15 12 9 18', 'row-chevron'),
   chevronDown: chevronIcon('6 9 12 15 18 9'),
+  chevronLeft: chevronIcon('15 6 9 12 15 18'),
+  lock: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
 };
+
+// The season in the URL (?season=N), or the first in CONFIG.SEASONS
+function currentSeason() {
+  const param = new URLSearchParams(location.search).get('season');
+  return CONFIG.SEASONS.find(s => String(s.season) === param) || CONFIG.SEASONS[0];
+}
 
 // Match the `@media (max-width: 640px)` and `(min-width: 768px)` breakpoints in styles.css
 function isPhone() {

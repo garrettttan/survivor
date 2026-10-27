@@ -14,7 +14,7 @@ function openSheet(name) {
     ...c.expiredAdvantages.map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
   ].join(' ');
 
-  document.getElementById('sheet-body').innerHTML = `
+  showSheet(`
     <div class="sheet-top">
       <div class="sheet-hero-name">${escapeHtml(c.name)}</div>
       <span class="sheet-pts" style="color:${ownerColor}">${fmt(c.points)} pts</span>
@@ -24,8 +24,12 @@ function openSheet(name) {
       ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
     </div>
     ${timelineHtml(c)}
-  `;
+  `);
+}
 
+// Fill the panel and open it (also used by the admin sign-in)
+function showSheet(html) {
+  document.getElementById('sheet-body').innerHTML = html;
   document.getElementById('sheet-overlay').classList.add('open');
   document.getElementById('bottom-sheet').classList.add('open');
   document.body.style.overflow = 'hidden';

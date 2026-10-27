@@ -73,12 +73,6 @@ function setUpLogo(entry) {
 }
 
 // ── Season picker ─────────────────────────────────────────────────────────
-// The season in the URL (?season=N), or the first in CONFIG.SEASONS
-function currentSeason() {
-  const param = new URLSearchParams(location.search).get('season');
-  return CONFIG.SEASONS.find(s => String(s.season) === param) || CONFIG.SEASONS[0];
-}
-
 // A small "S51 ▾" pill in the header's top left. The native select sits invisibly over it, so tapping opens
 // the platform picker; choosing a season reloads the page with it in the URL (dropped for the default).
 function setUpSeasonPicker(entry) {
@@ -110,6 +104,7 @@ async function main() {
   const entry = currentSeason();
   setUpLogo(entry);
   setUpSeasonPicker(entry);
+  setUpAdminButton();
   try {
     const season = await loadSeason(entry);
     appData = season.data;

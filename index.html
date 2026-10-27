@@ -10,10 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
   <script defer src="config.js"></script>
   <!-- Backend: load the draft data and calculate castaways, points and teams (no DOM) -->
   <script defer src="backend/scoring.js"></script>
   <script defer src="backend/load.js"></script>
+  <script defer src="backend/auth.js"></script>
   <!-- Frontend: render the backend's results and handle interaction -->
   <script defer src="frontend/util.js"></script>
   <script defer src="frontend/colors.js"></script>
@@ -21,6 +23,8 @@
   <script defer src="frontend/team-chart.js"></script>
   <script defer src="frontend/overview.js"></script>
   <script defer src="frontend/castaway-sheet.js"></script>
+  <script defer src="frontend/sign-in-form.js"></script>
+  <script defer src="frontend/admin-login.js"></script>
   <script defer src="frontend/app.js"></script>
 </head>
 <body>
@@ -28,6 +32,7 @@
 <header>
   <label class="season-picker" id="season-picker" hidden></label>
   <img alt="" class="header-logo" id="page-title">
+  <button type="button" class="admin-button" id="admin-button" hidden></button>
 </header>
 
 <div id="loading">🔥 Loading draft data…</div>
