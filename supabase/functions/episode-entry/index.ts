@@ -83,8 +83,14 @@ async function preview(supabase: SupabaseClient, season: number, episode: number
   const [tribeIds, advantageIds] = lookups(data);
   result.states.push(gameState(replayed, tribeIds, advantageIds));
 
+  const cried = new Set<number>();               // crying counts once per castaway per episode
   cards.forEach((card, index) => {
     const { rows, errors } = cardRows(card, data, result.states[result.states.length - 1]);
+    for (const row of rows.filter(r => r.eventType.name === "Cried on camera")) {
+      if (cried.has(row.castawayId)) errors.push(`${data.castawayById.get(row.castawayId)?.name} already cried this episode.`);
+      cried.add(row.castawayId);
+    }
+    if (errors.length) rows.length = 0;
     for (const message of errors) result.errors.push({ card: index, message });
     for (const row of rows) {
       const seq = result.rows.length + 1;

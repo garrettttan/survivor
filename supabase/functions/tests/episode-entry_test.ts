@@ -87,8 +87,7 @@ Deno.test("a custom row says what's missing", () => {
   assertEquals(cardRows(custom({ eventType: "Cried on camera", castawayId: 7 }), data, game).errors, ["That castaway isn't in this season."]);
 });
 
-Deno.test("other card types aren't supported yet", () => {
-  assertEquals(cardRows({ type: "tribal" }, data, game).errors, ["Tribal Council cards aren't supported yet."]);
+Deno.test("an unknown card type is an error", () => {
   assertEquals(cardRows({ type: "nope" }, data, game).errors, ['Unknown card type "nope".']);
 });
 
@@ -153,4 +152,105 @@ Deno.test("played: for themselves, or on someone else", () => {
 Deno.test("expired", () => {
   assertEquals(summary(cardRows(adv({ action: "expired", castawayId: 1, advantage: 100 }), data, game)),
     [[1, "Advantage expired", null, 100]]);
+});
+
+// ── The other cards ──────────────────────────────────────────────────────────
+// Three tribes: Red (Ann, Bea), Blue (Cal, Dee), Green (Eve, Fay); Gus and Hal are out (Hal left last)
+const NAMES = ["Ann", "Bea", "Cal", "Dee", "Eve", "Fay", "Gus", "Hal"];
+const TYPES = ["Swapped tribes", "Switched tribes", "Merged", "Won team immunity", "Won team immunity (2nd place)",
+  "Won team reward", "Won team reward (2nd place)", "Won individual immunity", "Won individual reward",
+  "Brought on reward", "Sat out of challenge", "Voted correctly", "Voted incorrectly", "Voted out",
+  "Went home on rocks", "Medically evacuated", "Quit", "Lost fire-making", "Had an iconic moment",
+  "Cried on camera", "Received a jury vote"];
+const big: SeasonData = {
+  season: 98,
+  castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n }])),
+  tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }], [11, { id: 11, name: "Blue", color: "#0284c7" }],
+    [12, { id: 12, name: "Green", color: "#16a34a" }], [13, { id: 13, name: "Merged", color: "#7c3aed" }]]),
+  eventTypeByName: new Map(TYPES.map(t => [t, type(t, { endsGame: /Voted out|rocks|evacuated|Quit|fire/.test(t),
+    changesTribe: /Swapped|Switched|Merged/.test(t) })])),
+  advantageById: new Map(),
+};
+const g: GameState = { tribeOf: { 1: 10, 2: 10, 3: 11, 4: 11, 5: 12, 6: 12, 7: 12, 8: 11 }, out: [7, 8], held: {} };
+const rowsOf = (card: Record<string, unknown>, game = g) => {
+  const r = cardRows(card, big, game);
+  assertEquals(r.errors, []);
+  // Each row as [castaway, event, its tribe id or the other castaway's name]
+  return r.rows.map(x => [NAMES[x.castawayId - 1], x.eventType.name,
+    x.tribeId ?? (x.otherCastawayId === null ? null : NAMES[x.otherCastawayId - 1])]);
+};
+const errorsOf = (card: Record<string, unknown>) => cardRows(card, big, g).errors;
+
+Deno.test("tribe change: swap, switch and merge", () => {
+  // Ann moves to Blue, Cal to Red, Bea placed on Red where she already is: everyone placed gets a row
+  assertEquals(rowsOf({ type: "tribeChange", kind: "swap", moves: { 3: 10, 1: 11, 2: 10 } }),
+    [["Bea", "Swapped tribes", 10], ["Cal", "Swapped tribes", 10], ["Ann", "Swapped tribes", 11]]);
+  assertEquals(rowsOf({ type: "tribeChange", kind: "move", castawayId: 1, tribeId: 12 }), [["Ann", "Switched tribes", 12]]);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "move", castawayId: 1, tribeId: 10 }), ["Ann is already on Red."]);
+  assertEquals(rowsOf({ type: "tribeChange", kind: "merge", tribeId: 13 }).length, 6);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "swap", moves: { 7: 10 } }), ["Gus is already out of the game."]);
+});
+
+Deno.test("challenge: tribe immunity with 2nd place and a sit-out", () => {
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "tribe", first: 10, second: 12, satOut: [2] }), [
+    ["Ann", "Won team immunity", 10],
+    ["Eve", "Won team immunity (2nd place)", 12], ["Fay", "Won team immunity (2nd place)", 12],
+    ["Bea", "Sat out of challenge", 10],
+  ]);
+  assertEquals(errorsOf({ type: "challenge", prize: "immunity", format: "tribe", first: 10, second: 10 }),
+    ["1st and 2nd place can't be the same tribe."]);
+});
+
+Deno.test("challenge: immunity + reward makes immunity rows only", () => {
+  assertEquals(rowsOf({ type: "challenge", prize: "both", format: "tribe", first: 11 }),
+    [["Cal", "Won team immunity", 11], ["Dee", "Won team immunity", 11]]);
+});
+
+Deno.test("challenge: individual reward with people brought along", () => {
+  assertEquals(rowsOf({ type: "challenge", prize: "reward", format: "individual", first: 3, broughtOnReward: [1, 5] }),
+    [["Cal", "Won individual reward", null], ["Ann", "Brought on reward", null], ["Eve", "Brought on reward", null]]);
+  assertEquals(errorsOf({ type: "challenge", prize: "reward", format: "individual", first: 3, broughtOnReward: [3] }),
+    ["The winner can't bring themselves."]);
+});
+
+Deno.test("challenge: teams that aren't tribes", () => {
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 3,
+    teams: { 1: 1, 3: 1, 2: 2, 4: 3 }, first: 1, second: 3 }),
+    [["Ann", "Won team immunity", null], ["Cal", "Won team immunity", null], ["Dee", "Won team immunity (2nd place)", null]]);
+  assertEquals(errorsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 2, teams: { 1: 1 }, first: 2 }),
+    ["No one is on Team 2."]);
+});
+
+Deno.test("tribal: votes, then whoever went home", () => {
+  // Red and Blue merged into one group for this test: Ann, Bea, Cal at Tribal on Red
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  assertEquals(rowsOf({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 3, 2: 1, 3: "none" } }, red3), [
+    ["Ann", "Voted correctly", "Cal"], ["Bea", "Voted incorrectly", "Ann"], ["Cal", "Voted out", null],
+  ]);
+  assertEquals(cardRows({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 3 } }, big, red3).errors,
+    ["Pick who Bea voted for, or No vote.", "Pick who Cal voted for, or No vote."]);
+  assertEquals(cardRows({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 1, 2: 1, 3: 1 } }, big, red3).errors,
+    ["Ann's vote has to be for someone else at this Tribal."]);
+});
+
+Deno.test("tribal: rocks takes no votes", () => {
+  assertEquals(rowsOf({ type: "tribal", tribeId: 11, outcome: "rocks", bootId: 4, votes: {} }), [["Dee", "Went home on rocks", null]]);
+  assertEquals(errorsOf({ type: "tribal", tribeId: 11, outcome: "rocks", bootId: 1, votes: {} }), ["Ann wasn't at this Tribal."]);
+});
+
+Deno.test("exit and moments", () => {
+  assertEquals(rowsOf({ type: "exit", reason: "medevac", castawayId: 5 }), [["Eve", "Medically evacuated", null]]);
+  assertEquals(errorsOf({ type: "exit", reason: "quit", castawayId: 8 }), ["Hal is already out of the game."]);
+  const iconic = cardRows({ type: "moment", kind: "iconic", castawayId: 1, note: " Tree mail rap " }, big, g).rows[0];
+  assertEquals([iconic.eventType.name, iconic.details], ["Had an iconic moment", "Tree mail rap"]);
+  assertEquals(errorsOf({ type: "moment", kind: "iconic", castawayId: 1, note: "" }), ["Say what happened."]);
+  assertEquals(rowsOf({ type: "moment", kind: "cried", castawayId: 2 }), [["Bea", "Cried on camera", null]]);
+});
+
+Deno.test("final tribal: a row per juror's vote", () => {
+  assertEquals(rowsOf({ type: "ftc", votes: { 8: 1, 7: 1 } }),
+    [["Ann", "Received a jury vote", "Gus"], ["Ann", "Received a jury vote", "Hal"]]);
+  assertEquals(errorsOf({ type: "ftc", votes: { 2: 1 } }), ["Bea is still in the game, so isn't on the jury."]);
+  assertEquals(errorsOf({ type: "ftc", votes: { 8: 7 } }), ["Hal's vote has to be for a finalist."]);
+  assertEquals(errorsOf({ type: "ftc", votes: {} }), ["Enter the jury's votes."]);
 });

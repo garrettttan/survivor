@@ -1,8 +1,8 @@
 // Cards → events rows, and the checks on them. A card is what the admin page sends for one thing that happened
 // (its shapes are listed in frontend/admin-cards.js); a card can make several rows.
 //
-// Supported so far: Custom row and Advantage. The other card types are added in phases 4 and 5; until then they
-// come back as an error on the card.
+// Rows follow how past seasons were recorded: team wins and sat-outs carry the tribe, votes point at who they voted
+// for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even someone who stays).
 
 import type { EventRow } from "../_shared/replay.ts";
 import type { GameState } from "./game.ts";
@@ -44,19 +44,240 @@ export interface CardRow {
 // deno-lint-ignore no-explicit-any
 type Card = Record<string, any>;
 
-const CARD_LABELS: Record<string, string> = {
-  tribeChange: "Tribe change", challenge: "Challenge", tribal: "Tribal Council", advantage: "Advantage",
-  exit: "Exit", moment: "Moment", ftc: "Final Tribal", custom: "Custom row",
-};
-
 type Result = { rows: CardRow[]; errors: string[] };
 
 /** The rows a card makes, or why it can't make them. `game` is the game just before the card. */
 export function cardRows(card: Card, data: SeasonData, game: GameState): Result {
-  if (card?.type === "custom") return customRows(card, data);
-  if (card?.type === "advantage") return advantageRows(card, data, game);
-  const label = CARD_LABELS[card?.type];
-  return { rows: [], errors: [label ? `${label} cards aren't supported yet.` : `Unknown card type "${card?.type}".`] };
+  switch (card?.type) {
+    case "tribeChange": return tribeChangeRows(card, data, game);
+    case "challenge": return challengeRows(card, data, game);
+    case "tribal": return tribalRows(card, data, game);
+    case "advantage": return advantageRows(card, data, game);
+    case "exit": return exitRows(card, data, game);
+    case "moment": return momentRows(card, data, game);
+    case "ftc": return ftcRows(card, data, game);
+    case "custom": return customRows(card, data);
+    default: return { rows: [], errors: [`Unknown card type "${card?.type}".`] };
+  }
+}
+
+// ── Who's where ──────────────────────────────────────────────────────────────
+
+// Castaways still in the game, in id order
+function activeIds(data: SeasonData, game: GameState): number[] {
+  return [...data.castawayById.keys()].filter(id => !game.out.includes(id));
+}
+
+function membersOf(tribeId: number, data: SeasonData, game: GameState): number[] {
+  return activeIds(data, game).filter(id => game.tribeOf[id] === tribeId);
+}
+
+function tribeName(data: SeasonData, id: number): string {
+  return data.tribeById.get(id)?.name ?? `tribe ${id}`;
+}
+
+// A tribe with someone still in the game on it, or an error saying why not
+function tribeInPlay(value: unknown, label: string, data: SeasonData, game: GameState, errors: string[]): number | null {
+  const id = idOrNull(value);
+  if (id === null) errors.push(`Pick ${label}.`);
+  else if (!data.tribeById.has(id)) errors.push("That tribe isn't in this season.");
+  else if (!membersOf(id, data, game).length) errors.push(`No one still in the game is on ${tribeName(data, id)}.`);
+  else return id;
+  return null;
+}
+
+// A card's map of castaway id → value (JSON object keys are strings)
+function entries(map: unknown): [number, unknown][] {
+  if (!map || typeof map !== "object") return [];
+  return Object.entries(map).map(([k, v]) => [Number(k), v]);
+}
+
+// ── Tribe change ─────────────────────────────────────────────────────────────
+// Swap: a Swapped tribes row for everyone placed on a tribe (anyone not placed keeps their tribe). Switched
+// Tribes: one castaway's Switched tribes row. Merge: a Merged row for everyone still in the game.
+function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  if (card.kind === "move") {
+    const id = activeCastaway(card.castawayId, "who switched", data, game, errors);
+    const tribeId = idOrNull(card.tribeId);
+    if (tribeId === null) errors.push("Pick their new tribe.");
+    else if (!data.tribeById.has(tribeId)) errors.push("That tribe isn't in this season.");
+    else if (id !== null && game.tribeOf[id] === tribeId) errors.push(`${name(data, id)} is already on ${tribeName(data, tribeId)}.`);
+    const switched = eventType(data, "Switched tribes", errors);
+    if (errors.length) return { rows: [], errors };
+    return { rows: [row(id!, switched, { tribeId })], errors };
+  }
+
+  if (card.kind === "merge") {
+    const tribeId = idOrNull(card.tribeId);
+    if (tribeId === null) errors.push("Pick the merged tribe.");
+    else if (!data.tribeById.has(tribeId)) errors.push("That tribe isn't in this season.");
+    const merged = eventType(data, "Merged", errors);
+    if (errors.length) return { rows: [], errors };
+    return { rows: activeIds(data, game).map(id => row(id, merged, { tribeId })), errors };
+  }
+
+  if (card.kind !== "swap") return { rows: [], errors: ["Pick the kind of tribe change."] };
+  const moves = entries(card.moves);
+  if (!moves.length) errors.push("Place at least one castaway on a tribe.");
+  for (const [id, tribeId] of moves) {
+    activeCastaway(id, "a castaway", data, game, errors);
+    if (typeof tribeId !== "number" || !data.tribeById.has(tribeId)) errors.push(`Pick a tribe in this season for ${name(data, id)}.`);
+  }
+  const swapped = eventType(data, "Swapped tribes", errors);
+  if (errors.length) return { rows: [], errors };
+  // Tribe by tribe, as entered
+  const tribeOrder = [...data.tribeById.keys()];
+  moves.sort(([a, ta], [b, tb]) => tribeOrder.indexOf(ta as number) - tribeOrder.indexOf(tb as number) || a - b);
+  return { rows: moves.map(([id, tribeId]) => row(id, swapped, { tribeId: tribeId as number })), errors };
+}
+
+// ── Challenge ────────────────────────────────────────────────────────────────
+// Won immunity or reward for everyone on the winning tribe or team (or the individual winner), the 2nd place
+// rows when three or more competed, Sat out rows, and Brought on reward rows for an individual reward. A challenge
+// for immunity and reward makes immunity rows only.
+function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  if (!["immunity", "reward", "both"].includes(card.prize)) errors.push("Pick the prize.");
+  if (!["tribe", "individual", "teams"].includes(card.format)) errors.push("Pick the format.");
+  if (errors.length) return { rows: [], errors };
+  const prize = card.prize === "reward" ? "reward" : "immunity";
+  const rows: CardRow[] = [];
+
+  const satOut: number[] = [];
+  for (const id of Array.isArray(card.satOut) ? card.satOut : []) {
+    const active = activeCastaway(id, "who sat out", data, game, errors);
+    if (active !== null) satOut.push(active);
+  }
+  const won = (ids: number[], second: boolean, tribeId: number | null) => {
+    const type = eventType(data, `Won ${card.format === "individual" ? "individual" : "team"} ${prize}${second ? " (2nd place)" : ""}`, errors);
+    for (const id of ids) if (!satOut.includes(id)) rows.push(row(id, type, { tribeId }));
+  };
+
+  if (card.format === "individual") {
+    const winner = activeCastaway(card.first, "the winner", data, game, errors);
+    if (winner !== null && satOut.includes(winner)) errors.push(`${name(data, winner)} can't win and sit out.`);
+    if (winner !== null) won([winner], false, null);
+    if (card.prize !== "immunity") {
+      const brought = eventType(data, "Brought on reward", errors);
+      for (const id of Array.isArray(card.broughtOnReward) ? card.broughtOnReward : []) {
+        const guest = activeCastaway(id, "who they brought", data, game, errors);
+        if (guest !== null && guest === winner) errors.push("The winner can't bring themselves.");
+        else if (guest !== null) rows.push(row(guest, brought));
+      }
+    }
+  } else if (card.format === "tribe") {
+    const tribesInPlay = new Set(activeIds(data, game).map(id => game.tribeOf[id]));
+    const first = tribeInPlay(card.first, "the winning tribe", data, game, errors);
+    if (first !== null) won(membersOf(first, data, game), false, first);
+    if (card.second != null) {
+      const second = tribeInPlay(card.second, "the 2nd place tribe", data, game, errors);
+      if (tribesInPlay.size < 3) errors.push("2nd place only counts with three or more tribes.");
+      else if (second !== null && second === first) errors.push("1st and 2nd place can't be the same tribe.");
+      else if (second !== null) won(membersOf(second, data, game), true, second);
+    }
+  } else {
+    const teamCount = card.teamCount;
+    if (!Number.isInteger(teamCount) || teamCount < 2) errors.push("Pick how many teams there were.");
+    const teams = entries(card.teams);
+    for (const [id] of teams) activeCastaway(id, "a castaway", data, game, errors);
+    const team = (n: number) => teams.filter(([, t]) => t === n).map(([id]) => id);
+    const first = idOrNull(card.first);
+    if (first === null || first < 1 || first > teamCount) errors.push("Pick the winning team.");
+    else if (!team(first).length) errors.push(`No one is on Team ${first}.`);
+    else won(team(first), false, null);
+    const second = idOrNull(card.second);
+    if (second !== null) {
+      if (teamCount < 3) errors.push("2nd place only counts with three or more teams.");
+      else if (second === first) errors.push("1st and 2nd place can't be the same team.");
+      else if (!team(second).length) errors.push(`No one is on Team ${second}.`);
+      else won(team(second), true, null);
+    }
+  }
+
+  const sat = eventType(data, "Sat out of challenge", errors);
+  for (const id of satOut) rows.push(row(id, sat, { tribeId: game.tribeOf[id] ?? null }));
+  if (errors.length) return { rows: [], errors };
+  return { rows, errors };
+}
+
+// ── Tribal Council ───────────────────────────────────────────────────────────
+// A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote),
+// then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
+// recorded like a vote.
+function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  const tribeId = tribeInPlay(card.tribeId, "the tribe at Tribal", data, game, errors);
+  if (!["voted", "rocks", "consensus"].includes(card.outcome)) errors.push("Pick how it ended.");
+  if (tribeId === null || errors.length) return { rows: [], errors };
+  const attendees = membersOf(tribeId, data, game);
+  const bootId = idOrNull(card.bootId);
+  if (bootId === null) errors.push("Pick who went home.");
+  else if (!attendees.includes(bootId)) errors.push(`${name(data, bootId)} wasn't at this Tribal.`);
+
+  const rows: CardRow[] = [];
+  if (card.outcome !== "rocks") {
+    const correct = eventType(data, "Voted correctly", errors);
+    const incorrect = eventType(data, "Voted incorrectly", errors);
+    const votes = new Map(entries(card.votes));
+    for (const voter of attendees) {
+      const target = votes.get(voter);
+      if (target === undefined || target === null) errors.push(`Pick who ${name(data, voter)} voted for, or No vote.`);
+      else if (target === "none") continue;
+      else if (typeof target !== "number" || !attendees.includes(target) || target === voter) {
+        errors.push(`${name(data, voter)}'s vote has to be for someone else at this Tribal.`);
+      } else if (bootId !== null) {
+        rows.push(row(voter, target === bootId ? correct : incorrect, { otherCastawayId: target }));
+      }
+    }
+  }
+  const out = eventType(data, card.outcome === "rocks" ? "Went home on rocks" : "Voted out", errors);
+  if (errors.length) return { rows: [], errors };
+  rows.push(row(bootId!, out));
+  return { rows, errors };
+}
+
+// ── Exit, moments, Final Tribal ──────────────────────────────────────────────
+const EXITS: Record<string, string> = { medevac: "Medically evacuated", quit: "Quit", fire: "Lost fire-making" };
+
+function exitRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  if (!EXITS[card.reason]) errors.push("Pick why they left.");
+  const id = activeCastaway(card.castawayId, "who left", data, game, errors);
+  const type = EXITS[card.reason] ? eventType(data, EXITS[card.reason], errors) : null;
+  if (errors.length) return { rows: [], errors };
+  return { rows: [row(id!, type!)], errors };
+}
+
+// An iconic moment carries what happened; crying is once per castaway per episode (checked across cards when
+// the episode is previewed)
+function momentRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  if (card.kind !== "iconic" && card.kind !== "cried") return { rows: [], errors: ["Pick the moment."] };
+  const id = activeCastaway(card.castawayId, "the castaway", data, game, errors);
+  const note = typeof card.note === "string" ? card.note.trim() : "";
+  if (card.kind === "iconic" && !note) errors.push("Say what happened.");
+  const type = eventType(data, card.kind === "iconic" ? "Had an iconic moment" : "Cried on camera", errors);
+  if (errors.length) return { rows: [], errors };
+  return { rows: [row(id!, type, { details: card.kind === "iconic" ? note : null })], errors };
+}
+
+// One Received a jury vote row per juror's vote, for the finalist (everyone still in the game), pointing at the
+// juror (someone already out)
+function ftcRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  const votes = entries(card.votes).filter(([, finalist]) => finalist !== null && finalist !== undefined);
+  if (!votes.length) errors.push("Enter the jury's votes.");
+  const received = eventType(data, "Received a jury vote", errors);
+  const rows: CardRow[] = [];
+  for (const [juror, finalist] of votes) {
+    if (!game.out.includes(juror)) errors.push(`${name(data, juror)} is still in the game, so isn't on the jury.`);
+    else if (typeof finalist !== "number" || game.out.includes(finalist) || !data.castawayById.has(finalist)) {
+      errors.push(`${name(data, juror)}'s vote has to be for a finalist.`);
+    } else rows.push(row(finalist, received, { otherCastawayId: juror }));
+  }
+  if (errors.length) return { rows: [], errors };
+  return { rows, errors };
 }
 
 // A row with only the columns set that most card rows use
