@@ -1,0 +1,16 @@
+# Supabase settings for this repo, read by the Supabase CLI and the GitHub integration.
+#
+# With "Deploy to production" on, every push to main applies new files in supabase/migrations/ and deploys the
+# edge functions listed below. Other settings (API, Auth) are left at the project's dashboard values; the GitHub
+# integration ignores them for production unless they're added here.
+
+# The local name the CLI uses for this project (not the hosted project ref)
+project_id = "survivor"
+
+# The standings data for one draft: teams, castaways and scoring (the site calls it with the publishable key)
+[functions.get-draft-data]
+verify_jwt = true
+
+# The list of drafts and their seasons, for the site's season picker
+[functions.get-drafts]
+verify_jwt = true

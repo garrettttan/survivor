@@ -1,1 +1,3 @@
 .DS_Store
+# Supabase CLI local state (written by `supabase link`)
+supabase/.temp/
