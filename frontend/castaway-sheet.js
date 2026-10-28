@@ -4,15 +4,15 @@ function openSheet(name) {
   const c = appData.castaways.find(x => x.name === name);
   if (!c) return;
 
-  const ownerColor = appData.teamColor[c.teams[0]] || FALLBACK_COLOR;
+  const ownerColor = teamColor(c.teams[0]);
   const statusBadge = c.finish === 'winner' ? '<span class="active-badge">🏆 Winner</span>'
     : c.finish === 'finalist' ? '<span class="active-badge">Finalist</span>'
     : c.active ? '<span class="active-badge">Active</span>'
     : '<span class="eliminated-label">☠️ Eliminated</span>';
 
   const advHtml = [
-    ...c.advantages.map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`),
-    ...c.expiredAdvantages.map(a => `<span class="badge badge-adv adv-used">${escapeHtml(a)}</span>`),
+    ...c.advantages.map(a => advantageBadge(a)),
+    ...c.expiredAdvantages.map(a => advantageBadge(a, true)),
   ].join(' ');
 
   showSheet(`
@@ -70,7 +70,7 @@ function tribematesHtml(stint, short) {
 function eventDetailHtml(e, short) {
   const other = e.otherCastaway;
   return (e.details ? ` <span class="muted">(${escapeHtml(e.details)})</span>` : '') +
-    (e.advantage ? ` <span class="badge badge-adv">${escapeHtml(e.advantage)}</span>` : '') +
+    (e.advantage ? ` ${advantageBadge(e.advantage)}` : '') +
     (other ? ` <span class="muted">— <span class="clickable" data-castaway="${escapeHtml(other.name)}">${escapeHtml(short.get(other.name) || other.name)}</span></span>` : '');
 }
 
@@ -115,7 +115,7 @@ function timelineHtml(c) {
     const s = band.stint;
     if (!s) return `<div class="tribe-band">${episodes}</div>`;
     const color = tribeColor(s);
-    return `<div class="tribe-band" style="border-left-color:${color};--tribe:${color};--tribe-contrast:${contrastText(color)};--tribe-tint:${hexToRgba(color, 0.14)};--tribe-tint-border:${hexToRgba(color, 0.4)}">
+    return `<div class="tribe-band" style="border-left-color:${color};${tribeStyleVars(color, 0.14)};--tribe-tint-border:${hexToRgba(color, 0.4)}">
       <button type="button" class="sheet-section-header band-header" aria-expanded="false">
         ${tribeBadge(s)}
         <span class="band-hint">${s.members.length} ${s.members.length === 1 ? 'tribemate' : 'tribemates'}<span class="expand-btn expand-btn-sm">${ICONS.chevronDown}</span></span>

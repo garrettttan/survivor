@@ -15,22 +15,26 @@ const FALLBACK_COLOR = '#64748b';
 
 // Team colors follow team order in the palette (tribe colors come with each castaway's tribe stints)
 function assignColors(data) {
-  data.teamColor = {};
-  data.teamNames.forEach((t, i) => {
-    data.teamColor[t] = data.teams[t].color = PALETTE[i % PALETTE.length];
-  });
+  data.teamNames.forEach((t, i) => { data.teams[t].color = PALETTE[i % PALETTE.length]; });
+}
+
+// A team's color by name
+function teamColor(team) {
+  return appData.teams[team]?.color || FALLBACK_COLOR;
+}
+
+// "#rrggbb" → [r, g, b]
+function hexToRgb(hex) {
+  return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
 }
 
 function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
+  return `rgba(${hexToRgb(hex).join(',')},${alpha})`;
 }
 
 // Dark text on light fills, white text on dark fills
 function contrastText(hex) {
-  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const [r, g, b] = hexToRgb(hex);
   return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#2b1d0e' : '#ffffff';
 }
 
@@ -58,5 +62,10 @@ function tribeBadge(stint, faded = false) {
 
 // A team name in its team color
 function teamNameHtml(team) {
-  return `<strong style="color:${appData.teamColor[team] || FALLBACK_COLOR}">${escapeHtml(team)}</strong>`;
+  return `<strong style="color:${teamColor(team)}">${escapeHtml(team)}</strong>`;
+}
+
+// An idol or advantage's name as a badge; a used one is dimmed
+function advantageBadge(name, used = false) {
+  return `<span class="badge badge-adv${used ? ' adv-used' : ''}">${escapeHtml(name)}</span>`;
 }

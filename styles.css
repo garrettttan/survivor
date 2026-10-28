@@ -1028,7 +1028,6 @@ html { scroll-behavior: smooth; }
   white-space: nowrap;
 }
 .sheet-owner { font-size: 0.8rem; color: var(--muted); }
-.sheet-section { margin-top: 0.9rem; }
 .sheet-section-header {
   font-family: 'Oswald', sans-serif;
   font-size: 0.8rem; color: var(--muted);

@@ -1,11 +1,16 @@
 // Backend: fetches the Supabase draft data and runs it through scoring.js.
 // The frontend only calls loadSeason().
 
+// GET a public edge function (path includes any query string); null if the request couldn't be made
+function callFunction(path) {
+  return fetch(`${CONFIG.SUPABASE_URL}/functions/v1/${path}`, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } })
+    .catch(() => null);
+}
+
 // This season's castaways (keyed by id, with their tribe stints, points and game log), the draft's teams
 // (keyed by name, with member ids) and the scoring rules (category → rules), from the get-draft-data edge function
 async function fetchDraftData(season, draftId) {
-  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-draft-data?season=${season}&draft_id=${draftId}`;
-  const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
+  const res = await callFunction(`get-draft-data?season=${season}&draft_id=${draftId}`);
   const body = res ? await res.json().catch(() => ({})) : {};
   if (!res || !res.ok || body.error) {
     throw new Error(`HTTP ${res ? res.status : '—'} loading draft data${body.error ? `: ${body.error}` : ''}`);
@@ -28,8 +33,7 @@ function defaultSeason() {
 // Every draft from the get-drafts edge function as a season entry, newest season first (the first draft wins
 // if a season has several). The default season is always included, and is all there is if the request fails.
 async function fetchSeasons() {
-  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-drafts`;
-  const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
+  const res = await callFunction('get-drafts');
   const body = res && res.ok ? await res.json().catch(() => ({})) : {};
   const entries = [defaultSeason()];
   for (const { id, season } of body.data || []) {

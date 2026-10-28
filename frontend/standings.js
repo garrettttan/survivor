@@ -9,23 +9,26 @@ function renderStandings({ teams, teamNames, finished }) {
     const tm = teams[t];
     const rank = i + 1;
     const guess = tm.winnerPick;
-    const guessAlive = guess && guess.active;
-
-    const guessGood = finished ? guess?.finish === 'winner' : guessAlive;
-    const guessMark = finished ? (guessGood ? '✅' : '❌') : (guessAlive ? '🟢' : '☠️');
+    // Live: 🟢 while the pick is still in, ☠️ once they're out. Finished: ✅ if they won, ❌ if not.
+    const guessGood = finished ? guess?.finish === 'winner' : guess?.active;
+    const guessMark = finished ? (guessGood ? '✅' : '❌') : (guessGood ? '🟢' : '☠️');
+    const guessClass = guessGood ? 'guess-alive' : finished ? '' : 'guess-out';
     const guessSection = guess ? `
-      <div class="roster-guess">🏆 <span class="${guessGood ? 'guess-alive' : finished ? '' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessMark}</div>` : '';
+      <div class="roster-guess">🏆 <span class="${guessClass}">${escapeHtml(guess.name)}</span> ${guessMark}</div>` : '';
 
+    // A finished season doesn't fade or cross out who went home
     const castawayRows = [...tm.members]
       .sort((a, b) => b.active - a.active || b.points - a.points)
-      .map(c => ({ c, shown: c.active || finished }))   // a finished season doesn't fade or cross out who went home
-      .map(({ c, shown }) => `<div class="castaway-row clickable-row ${shown ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
+      .map(c => {
+        const shown = c.active || finished;
+        return `<div class="castaway-row clickable-row ${shown ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
           <div class="castaway-name clickable">${escapeHtml(c.name)}</div>
           <div class="castaway-end">
             <div class="castaway-pts" style="color:${shown ? tm.color : 'var(--muted)'}">${fmt(c.points)}</div>
             ${ICONS.chevronRight}
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
 
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
       <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
