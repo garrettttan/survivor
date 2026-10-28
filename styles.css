@@ -209,7 +209,6 @@ html { scroll-behavior: smooth; }
 .standings-table .points-col { text-align: right; }
 /* Shrink-wrap the number columns so the Team column takes any extra width */
 .standings-table .fit-col { width: 1%; white-space: nowrap; }
-.standings-table.finished .active-col { display: none; }
 /* Keep the standings compact and centered on wide screens instead of stretching across the page */
 #standings .table-scroll { max-width: 560px; margin: 0 auto; }
 @media (hover: hover) {

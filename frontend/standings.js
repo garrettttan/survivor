@@ -1,8 +1,9 @@
 // Frontend: the standings table — one row per team, expanding to show its castaways.
 
-// A finished season drops the Active column (only finalists are left), and winner picks show whether they won
+// A finished season counts each team's members instead of who's still active (only finalists are), and winner
+// picks show whether they won
 function renderStandings({ teams, teamNames, finished }) {
-  document.querySelector('#standings .standings-table').classList.toggle('finished', finished);
+  document.querySelector('#standings .count-col').textContent = finished ? 'Members' : 'Active';
   const sorted = [...teamNames].sort((a, b) => teams[b].points - teams[a].points);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
     const tm = teams[t];
@@ -13,14 +14,15 @@ function renderStandings({ teams, teamNames, finished }) {
     const guessGood = finished ? guess?.finish === 'winner' : guessAlive;
     const guessMark = finished ? (guessGood ? '✅' : '❌') : (guessAlive ? '🟢' : '☠️');
     const guessSection = guess ? `
-      <div class="roster-guess">🏆 <span class="${guessGood ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessMark}</div>` : '';
+      <div class="roster-guess">🏆 <span class="${guessGood ? 'guess-alive' : finished ? '' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessMark}</div>` : '';
 
     const castawayRows = [...tm.members]
       .sort((a, b) => b.active - a.active || b.points - a.points)
-      .map(c => `<div class="castaway-row clickable-row ${c.active ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
+      .map(c => ({ c, shown: c.active || finished }))   // a finished season doesn't fade or cross out who went home
+      .map(({ c, shown }) => `<div class="castaway-row clickable-row ${shown ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
           <div class="castaway-name clickable">${escapeHtml(c.name)}</div>
           <div class="castaway-end">
-            <div class="castaway-pts" style="color:${c.active ? tm.color : 'var(--muted)'}">${fmt(c.points)}</div>
+            <div class="castaway-pts" style="color:${shown ? tm.color : 'var(--muted)'}">${fmt(c.points)}</div>
             ${ICONS.chevronRight}
           </div>
         </div>`).join('');
@@ -28,7 +30,7 @@ function renderStandings({ teams, teamNames, finished }) {
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
       <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
-      <td class="fit-col active-col"><span class="active-count">${tm.activeCount}</span></td>
+      <td class="fit-col"><span class="active-count">${finished ? tm.members.length : tm.activeCount}</span></td>
       <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.points)}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>
     </tr>
