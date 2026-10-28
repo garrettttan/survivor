@@ -182,13 +182,18 @@ const rowsOf = (card: Record<string, unknown>, game = g) => {
 const errorsOf = (card: Record<string, unknown>) => cardRows(card, big, g).errors;
 
 Deno.test("tribe change: swap, switch and merge", () => {
-  // Ann moves to Blue, Cal to Red, Bea placed on Red where she already is: everyone placed gets a row
-  assertEquals(rowsOf({ type: "tribeChange", kind: "swap", moves: { 3: 10, 1: 11, 2: 10 } }),
-    [["Bea", "Swapped tribes", 10], ["Cal", "Swapped tribes", 10], ["Ann", "Swapped tribes", 11]]);
+  // Everyone is placed: Ann and Cal trade tribes, the rest are placed on the tribe they were on, and all get a row
+  assertEquals(rowsOf({ type: "tribeChange", kind: "swap", moves: { 3: 10, 1: 11, 2: 10, 4: 11, 5: 12, 6: 12 } }), [
+    ["Bea", "Swapped tribes", 10], ["Cal", "Swapped tribes", 10], ["Ann", "Swapped tribes", 11],
+    ["Dee", "Swapped tribes", 11], ["Eve", "Swapped tribes", 12], ["Fay", "Swapped tribes", 12],
+  ]);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "swap", moves: { 3: 10, 1: 11 } }),
+    ["Everyone has to be on a tribe after a swap. Still to place: Bea, Dee, Eve, Fay."]);
   assertEquals(rowsOf({ type: "tribeChange", kind: "move", castawayId: 1, tribeId: 12 }), [["Ann", "Switched tribes", 12]]);
   assertEquals(errorsOf({ type: "tribeChange", kind: "move", castawayId: 1, tribeId: 10 }), ["Ann is already on Red."]);
   assertEquals(rowsOf({ type: "tribeChange", kind: "merge", tribeId: 13 }).length, 6);
-  assertEquals(errorsOf({ type: "tribeChange", kind: "swap", moves: { 7: 10 } }), ["Gus is already out of the game."]);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "swap", moves: { 1: 10, 2: 10, 3: 11, 4: 11, 5: 12, 6: 12, 7: 10 } }),
+    ["Gus is already out of the game."]);
 });
 
 Deno.test("challenge: tribe immunity with 2nd place and a sit-out", () => {

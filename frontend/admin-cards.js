@@ -3,8 +3,8 @@
 // episode-entry function decides what rows a card makes and whether it's valid.
 //
 // Card shapes, as sent to the function (ids are castaway, tribe or advantage ids):
-//   tribeChange  { kind: 'swap', moves: { [castawayId]: tribeId } } (anyone missing, or listed with the tribe they
-//                were already on, stays put; empty moves = no one moves)
+//   tribeChange  { kind: 'swap', moves: { [castawayId]: tribeId } } (everyone still in the game must be placed,
+//                including anyone who stays on the tribe they were on)
 //                { kind: 'move', castawayId, tribeId } (one castaway changes tribe on their own)
 //                { kind: 'merge', tribeId } (everyone still in the game joins tribeId)
 //   challenge    { prize: 'immunity'|'reward'|'both', format: 'tribe'|'individual'|'teams', first, second,
@@ -243,7 +243,7 @@ function tribeChangeHtml(card, ctx) {
   if (card.kind === 'merge') {
     return kind + groupHtml('Merged tribe', tribeChoicesHtml({ field: 'tribeId', num: true }, ctx.tribes, card.tribeId));
   }
-  // A swap, tribe by tribe; anyone left unplaced keeps their current tribe
+  // A swap, tribe by tribe; everyone still in the game has to be placed
   return kind + sortIntoGroupsHtml('moves', ctx.tribes, card, ctx);
 }
 

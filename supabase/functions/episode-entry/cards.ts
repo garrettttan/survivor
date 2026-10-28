@@ -93,7 +93,7 @@ function entries(map: unknown): [number, unknown][] {
 }
 
 // ── Tribe change ─────────────────────────────────────────────────────────────
-// Swap: a Swapped tribes row for everyone placed on a tribe (anyone not placed keeps their tribe). Switched
+// Swap: everyone still in the game is placed on a tribe and gets a Swapped tribes row. Switched
 // Tribes: one castaway's Switched tribes row. Merge: a Merged row for everyone still in the game.
 function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
@@ -119,7 +119,10 @@ function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result 
 
   if (card.kind !== "swap") return { rows: [], errors: ["Pick the kind of tribe change."] };
   const moves = entries(card.moves);
-  if (!moves.length) errors.push("Place at least one castaway on a tribe.");
+  const unplaced = activeIds(data, game).filter(id => !moves.some(([placed]) => placed === id));
+  if (unplaced.length) {
+    errors.push(`Everyone has to be on a tribe after a swap. Still to place: ${unplaced.map(id => name(data, id)).join(", ")}.`);
+  }
   for (const [id, tribeId] of moves) {
     activeCastaway(id, "a castaway", data, game, errors);
     if (typeof tribeId !== "number" || !data.tribeById.has(tribeId)) errors.push(`Pick a tribe in this season for ${name(data, id)}.`);
