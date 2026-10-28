@@ -211,6 +211,13 @@ Deno.test("challenge: immunity + reward makes immunity rows only", () => {
     [["Cal", "Won team immunity", 11], ["Dee", "Won team immunity", 11]]);
 });
 
+Deno.test("challenge: a sit-out carries the tribe only in a tribe challenge", () => {
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "individual", first: 3, satOut: [1] }),
+    [["Cal", "Won individual immunity", null], ["Ann", "Sat out of challenge", null]]);
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 2, teams: { 3: 1, 4: 2 },
+    first: 1, satOut: [1] }), [["Cal", "Won team immunity", null], ["Ann", "Sat out of challenge", null]]);
+});
+
 Deno.test("challenge: individual reward with people brought along", () => {
   assertEquals(rowsOf({ type: "challenge", prize: "reward", format: "individual", first: 3, broughtOnReward: [1, 5] }),
     [["Cal", "Won individual reward", null], ["Ann", "Brought on reward", null], ["Eve", "Brought on reward", null]]);

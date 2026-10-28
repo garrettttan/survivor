@@ -1,8 +1,8 @@
 // Cards → events rows, and the checks on them. A card is what the admin page sends for one thing that happened
 // (its shapes are listed in frontend/admin-cards.js); a card can make several rows.
 //
-// Rows follow how past seasons were recorded: team wins and sat-outs carry the tribe, votes point at who they voted
-// for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even someone who stays).
+// Rows follow how past seasons were recorded: team wins and sit-outs in a tribe challenge carry the tribe, votes point
+// at who they voted for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even someone who stays).
 
 import type { EventRow } from "../_shared/replay.ts";
 import type { GameState } from "./game.ts";
@@ -137,8 +137,9 @@ function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result 
 
 // ── Challenge ────────────────────────────────────────────────────────────────
 // Won immunity or reward for everyone on the winning tribe or team (or the individual winner), the 2nd place
-// rows when three or more competed, Sat out rows, and Brought on reward rows for an individual reward. A challenge
-// for immunity and reward makes immunity rows only.
+// rows when three or more competed, Sat out rows (with the castaway's tribe only in a tribe challenge, since
+// individual and team challenges aren't competed by tribe), and Brought on reward rows for an individual reward. A
+// challenge for immunity and reward makes immunity rows only.
 function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
   if (!["immunity", "reward", "both"].includes(card.prize)) errors.push("Pick the prize.");
@@ -199,7 +200,9 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
   }
 
   const sat = eventType(data, "Sat out of challenge", errors);
-  for (const id of satOut) rows.push(row(id, sat, { tribeId: game.tribeOf[id] ?? null }));
+  for (const id of satOut) {
+    rows.push(row(id, sat, { tribeId: card.format === "tribe" ? game.tribeOf[id] ?? null : null }));
+  }
   if (errors.length) return { rows: [], errors };
   return { rows, errors };
 }
