@@ -6,6 +6,7 @@
   "points": 14,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",
@@ -122,6 +123,7 @@
   "points": 13,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -274,6 +276,7 @@
   "points": 31,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -417,6 +420,7 @@
   "points": 11,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -560,6 +564,7 @@
   "points": 12.5,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -694,6 +699,7 @@
   "points": 23,
   "active": false,
   "exitEpisode": 12,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -846,6 +852,7 @@
   "points": 21.5,
   "active": false,
   "exitEpisode": 11,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -989,6 +996,7 @@
   "points": 4,
   "active": false,
   "exitEpisode": 10,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -1087,6 +1095,7 @@
   "points": 9.5,
   "active": false,
   "exitEpisode": 9,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",
@@ -1212,6 +1221,7 @@
   "points": 17,
   "active": false,
   "exitEpisode": 8,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -1346,6 +1356,7 @@
   "points": 6.5,
   "active": false,
   "exitEpisode": 7,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -1471,6 +1482,7 @@
   "points": 5,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Uli",
@@ -1559,6 +1571,7 @@
   "points": 6,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -1638,6 +1651,7 @@
   "points": 6,
   "active": false,
   "exitEpisode": 4,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Hina",
@@ -1717,6 +1731,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",
@@ -1769,6 +1784,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",
@@ -1821,6 +1837,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 2,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",
@@ -1873,6 +1890,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kele",

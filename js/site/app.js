@@ -5,17 +5,14 @@ let appData = null;          // loadSeason result for the current draft, plus co
 let scoring = {};            // category → [{ name, description, points }] shown on the scoring tab
 
 // ── Scoring tab ───────────────────────────────────────────────────────────
-// Leaves out 0-point rules, and categories with nothing left
+// The server leaves out 0-point rules
 function renderScoring() {
-  document.getElementById('scoring-grid').innerHTML = Object.entries(scoring).map(([category, rules]) => {
-    const scored = rules.filter(r => r.points !== 0);
-    return scored.length ? `
+  document.getElementById('scoring-grid').innerHTML = Object.entries(scoring).map(([category, rules]) => `
     <div class="scoring-cat">
       <h4>${escapeHtml(category)}</h4>
-      ${scored.map(scoringRuleHtml).join('')}
+      ${rules.map(scoringRuleHtml).join('')}
     </div>
-  ` : '';
-  }).join('');
+  `).join('');
 }
 
 // A rule with a description opens on tap to show it underneath

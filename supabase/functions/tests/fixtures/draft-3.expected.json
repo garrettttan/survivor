@@ -6,6 +6,7 @@
   "points": 39,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",
@@ -187,6 +188,7 @@
   "points": 18,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",
@@ -341,6 +343,7 @@
   "points": 16,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -468,6 +471,7 @@
   "points": 11,
   "active": false,
   "exitEpisode": 14,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -604,6 +608,7 @@
   "points": 12,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -740,6 +745,7 @@
   "points": 14,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",
@@ -885,6 +891,7 @@
   "points": 8,
   "active": false,
   "exitEpisode": 12,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -1003,6 +1010,7 @@
   "points": 21,
   "active": false,
   "exitEpisode": 11,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -1157,6 +1165,7 @@
   "points": 13,
   "active": false,
   "exitEpisode": 10,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -1284,6 +1293,7 @@
   "points": 8,
   "active": false,
   "exitEpisode": 9,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -1402,6 +1412,7 @@
   "points": 10,
   "active": false,
   "exitEpisode": 8,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",
@@ -1529,6 +1540,7 @@
   "points": 6,
   "active": false,
   "exitEpisode": 7,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -1638,6 +1650,7 @@
   "points": 6,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -1727,6 +1740,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",
@@ -1816,6 +1830,7 @@
   "points": 3,
   "active": false,
   "exitEpisode": 4,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -1887,6 +1902,7 @@
   "points": 3,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lavo",
@@ -1958,6 +1974,7 @@
   "points": 2,
   "active": false,
   "exitEpisode": 2,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -2020,6 +2037,7 @@
   "points": 1,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Gata",

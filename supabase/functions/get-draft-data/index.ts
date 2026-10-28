@@ -9,7 +9,11 @@ import { parseScoring, type ScoringRow } from "./scoring.ts";
 export interface TeamInfo {
   winnerPickId: number; 
   memberIds: number[]; 
-  scoreByEpisode: number[]; 
+  scoreByEpisode: number[];      // points scored in each episode, ghosts included
+  cumulativePoints: number[];    // running total after each episode
+  rankByEpisode: number[];       // place after each episode; tied teams share a place and the next skips (1, 1, 3)
+  points: number;                // total so far
+  activeCount: number;           // members still in the game
 }
 
 // =====================================================================
@@ -37,12 +41,6 @@ export default {
 
     if (typeof season === "string") return Response.json({ error: season }, { status: 400 });
     if (typeof draftId === "string") return Response.json({ error: draftId }, { status: 400 });
-
-    for (const value of [season, draftId]) {
-      if (typeof value === "string") {
-        return Response.json({ error: value }, { status: 400 });
-      }
-    }
 
     const [teams, events, rosters, scoring] = await Promise.all([
       supabase
@@ -85,6 +83,10 @@ export default {
           winnerPickId: t.winner_pick_id,
           memberIds: [],
           scoreByEpisode: new Array<number>(episodeCount).fill(0),
+          cumulativePoints: [],
+          rankByEpisode: [],
+          points: 0,
+          activeCount: 0,
         }; 
         teamToInfo.set(t.name, data);
     }
@@ -96,6 +98,7 @@ export default {
 
       const castaway = castaways.get(r.castaway_id);
       if (!castaway) continue;               // drafted but no events yet: contributes 0
+      if (castaway.active) teamInfo.activeCount++;
       castaway.pointsByEpisode.forEach((pts, i) => {
         teamInfo.scoreByEpisode[i] += pts;
       });
@@ -114,6 +117,23 @@ export default {
         (score) => score + (score / teamSize) * ghostCount,
       );
     }
+
+    // Running totals, then each team's place after every episode
+    for (const teamInfo of teamToInfo.values()) {
+      let total = 0;
+      teamInfo.cumulativePoints = teamInfo.scoreByEpisode.map((score) => (total += score));
+      teamInfo.points = total;
+    }
+    const allTeams = [...teamToInfo.values()];
+    for (const teamInfo of allTeams) {
+      teamInfo.rankByEpisode = teamInfo.cumulativePoints.map((points, i) =>
+        1 + allTeams.filter((other) => other.cumulativePoints[i] > points).length);
+    }
+
+    // The season is merged once anyone has joined a tribe at the merge, and finished once it has a winner
+    const allCastaways = [...castaways.values()];
+    const merged = allCastaways.some((c) => c.tribes.some((t) => t.startReason === "Merged"));
+    const finished = allCastaways.some((c) => c.finish === "winner");
   
     const toJson = (_key: string, value: unknown) =>
       value instanceof Set ? [...value] :
@@ -124,6 +144,9 @@ export default {
         teams: teamToInfo,
         castaways: castaways, 
         scoring: scoringParsed, 
+        episodeCount,
+        merged,
+        finished,
       };
 
     return new Response(JSON.stringify(body, toJson), {

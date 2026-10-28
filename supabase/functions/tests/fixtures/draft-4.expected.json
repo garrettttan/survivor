@@ -6,6 +6,7 @@
   "points": 25,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -177,6 +178,7 @@
   "points": 26.5,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -339,6 +341,7 @@
   "points": 18.5,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -483,6 +486,7 @@
   "points": 29.5,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -636,6 +640,7 @@
   "points": 9,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -771,6 +776,7 @@
   "points": 13.5,
   "active": false,
   "exitEpisode": 12,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -915,6 +921,7 @@
   "points": 8,
   "active": false,
   "exitEpisode": 11,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",
@@ -1032,6 +1039,7 @@
   "points": 13,
   "active": false,
   "exitEpisode": 10,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -1158,6 +1166,7 @@
   "points": 16,
   "active": false,
   "exitEpisode": 9,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -1302,6 +1311,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 8,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -1419,6 +1429,7 @@
   "points": 2,
   "active": false,
   "exitEpisode": 7,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",
@@ -1509,6 +1520,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 7,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",
@@ -1617,6 +1629,7 @@
   "points": 9,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Civa",
@@ -1723,6 +1736,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -1811,6 +1825,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 4,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -1890,6 +1905,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",
@@ -1942,6 +1958,7 @@
   "points": 1,
   "active": false,
   "exitEpisode": 2,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",
@@ -2003,6 +2020,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vula",

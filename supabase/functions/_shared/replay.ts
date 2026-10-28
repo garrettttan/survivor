@@ -71,6 +71,7 @@ export interface CastawayState {
   points: number;
   active: boolean;
   exitEpisode: number | null;
+  finish: "winner" | "finalist" | null;  // once the season has a winner: them, and everyone else still in at the end
   tribes: TribeStint[];          // every stint, oldest first; the last one is the current tribe
   advantages: string[];          // advantages they currently hold
   expiredAdvantages: string[]; 
@@ -80,6 +81,9 @@ export interface CastawayState {
 
 // A castaway switching tribes on their own (not in a swap): always a tribe change by itself
 const SWITCHED_TRIBES = "Switched tribes";
+
+// The winner's row at the end of a season: once it's there, the season is finished
+const SOLE_SURVIVOR = "Became Sole Survivor";
 
 // Whether two back-to-back rows are part of the same swap: the same tribe-change event in the
 // same episode. A switch next to a swap, or two switches in a row, stay separate moves.
@@ -116,6 +120,9 @@ export function replay(events: EventRow[], rosters: RosterRow[]): Map<number, Ca
   // Advantage name → id of the castaway holding it (null once played or expired).
   const advantageToHolder = new Map<string, number | null>();
 
+  // Id of the castaway who became Sole Survivor (null until the season is finished).
+  let winnerId: number | null = null;
+
   // The last event is from the latest episode (events are sorted), so this is
   // how many episodes there are so far.
   const episodeCount = events.length > 0 ? events[events.length - 1].episode : 0;
@@ -131,6 +138,7 @@ export function replay(events: EventRow[], rosters: RosterRow[]): Map<number, Ca
         points: 0,
         active: true,
         exitEpisode: null,
+        finish: null,
         tribes: [],
         advantages: [],
         expiredAdvantages: [],
@@ -231,6 +239,8 @@ export function replay(events: EventRow[], rosters: RosterRow[]): Map<number, Ca
       leaveTribe(c.id, e.episode);
     }
 
+    if (e.event === SOLE_SURVIVOR) winnerId = c.id;
+
     // Advantages: "gain" makes this castaway the holder; "lose" means nobody holds it.
     if (e.advantage && e.advantage_effect === "gain") advantageToHolder.set(e.advantage, e.castaway_id);
     if (e.advantage && e.advantage_effect === "lose") {
@@ -246,6 +256,14 @@ export function replay(events: EventRow[], rosters: RosterRow[]): Map<number, Ca
   // Give each advantage to whoever holds it at the end.
   for (const [advantage, id] of advantageToHolder) {
     if (id !== null) castaways.get(id)?.advantages.push(advantage);
+  }
+
+  // Once someone has won, everyone else still in made the final tribal.
+  if (winnerId !== null) {
+    for (const c of castaways.values()) {
+      if (c.id === winnerId) c.finish = "winner";
+      else if (c.active) c.finish = "finalist";
+    }
   }
 
   return castaways;

@@ -6,6 +6,7 @@
   "points": 6,
   "active": false,
   "exitEpisode": 12,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -138,6 +139,7 @@
   "points": 9,
   "active": false,
   "exitEpisode": 12,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -288,6 +290,7 @@
   "points": 21.5,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -463,6 +466,7 @@
   "points": 9,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -613,6 +617,7 @@
   "points": 14,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -761,6 +766,7 @@
   "points": 10.5,
   "active": false,
   "exitEpisode": 8,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -918,6 +924,7 @@
   "points": 10.5,
   "active": false,
   "exitEpisode": 8,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -1075,6 +1082,7 @@
   "points": 20.5,
   "active": false,
   "exitEpisode": 13,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -1259,6 +1267,7 @@
   "points": 25,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -1436,6 +1445,7 @@
   "points": 8,
   "active": false,
   "exitEpisode": 9,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -1577,6 +1587,7 @@
   "points": 3,
   "active": false,
   "exitEpisode": 11,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -1689,6 +1700,7 @@
   "points": 9,
   "active": false,
   "exitEpisode": 11,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -1841,6 +1853,7 @@
   "points": 13,
   "active": false,
   "exitEpisode": 10,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -2000,6 +2013,7 @@
   "points": 12.5,
   "active": false,
   "exitEpisode": 7,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -2157,6 +2171,7 @@
   "points": 10,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -2305,6 +2320,7 @@
   "points": 12,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -2492,6 +2508,7 @@
   "points": 8.5,
   "active": false,
   "exitEpisode": 6,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -2640,6 +2657,7 @@
   "points": 6.5,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -2754,6 +2772,7 @@
   "points": 4,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -2850,6 +2869,7 @@
   "points": 3.5,
   "active": false,
   "exitEpisode": 4,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -2946,6 +2966,7 @@
   "points": 4,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -3042,6 +3063,7 @@
   "points": 2,
   "active": false,
   "exitEpisode": 2,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",
@@ -3116,6 +3138,7 @@
   "points": 2,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -3188,6 +3211,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Cila",

@@ -86,3 +86,23 @@ Deno.test("a swap's rows still move together", () => {
   assertEquals([...stint(castaways, 1, "Blue", 2).memberIds].sort(), [4]);
   assertEquals([...stint(castaways, 3, "Red", 2).memberIds].sort(), [2]);
 });
+
+// ── Finish ───────────────────────────────────────────────────────────────────
+// An event row that isn't a tribe change: a vote-out ends Cal's game, and the winner's row ends the season
+function eventRow(episode: number, castawayId: number, event: string, endsGame = false): EventRow {
+  return { ...tribeRow(episode, castawayId, event, "Red"), category: "Voting", changes_tribe: false, ends_game: endsGame, tribe: null };
+}
+
+Deno.test("the winner and everyone still in at the end get a finish", () => {
+  const castaways = replay([
+    ...startingTribes(),
+    eventRow(2, 3, "Voted out", true), eventRow(2, 4, "Voted out", true),
+    eventRow(3, 1, "Became Sole Survivor"),
+  ], []);
+  assertEquals([1, 2, 3, 4].map(id => castaways.get(id)!.finish), ["winner", "finalist", null, null]);
+});
+
+Deno.test("nobody has a finish until someone wins", () => {
+  const castaways = replay([...startingTribes(), eventRow(2, 3, "Voted out", true)], []);
+  assertEquals([1, 2, 3, 4].map(id => castaways.get(id)!.finish), [null, null, null, null]);
+});

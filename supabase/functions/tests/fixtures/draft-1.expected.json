@@ -6,6 +6,7 @@
   "points": 0,
   "active": false,
   "exitEpisode": 1,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -54,6 +55,7 @@
   "points": 5,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -160,6 +162,7 @@
   "points": 1,
   "active": false,
   "exitEpisode": 2,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -226,6 +229,7 @@
   "points": 7,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -344,6 +348,7 @@
   "points": 7,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -481,6 +486,7 @@
   "points": 8,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -588,6 +594,7 @@
   "points": 11,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -726,6 +733,7 @@
   "points": 4,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -854,6 +862,7 @@
   "points": 5,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -961,6 +970,7 @@
   "points": 4,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1089,6 +1099,7 @@
   "points": 3,
   "active": false,
   "exitEpisode": 4,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1188,6 +1199,7 @@
   "points": 6,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -1286,6 +1298,7 @@
   "points": 10,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1405,6 +1418,7 @@
   "points": 7,
   "active": false,
   "exitEpisode": 5,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -1503,6 +1517,7 @@
   "points": 11,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1660,6 +1675,7 @@
   "points": 6,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1769,6 +1785,7 @@
   "points": 5,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -1866,6 +1883,7 @@
   "points": 3,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",
@@ -1952,6 +1970,7 @@
   "points": 2,
   "active": false,
   "exitEpisode": 3,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -2047,6 +2066,7 @@
   "points": 8,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Savu",
@@ -2145,6 +2165,7 @@
   "points": 7,
   "active": true,
   "exitEpisode": null,
+  "finish": null,
   "tribes": [
    {
     "tribeName": "Toka",

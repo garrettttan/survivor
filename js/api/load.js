@@ -8,16 +8,17 @@ function callFunction(path) {
 }
 
 // This season's castaways (keyed by id, with their tribe stints, points and game log), the draft's teams
-// (keyed by name, with member ids) and the scoring rules (category → rules), from the get-draft-data edge function
+// (keyed by name, with member ids, points and ranks), the scoring rules (category → rules), and the episode count
+// and whether the season has merged or finished, from the get-draft-data edge function
 async function fetchDraftData(season, draftId) {
   const res = await callFunction(`get-draft-data?season=${season}&draft_id=${draftId}`);
   const body = res ? await res.json().catch(() => ({})) : {};
   if (!res || !res.ok || body.error) {
     throw new Error(`HTTP ${res ? res.status : '—'} loading draft data${body.error ? `: ${body.error}` : ''}`);
   }
-  const { castaways = {}, teams = {}, scoring = {} } = body;
+  const { castaways = {}, teams = {}, scoring = {}, episodeCount = 0, merged = false, finished = false } = body;
   if (!Object.keys(castaways).length) throw new Error(`No castaways found for season ${season}.`);
-  return { castaways, teams, scoring };
+  return { castaways, teams, scoring, episodeCount, merged, finished };
 }
 
 // One season picker entry. draftId is get-draft-data's draft_id; a season without a logos/N.png shows its
@@ -45,8 +46,8 @@ async function fetchSeasons() {
 // Everything the page needs for one draft: linked castaways and teams, plus the scoring rules.
 // `entry` is one of fetchSeasons()'s entries.
 async function loadSeason(entry) {
-  const { castaways, teams, scoring } = await fetchDraftData(entry.season, entry.draftId);
-  return { data: processDraftData(castaways, teams), scoring };
+  const draft = await fetchDraftData(entry.season, entry.draftId);
+  return { data: processDraftData(draft), scoring: draft.scoring };
 }
 
 if (typeof module !== 'undefined') {
