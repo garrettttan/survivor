@@ -10,7 +10,8 @@
 //   challenge    { prize: 'immunity'|'reward'|'both', format: 'tribe'|'individual'|'teams', first, second,
 //                  teamCount, teams: { [castawayId]: teamNumber }, satOut: [id], broughtOnReward: [id] }
 //                  (tribe: first/second = tribe ids; individual: first = a castaway id; teams, for teams that aren't
-//                  tribes: teamCount teams numbered from 1, teams = who was on each, first/second = team numbers)
+//                  tribes: teamCount teams numbered from 1, teams = who was on each, first/second = team numbers;
+//                  anyone still in the game who isn't on a team sat out)
 //   tribal       { tribeId, votes: { [voterId]: targetId | 'none' }, outcome: 'voted'|'rocks'|'consensus', bootId }
 //   advantage    { action: 'found'|'gave'|'played'|'expired', castawayId, advantage, recipientId, targetId,
 //                  changedOutcome } (played: targetId = who it was played on, null when they played it for themselves)
@@ -37,18 +38,18 @@ const CARD_TYPES = {
     blank: () => ({ prize: 'immunity', format: 'tribe', first: null, second: null, teamCount: 2, teams: {}, satOut: [], broughtOnReward: [] }),
     html: challengeHtml,
     reset: {
-      format: { first: null, second: null, teams: {}, broughtOnReward: [] },
+      format: { first: null, second: null, teams: {}, satOut: [], broughtOnReward: [] },
       prize: { broughtOnReward: [] },
       first: { second: null },
     },
-    // Teams: anyone who sat out isn't on a team, and fewer teams drops anyone on a team that's gone and the
-    // places it held
-    tidy: card => {
+    // Teams: fewer teams drops anyone on a team that's gone and the places it held, and whoever isn't on a team
+    // sat out
+    tidy: (card, ctx) => {
       if (card.format !== 'teams') return;
-      card.teams = Object.fromEntries(Object.entries(card.teams)
-        .filter(([id, n]) => n <= card.teamCount && !card.satOut.includes(Number(id))));
+      card.teams = Object.fromEntries(Object.entries(card.teams).filter(([, n]) => n <= card.teamCount));
       if (card.first > card.teamCount) card.first = null;
       if (card.second > card.teamCount || card.teamCount < 3) card.second = null;
+      card.satOut = unsortedIds(card, ctx);
     },
   },
   tribal: {
@@ -283,16 +284,25 @@ function placesHtml(card, groups) {
   return html;
 }
 
-// How many teams, who was on each, then their places. Anyone who sat out
-// isn't sorted. Teams can be as small as pairs, so there can be up to half as many teams as castaways competing.
+// Castaways still in the game who aren't on a team: in a team challenge, they sat out
+function unsortedIds(card, ctx) {
+  return activeIds(ctx).filter(id => card.teams[id] == null);
+}
+
+// How many teams, who was on each, then their places, then who sat out: everyone not put on a team. Teams can be
+// as small as pairs, so there can be up to half as many teams as castaways still in the game.
 function teamPlacesHtml(card, ctx) {
   const teams = challengeTeams(card);
-  const competing = activeIds(ctx).filter(id => !card.satOut.includes(id));
-  const maxTeams = Math.max(2, Math.floor(competing.length / 2), card.teamCount);
+  const maxTeams = Math.max(2, Math.floor(activeIds(ctx).length / 2), card.teamCount);
   const counts = Array.from({ length: maxTeams - 1 }, (_, i) => [i + 2, String(i + 2)]);
+  const unsorted = unsortedIds(card, ctx);
+  const satOut = unsorted.length
+    ? `<div class="entry-chips">${unsorted.map(id => `<span class="entry-member">${escapeHtml(ctx.short.get(id))}</span>`).join('')}</div>`
+    : '<span class="empty-note">No one</span>';
   return fieldHtml('Number of teams', selectHtml({ field: 'teamCount', num: true, rerender: true }, counts, card.teamCount, null)) +
-    sortIntoGroupsHtml('teams', teams, card, ctx, competing) +
-    placesHtml(card, teams);
+    sortIntoGroupsHtml('teams', teams, card, ctx) +
+    placesHtml(card, teams) +
+    groupHtml('Sat out (anyone not on a team)', satOut);
 }
 
 function challengeHtml(card, ctx) {
@@ -311,8 +321,8 @@ function challengeHtml(card, ctx) {
   } else {
     html += placesHtml(card, tribesInPlay(ctx));
   }
-  // In a team challenge, sitting out takes someone off their team, so the teams redraw
-  html += groupHtml('Sat out', checkChipsHtml('satOut', activeIds(ctx), card.satOut, ctx, teams ? { rerender: true } : {}));
+  // A team challenge lists its sit-outs itself (whoever isn't on a team)
+  if (!teams) html += groupHtml('Sat out', checkChipsHtml('satOut', activeIds(ctx), card.satOut, ctx));
   // Only an individual reward winner brings people along; a tribe or team reward goes to the whole group
   if (card.prize !== 'immunity' && individual) {
     const others = activeIds(ctx).filter(id => id !== card.first);
@@ -488,7 +498,7 @@ function errorListHtml(errors) {
 }
 
 // One numbered card with move and delete buttons, around its form, then the rows it will save and its errors
-function cardHtml(card, index, count, ctx, errors, rows) {
+function cardHtml(card, index, count, ctx, errors, rows = []) {
   const type = CARD_TYPES[card.type];
   return `<div class="entry-card${errors.length ? ' has-errors' : ''}" data-card="${index}">
     <div class="entry-card-head">

@@ -185,6 +185,10 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
     if (!Number.isInteger(teamCount) || teamCount < 2) errors.push("Pick how many teams there were.");
     const teams = entries(card.teams);
     for (const [id] of teams) activeCastaway(id, "a castaway", data, game, errors);
+    // Everyone still in the game is on a team or sat out: anyone not put on a team sat out
+    for (const id of activeIds(data, game)) {
+      if (!satOut.includes(id) && !teams.some(([placed]) => placed === id)) satOut.push(id);
+    }
     const team = (n: number) => teams.filter(([, t]) => t === n).map(([id]) => id);
     const first = idOrNull(card.first);
     if (first === null || first < 1 || first > teamCount) errors.push("Pick the winning team.");

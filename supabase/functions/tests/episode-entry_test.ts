@@ -214,8 +214,10 @@ Deno.test("challenge: immunity + reward makes immunity rows only", () => {
 Deno.test("challenge: a sit-out carries the tribe only in a tribe challenge", () => {
   assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "individual", first: 3, satOut: [1] }),
     [["Cal", "Won individual immunity", null], ["Ann", "Sat out of challenge", null]]);
+  // Bea, Eve and Fay weren't put on a team, so they sat out too
   assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 2, teams: { 3: 1, 4: 2 },
-    first: 1, satOut: [1] }), [["Cal", "Won team immunity", null], ["Ann", "Sat out of challenge", null]]);
+    first: 1, satOut: [1] }), [["Cal", "Won team immunity", null], ["Ann", "Sat out of challenge", null],
+    ["Bea", "Sat out of challenge", null], ["Eve", "Sat out of challenge", null], ["Fay", "Sat out of challenge", null]]);
 });
 
 Deno.test("challenge: individual reward with people brought along", () => {
@@ -226,9 +228,15 @@ Deno.test("challenge: individual reward with people brought along", () => {
 });
 
 Deno.test("challenge: teams that aren't tribes", () => {
+  // Everyone is on a team (Eve and Fay on Team 2), so no one sat out
   assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 3,
-    teams: { 1: 1, 3: 1, 2: 2, 4: 3 }, first: 1, second: 3 }),
+    teams: { 1: 1, 3: 1, 2: 2, 5: 2, 6: 2, 4: 3 }, first: 1, second: 3 }),
     [["Ann", "Won team immunity", null], ["Cal", "Won team immunity", null], ["Dee", "Won team immunity (2nd place)", null]]);
+  // Anyone left off every team sat out
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 2,
+    teams: { 1: 1, 2: 1, 3: 2, 4: 2 }, first: 2 }),
+    [["Cal", "Won team immunity", null], ["Dee", "Won team immunity", null],
+     ["Eve", "Sat out of challenge", null], ["Fay", "Sat out of challenge", null]]);
   assertEquals(errorsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 2, teams: { 1: 1 }, first: 2 }),
     ["No one is on Team 2."]);
 });
