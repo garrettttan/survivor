@@ -1,4 +1,4 @@
-// Backend: links the draft data's castaways and teams by id and adds what the server doesn't send (names,
+// API: links the draft data's castaways and teams by id and adds what the server doesn't send (names,
 // team totals, log links). Fields keep the server's names. No DOM, colors or browser state.
 
 function processDraftData(rawCastaways, rawTeams) {

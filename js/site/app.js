@@ -1,7 +1,7 @@
-// Frontend: page setup — asks the backend for the draft's data, then renders every section.
+// Site: page setup — loads the draft's data (js/api/load.js), then renders every section.
 
 let currentEntry = null;     // the season entry being shown (see makeSeasonEntry)
-let appData = null;          // backend result for the current draft, plus colors from assignColors
+let appData = null;          // loadSeason result for the current draft, plus colors from assignColors
 let scoring = {};            // category → [{ name, description, points }] shown on the scoring tab
 
 // ── Scoring tab ───────────────────────────────────────────────────────────

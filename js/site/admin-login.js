@@ -1,4 +1,4 @@
-// Frontend: the admin lock in the header's top right. Signed out it's an icon-only lock that opens a sign-in
+// Site: the admin lock in the header's top right. Signed out it's an icon-only lock that opens a sign-in
 // form in the detail panel; signed in as an admin it shows the email and opens a panel with the admin pages
 // and Sign out.
 

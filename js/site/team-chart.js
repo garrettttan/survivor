@@ -1,4 +1,4 @@
-// Frontend: the "standings over time" line chart (Chart.js).
+// Site: the "standings over time" line chart (Chart.js).
 
 let teamChartInst = null;
 let teamChartShowRank = false; // the selector: running points (default) or each team's place after every episode
@@ -65,6 +65,7 @@ function renderTeamChart({ teams, teamNames, episodeCount }) {
     pointRadius: 2.5,
     pointHoverRadius: 5,
     pointBackgroundColor: teams[t].color,
+    pointBorderColor: teams[t].color,
     clip: false, // in rank view, don't cut the 1st and last place lines in half at the chart's edges
   }));
   // Set min-width so the chart is scrollable on mobile for many episodes

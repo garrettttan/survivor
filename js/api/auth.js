@@ -1,4 +1,4 @@
-// Backend: admin sign-in with Supabase Auth. An admin is a user whose app_metadata.role is "admin"
+// API: admin sign-in with Supabase Auth. An admin is a user whose app_metadata.role is "admin"
 // (set in SQL; users can't change their own app_metadata). This only decides what the page shows —
 // admin writes must still be checked server-side (RLS or the edge function).
 

@@ -1,4 +1,4 @@
-// Frontend: team and tribe colors, and the HTML that shows them.
+// Shared: team and tribe colors, and the HTML that shows them.
 
 // Color palette — assigned by alphabetical team order
 const PALETTE = [

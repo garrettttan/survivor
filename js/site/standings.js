@@ -1,4 +1,4 @@
-// Frontend: the standings table — one row per team, expanding to show its castaways.
+// Site: the standings table — one row per team, expanding to show its castaways.
 
 // A finished season counts each team's members instead of who's still active (only finalists are), and winner
 // picks show whether they won

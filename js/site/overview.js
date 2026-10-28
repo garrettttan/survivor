@@ -1,4 +1,4 @@
-// Frontend: the game overview table — every castaway, sortable, with an active-only filter.
+// Site: the game overview table — every castaway, sortable, with an active-only filter.
 
 let overviewActiveOnly = true;
 let overviewMultiSort = false; // taps add sort levels (like Shift-click)

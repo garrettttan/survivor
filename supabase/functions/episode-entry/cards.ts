@@ -1,5 +1,5 @@
 // Cards → events rows, and the checks on them. A card is what the admin page sends for one thing that happened
-// (its shapes are listed in frontend/admin-cards.js); a card can make several rows.
+// (its shapes are listed in js/admin/admin-cards.js); a card can make several rows.
 //
 // Rows follow how past seasons were recorded: team wins and sit-outs in a tribe challenge carry the tribe, votes point
 // at who they voted for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even someone who stays).

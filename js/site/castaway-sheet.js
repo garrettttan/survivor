@@ -1,4 +1,4 @@
-// Frontend: the castaway detail panel (bottom sheet on phones, modal on desktop).
+// Site: the castaway detail panel (bottom sheet on phones, modal on desktop).
 
 function openSheet(name) {
   const c = appData.castaways.find(x => x.name === name);

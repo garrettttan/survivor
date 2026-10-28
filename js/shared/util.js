@@ -1,4 +1,4 @@
-// Frontend: small formatting and HTML helpers shared by the renderers.
+// Shared: small formatting, HTML and season URL helpers used by both pages.
 
 // 12 → "12", 12.5 → "12.5"
 function fmt(n) {

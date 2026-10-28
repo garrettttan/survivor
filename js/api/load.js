@@ -1,5 +1,5 @@
-// Backend: fetches the Supabase draft data and runs it through scoring.js.
-// The frontend only calls loadSeason().
+// API: fetches the Supabase draft data and links it up with draft-data.js.
+// The page only calls loadSeason() and fetchSeasons().
 
 // GET a public edge function (path includes any query string); null if the request couldn't be made
 function callFunction(path) {
@@ -42,7 +42,7 @@ async function fetchSeasons() {
   return entries.sort((a, b) => b.season - a.season);
 }
 
-// Everything the frontend needs for one draft: linked castaways and teams, plus the scoring rules.
+// Everything the page needs for one draft: linked castaways and teams, plus the scoring rules.
 // `entry` is one of fetchSeasons()'s entries.
 async function loadSeason(entry) {
   const { castaways, teams, scoring } = await fetchDraftData(entry.season, entry.draftId);

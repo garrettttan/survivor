@@ -1,4 +1,4 @@
-// Backend: thin wrappers over the episode-entry edge function, which holds every rule for turning cards into
+// API: thin wrappers over the episode-entry edge function, which holds every rule for turning cards into
 // events rows. The page sends what happened (cards, as castaway and tribe ids) and renders what comes back.
 //
 // Shapes the function returns:
@@ -9,7 +9,7 @@
 //              (card = index of the card that makes it; eventType = its name; advantage = an id, or a new one's name)
 //   Error      { card?, message } (no card = about the whole episode)
 //
-// Card shapes are listed in frontend/admin-cards.js. Wherever a card names an advantage, it's a number
+// Card shapes are listed in js/admin/admin-cards.js. Wherever a card names an advantage, it's a number
 // (advantages.id) or a string (the name of a new advantage, created on save). Editing an episode that's already
 // entered isn't supported yet.
 

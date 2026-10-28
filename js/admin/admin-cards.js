@@ -1,4 +1,4 @@
-// Frontend: the episode entry page's card forms.
+// Admin page: the episode entry page's card forms.
 // Forms only: each renders inputs from a card object and copies inputs back into it. No rules; the
 // episode-entry function decides what rows a card makes and whether it's valid.
 //

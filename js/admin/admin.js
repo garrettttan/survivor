@@ -1,7 +1,7 @@
-// Frontend: the "Add events" admin page for the season in the URL (?season=N). Shows the sign-in form until
+// Admin page: "Add events" for the season in the URL (?season=N). Shows the sign-in form until
 // an admin is signed in, then the episode entry form: pick the episode, describe it as cards, save. Each change
 // is checked in the background (a preview), which keeps the game panel, pickers and errors current. Every rule
-// lives in the episode-entry function (backend/admin-data.js); this file keeps the form's state and draws it.
+// lives in the episode-entry function (js/api/admin-data.js); this file keeps the form's state and draws it.
 // Episodes already entered can't be edited here yet.
 
 // The season in the URL, taken as given: entering events doesn't need the season to have a draft

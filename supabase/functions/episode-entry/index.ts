@@ -6,7 +6,7 @@
 //            (episode null = the one after the last entered)
 //   preview  the rows the cards would make, errors per card, warnings, and the game before each card
 //   save     preview's checks again, then one transaction through insert_episode_events
-// The exact request and response shapes are in backend/admin-data.js. Only admins (app_metadata.role "admin") may
+// The exact request and response shapes are in js/api/admin-data.js. Only admins (app_metadata.role "admin") may
 // call it; reads and the save run as the caller, so RLS applies too.
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";

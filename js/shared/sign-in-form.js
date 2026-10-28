@@ -1,4 +1,4 @@
-// Frontend: the admin sign-in form, shared by the header lock's panel and the admin page.
+// Shared: the admin sign-in form, shared by the header lock's panel and the admin page.
 
 function signInFormHtml() {
   return `
