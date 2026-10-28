@@ -848,8 +848,8 @@ html { scroll-behavior: smooth; }
   letter-spacing: 0.5px;
   margin-bottom: 0.35rem;
 }
-/* Members as pills; an advantage holder's pill has a purple outline and dot, and each advantage is a line below
-   (with the same dot) */
+/* Members as pills. An advantage holder's pill has a purple outline and dot, and is a button: tapping it opens a
+   popover under the pill listing what they hold (each advantage a line with the same dot). */
 .entry-member {
   display: inline-flex;
   align-items: center;
@@ -861,9 +861,18 @@ html { scroll-behavior: smooth; }
   background: var(--card-bg);
   border: 1px solid var(--card-border);
 }
-.entry-member.holds-adv { border-color: var(--adv-light); }
+.entry-member.holds-adv {
+  font-family: inherit;
+  color: var(--adv);
+  border-color: var(--adv-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.entry-member.holds-adv[aria-expanded="true"] { background: var(--adv-light); border-color: var(--adv-light); color: #fff; }
+.entry-member.holds-adv[aria-expanded="true"]::before { background: #fff; }
+.entry-member.holds-adv:focus-visible { outline: 2px solid var(--adv-light); outline-offset: 2px; }
 .entry-member.holds-adv::before,
-.entry-held li::before {
+.entry-adv-pop li::before {
   content: '';
   width: 6px;
   height: 6px;
@@ -876,10 +885,27 @@ html { scroll-behavior: smooth; }
   color: var(--muted);
   text-decoration: line-through;
 }
-.entry-held { list-style: none; margin-top: 0.45rem; font-size: 0.75rem; color: var(--adv); }
-.entry-held li { display: flex; align-items: baseline; gap: 0.35rem; }
-.entry-held li::before { transform: translateY(-1px); }
-.entry-held strong { font-weight: 600; }
+.entry-holder { position: relative; display: inline-flex; }
+.entry-adv-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: min(240px, calc(100vw - 32px));
+  list-style: none;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--adv-light);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  font-size: 0.75rem;
+  color: var(--adv);
+}
+.entry-adv-pop.flip { left: auto; right: 0; }
+.entry-adv-pop li { display: flex; align-items: baseline; gap: 0.35rem; }
+.entry-adv-pop li + li { margin-top: 0.2rem; }
+.entry-adv-pop li::before { transform: translateY(-1px); }
 .entry-out { margin-top: 0.75rem; }
 
 /* Tribal vote count: a pill per castaway getting votes, with the number in bold */

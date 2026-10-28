@@ -24,6 +24,7 @@ const entry = {
   previewTimer: null,
   saving: false,
   flash: null,           // { episode, inserted } after a save
+  shownHolder: null,     // the castaway whose advantages the game panel is showing (tap their pill)
 };
 
 // What each card was last drawn from, so a new preview redraws only the ones whose pickers changed
@@ -202,17 +203,18 @@ function renderRestoreOffer() {
   </div>`;
 }
 
-// A pill per castaway; advantage holders' pills get a purple outline and dot, and what they hold is listed under
-// the tribe (a long advantage name would stretch the pill)
+// A pill per castaway. An advantage holder's pill has a purple outline and dot, and is the only one you can tap:
+// it opens a popover under the pill listing what they hold.
 function memberPillsHtml(ids, game, out = false) {
-  return `<div class="entry-chips">${ids.map(id => `<span class="entry-member${out ? ' out' : ''}${game.held[id]?.length ? ' holds-adv' : ''}">
-    ${escapeHtml(entry.ctx.short.get(id))}</span>`).join('')}</div>`;
-}
-
-function heldAdvantagesHtml(ids, game) {
-  const lines = ids.flatMap(id => (game.held[id] || []).map(a =>
-    `<li><span><strong>${escapeHtml(entry.ctx.short.get(id))}:</strong> ${escapeHtml(a.name)}</span></li>`));
-  return lines.length ? `<ul class="entry-held">${lines.join('')}</ul>` : '';
+  return `<div class="entry-chips">${ids.map(id => {
+    const name = escapeHtml(entry.ctx.short.get(id));
+    if (out || !game.held[id]?.length) return `<span class="entry-member${out ? ' out' : ''}">${name}</span>`;
+    const shown = entry.shownHolder === id;
+    return `<span class="entry-holder">
+      <button type="button" class="entry-member holds-adv" data-holder="${id}" aria-expanded="${shown}">${name}</button>
+      ${shown ? `<ul class="entry-adv-pop" role="tooltip">${game.held[id].map(a => `<li>${escapeHtml(a.name)}</li>`).join('')}</ul>` : ''}
+    </span>`;
+  }).join('')}</div>`;
 }
 
 // Each tribe still in play with its members, then everyone who's out, as of the end of the cards so far
@@ -224,7 +226,6 @@ function renderGame() {
     return `<div class="entry-tribe" style="${tribeStyleVars(t.color)}">
       <div class="entry-tribe-name">${escapeHtml(t.name)} · ${members.length}</div>
       ${memberPillsHtml(members, game)}
-      ${heldAdvantagesHtml(members, game)}
     </div>`;
   }).join('');
   const out = byShortName(game.out, ctx);
@@ -234,6 +235,15 @@ function renderGame() {
     ${out.length ? `<div class="entry-out"><span class="entry-label">Out</span>
       ${memberPillsHtml(out, game, true)}</div>` : ''}
   `;
+  // A popover that would run off the right edge of the screen opens leftward instead
+  const pop = document.querySelector('.entry-adv-pop');
+  if (pop && pop.getBoundingClientRect().right > document.documentElement.clientWidth - 8) pop.classList.add('flip');
+}
+
+function hideHolder() {
+  if (entry.shownHolder === null) return;
+  entry.shownHolder = null;
+  renderGame();
 }
 
 function cardCtx(index) {
@@ -406,10 +416,14 @@ function bindEntryForm(body) {
     }
     if (e.target.matches('select, input[type=checkbox], input[type=radio]')) handleInput(e.target);
   });
+  body.addEventListener('keydown', e => {
+    if (e.key === 'Escape') hideHolder();
+  });
   body.addEventListener('input', e => {
     if (e.target.matches('input[type=text], input[type=number]') && e.target.id !== 'entry-episode-input') handleInput(e.target);
   });
   body.addEventListener('click', async e => {
+    if (!e.target.closest('[data-holder]')) hideHolder();   // a tap anywhere else closes the advantages popover
     const target = e.target.closest('button');
     if (!target) return;
     if (target.id === 'admin-sign-out') {
@@ -423,6 +437,10 @@ function bindEntryForm(body) {
       renderGame();
       document.querySelector(`[data-card="${entry.cards.length - 1}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' });
       formChanged();
+    } else if (target.dataset.holder) {
+      const id = Number(target.dataset.holder);
+      entry.shownHolder = entry.shownHolder === id ? null : id;
+      renderGame();
     } else if (target.dataset.action) {
       handleItemAction(target);
     } else if (target.dataset.draft === 'restore') {
