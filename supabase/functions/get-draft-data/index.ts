@@ -1,6 +1,5 @@
-// Setup type definitions for built-in Supabase Runtime APIs
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { withSupabase } from "jsr:@supabase/server@^1";
+// From npm rather than jsr.io: fetching from jsr.io kept timing out while Supabase bundled the function
+import { withSupabase } from "npm:@supabase/server@1";
 import { replay, type EventRow, type RosterRow} from "../_shared/replay.ts";
 import { parseScoring, type ScoringRow } from "./scoring.ts";
 
