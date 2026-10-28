@@ -1,0 +1,2078 @@
+{
+ "66": {
+  "id": 66,
+  "firstName": "Rachel",
+  "lastName": "LaMont",
+  "points": 39,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     67,
+     71,
+     76,
+     79,
+     83
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": null,
+    "memberIds": [
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   2,
+   2,
+   2,
+   1,
+   1,
+   1,
+   2,
+   0,
+   1,
+   5,
+   0,
+   2,
+   19
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 11,
+    "name": "Episode points",
+    "points": 5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 14,
+    "name": "Episode points",
+    "points": 8,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 14,
+    "name": "Episode points",
+    "points": 11,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "67": {
+  "id": 67,
+  "firstName": "Sam",
+  "lastName": "Phalen",
+  "points": 18,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     66,
+     71,
+     76,
+     79,
+     83
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": null,
+    "memberIds": [
+     66,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   3,
+   2,
+   2,
+   1,
+   1,
+   2,
+   0,
+   0,
+   1,
+   0,
+   2,
+   0,
+   3
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 14,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "68": {
+  "id": 68,
+  "firstName": "Sue",
+  "lastName": "Smey",
+  "points": 16,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     72,
+     73,
+     74,
+     77,
+     82
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": null,
+    "memberIds": [
+     66,
+     67,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   0,
+   1,
+   3,
+   3,
+   1,
+   0,
+   4,
+   0,
+   0,
+   0,
+   0,
+   3,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Episode points",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "69": {
+  "id": 69,
+  "firstName": "Teeny",
+  "lastName": "Chirichillo",
+  "points": 11,
+  "active": false,
+  "exitEpisode": 14,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     70,
+     75,
+     78,
+     80,
+     81
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 14,
+    "memberIds": [
+     66,
+     67,
+     68,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   1,
+   2,
+   2,
+   2,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 14,
+    "name": "Lost fire-making",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "70": {
+  "id": 70,
+  "firstName": "Genevieve",
+  "lastName": "Mushaluk",
+  "points": 12,
+  "active": false,
+  "exitEpisode": 13,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     69,
+     75,
+     78,
+     80,
+     81
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 13,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   0,
+   1,
+   1,
+   2,
+   0,
+   0,
+   0,
+   0,
+   1,
+   4,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Episode points",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "71": {
+  "id": 71,
+  "firstName": "Andy",
+  "lastName": "Rueda",
+  "points": 14,
+  "active": false,
+  "exitEpisode": 13,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     66,
+     67,
+     76,
+     79,
+     83
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 13,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     72,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   3,
+   2,
+   3,
+   0,
+   1,
+   2,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "72": {
+  "id": 72,
+  "firstName": "Caroline",
+  "lastName": "Vidmar",
+  "points": 8,
+  "active": false,
+  "exitEpisode": 12,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     68,
+     73,
+     74,
+     77,
+     82
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 12,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     73,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   0,
+   1,
+   2,
+   3,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "73": {
+  "id": 73,
+  "firstName": "Kyle",
+  "lastName": "Rhen Otswald",
+  "points": 21,
+  "active": false,
+  "exitEpisode": 11,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     68,
+     72,
+     74,
+     77,
+     82
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 11,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     74,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   0,
+   1,
+   1,
+   3,
+   4,
+   1,
+   4,
+   1,
+   5,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Episode points",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Episode points",
+    "points": 5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 11,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "74": {
+  "id": 74,
+  "firstName": "Gabe",
+  "lastName": "Ortis",
+  "points": 13,
+  "active": false,
+  "exitEpisode": 10,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     68,
+     72,
+     73,
+     77,
+     82
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 10,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     75,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   3,
+   2,
+   1,
+   1,
+   2,
+   0,
+   0,
+   0,
+   4,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Episode points",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "75": {
+  "id": 75,
+  "firstName": "Sol",
+  "lastName": "Yi",
+  "points": 8,
+  "active": false,
+  "exitEpisode": 9,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     69,
+     70,
+     78,
+     80,
+     81
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 9,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     76,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   0,
+   1,
+   0,
+   3,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "76": {
+  "id": 76,
+  "firstName": "Sierra",
+  "lastName": "Wright",
+  "points": 10,
+  "active": false,
+  "exitEpisode": 8,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     66,
+     67,
+     71,
+     79,
+     83
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 8,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   2,
+   2,
+   2,
+   0,
+   1,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "77": {
+  "id": 77,
+  "firstName": "Tiyana",
+  "lastName": "Hallums",
+  "points": 6,
+  "active": false,
+  "exitEpisode": 7,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 7,
+    "memberIds": [
+     68,
+     72,
+     73,
+     74,
+     82
+    ]
+   },
+   {
+    "tribeName": "Beka",
+    "tribeColor": "#6b2d8f",
+    "startReason": "Merged",
+    "startEpisode": 7,
+    "endEpisode": 7,
+    "memberIds": [
+     66,
+     67,
+     68,
+     69,
+     70,
+     71,
+     72,
+     73,
+     74,
+     75,
+     76
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   0,
+   1,
+   1,
+   3,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "78": {
+  "id": 78,
+  "firstName": "Rome",
+  "lastName": "Cooney",
+  "points": 6,
+  "active": false,
+  "exitEpisode": 6,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 6,
+    "memberIds": [
+     69,
+     70,
+     75,
+     80,
+     81
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   3,
+   1,
+   1,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "79": {
+  "id": 79,
+  "firstName": "Anika",
+  "lastName": "Dhar",
+  "points": 7,
+  "active": false,
+  "exitEpisode": 5,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 5,
+    "memberIds": [
+     66,
+     67,
+     71,
+     76,
+     83
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   2,
+   2,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "80": {
+  "id": 80,
+  "firstName": "Kishan",
+  "lastName": "Patel",
+  "points": 3,
+  "active": false,
+  "exitEpisode": 4,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     69,
+     70,
+     75,
+     78,
+     81
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "81": {
+  "id": 81,
+  "firstName": "Aysha",
+  "lastName": "Welch",
+  "points": 3,
+  "active": false,
+  "exitEpisode": 3,
+  "tribes": [
+   {
+    "tribeName": "Lavo",
+    "tribeColor": "#d7261e",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     69,
+     70,
+     75,
+     78,
+     80
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "82": {
+  "id": 82,
+  "firstName": "TK",
+  "lastName": "Foster",
+  "points": 2,
+  "active": false,
+  "exitEpisode": 2,
+  "tribes": [
+   {
+    "tribeName": "Tuku",
+    "tribeColor": "#1f5fbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 2,
+    "memberIds": [
+     68,
+     72,
+     73,
+     74,
+     77
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "83": {
+  "id": 83,
+  "firstName": "Jon",
+  "lastName": "Lovett",
+  "points": 1,
+  "active": false,
+  "exitEpisode": 1,
+  "tribes": [
+   {
+    "tribeName": "Gata",
+    "tribeColor": "#f2c200",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 1,
+    "memberIds": [
+     66,
+     67,
+     71,
+     76,
+     79
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Episode points",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ }
+}

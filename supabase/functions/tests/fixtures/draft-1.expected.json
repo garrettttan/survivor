@@ -1,0 +1,2250 @@
+{
+ "3": {
+  "id": 3,
+  "firstName": "Aaliyah",
+  "lastName": "Puglia",
+  "points": 0,
+  "active": false,
+  "exitEpisode": 1,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 1,
+    "memberIds": [
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "4": {
+  "id": 4,
+  "firstName": "Alexis",
+  "lastName": "Levine",
+  "points": 5,
+  "active": false,
+  "exitEpisode": 5,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     5,
+     7,
+     8,
+     11,
+     14,
+     16,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": 5,
+    "memberIds": [
+     13,
+     19,
+     12,
+     10
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   2,
+   1,
+   -1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "5": {
+  "id": 5,
+  "firstName": "Ana",
+  "lastName": "Sani",
+  "points": 1,
+  "active": false,
+  "exitEpisode": 2,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 2,
+    "memberIds": [
+     4,
+     7,
+     8,
+     11,
+     14,
+     16,
+     19,
+     21,
+     22
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   -1,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "6": {
+  "id": 6,
+  "firstName": "Brady",
+  "lastName": "Booker",
+  "points": 7,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     14,
+     7,
+     18,
+     23,
+     17
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   4,
+   -1,
+   1,
+   2
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Had an iconic moment",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Chopped off his thumb",
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   }
+  ]
+ },
+ "7": {
+  "id": 7,
+  "firstName": "Carter",
+  "lastName": "Krull",
+  "points": 7,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     4,
+     5,
+     8,
+     11,
+     14,
+     16,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Switched tribes",
+    "startEpisode": 3,
+    "endEpisode": 4,
+    "memberIds": [
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23,
+     15
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     14,
+     18,
+     6,
+     23,
+     17
+    ]
+   }
+  ],
+  "advantages": [
+   "Immunity idol (Savu)"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   -1,
+   3,
+   1,
+   2
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 21,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Savu)"
+   },
+   {
+    "episode": 3,
+    "name": "Had an iconic moment",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Missed his boat back to his tribe",
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   }
+  ]
+ },
+ "8": {
+  "id": 8,
+  "firstName": "Cristian",
+  "lastName": "Chavez",
+  "points": 8,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     11,
+     14,
+     16,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     16,
+     11,
+     22,
+     9,
+     15
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   2,
+   2,
+   1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 16,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "9": {
+  "id": 9,
+  "firstName": "Danny",
+  "lastName": "Kilby",
+  "points": 11,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     16,
+     8,
+     11,
+     22,
+     15
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Extra vote (Toka)"
+  ],
+  "pointsByEpisode": [
+   1,
+   3,
+   1,
+   2,
+   4
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 17,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (Toka)"
+   },
+   {
+    "episode": 5,
+    "name": "Played advantage successfully",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (Toka)"
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 16,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "10": {
+  "id": 10,
+  "firstName": "Devin",
+  "lastName": "Way",
+  "points": 4,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     13,
+     19,
+     12,
+     4
+    ]
+   }
+  ],
+  "advantages": [
+   "Extra vote (Savu)"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   -1,
+   3,
+   1,
+   1,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (Savu)"
+   },
+   {
+    "episode": 3,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "11": {
+  "id": 11,
+  "firstName": "Eric",
+  "lastName": "Macksoud",
+  "points": 5,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     14,
+     16,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     16,
+     8,
+     22,
+     9,
+     15
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   1,
+   2,
+   0,
+   1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 16,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "12": {
+  "id": 12,
+  "firstName": "Jelly",
+  "lastName": "Loblack",
+  "points": 4,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     13,
+     17,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     13,
+     19,
+     4,
+     10
+    ]
+   }
+  ],
+  "advantages": [
+   "Immunity idol (Toka)"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   -1,
+   5,
+   -1,
+   0,
+   1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Toka)"
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "13": {
+  "id": 13,
+  "firstName": "Jenna",
+  "lastName": "Doore",
+  "points": 3,
+  "active": false,
+  "exitEpisode": 4,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     12,
+     17,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": 4,
+    "memberIds": [
+     19,
+     12,
+     4,
+     10
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   3,
+   1,
+   -1,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "14": {
+  "id": 14,
+  "firstName": "Kristin",
+  "lastName": "Flickinger",
+  "points": 6,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     11,
+     16,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     7,
+     18,
+     6,
+     23,
+     17
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   2,
+   1,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   }
+  ]
+ },
+ "15": {
+  "id": 15,
+  "firstName": "Lewis",
+  "lastName": "Kelly",
+  "points": 10,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 2,
+    "endEpisode": 4,
+    "memberIds": [
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     23,
+     7
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     16,
+     8,
+     11,
+     22,
+     9
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Extra vote (alliance builder)"
+  ],
+  "pointsByEpisode": [
+   0,
+   3,
+   1,
+   2,
+   4
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Had an iconic moment",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Tried to pass off a ring he’d shown everyone as an idol",
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 17,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (alliance builder)"
+   },
+   {
+    "episode": 5,
+    "name": "Played advantage successfully",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (alliance builder)"
+   }
+  ]
+ },
+ "16": {
+  "id": 16,
+  "firstName": "Linnea",
+  "lastName": "Capobianco",
+  "points": 7,
+  "active": false,
+  "exitEpisode": 5,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     11,
+     14,
+     19,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": 5,
+    "memberIds": [
+     8,
+     11,
+     22,
+     9,
+     15
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   2,
+   2,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": "Consensus after deadlock",
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "17": {
+  "id": 17,
+  "firstName": "Maggie",
+  "lastName": "Nestor",
+  "points": 11,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     12,
+     13,
+     18,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     14,
+     7,
+     18,
+     6,
+     23
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Extra vote (alliance builder)",
+   "Extra vote (Toka)"
+  ],
+  "pointsByEpisode": [
+   1,
+   3,
+   4,
+   1,
+   2
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (Toka)"
+   },
+   {
+    "episode": 3,
+    "name": "Had an iconic moment",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Asked Brady for his extra vote and got it",
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (alliance builder)"
+   },
+   {
+    "episode": 5,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 15,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (alliance builder)"
+   },
+   {
+    "episode": 5,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote (Toka)"
+   }
+  ]
+ },
+ "18": {
+  "id": 18,
+  "firstName": "Mike",
+  "lastName": "Pinsky",
+  "points": 6,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     20,
+     23,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     14,
+     7,
+     6,
+     23,
+     17
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   3,
+   -1,
+   1,
+   2
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   }
+  ]
+ },
+ "19": {
+  "id": 19,
+  "firstName": "Ori",
+  "lastName": "Jean-Charles",
+  "points": 5,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     11,
+     14,
+     16,
+     21,
+     22
+    ]
+   },
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     13,
+     12,
+     4,
+     10
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   -1,
+   2,
+   1,
+   1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "20": {
+  "id": 20,
+  "firstName": "Patt",
+  "lastName": "Cannaday",
+  "points": 3,
+  "active": false,
+  "exitEpisode": 3,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     23,
+     15,
+     7
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   3,
+   -1,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "21": {
+  "id": 21,
+  "firstName": "Rob",
+  "lastName": "Antonson",
+  "points": 2,
+  "active": false,
+  "exitEpisode": 3,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     11,
+     14,
+     16,
+     19,
+     22
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Immunity idol (Savu)"
+  ],
+  "pointsByEpisode": [
+   4,
+   0,
+   -2,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Savu)"
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Had an iconic moment",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Tried and failed to vote for himself",
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted incorrectly",
+    "points": -1,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 7,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Savu)"
+   },
+   {
+    "episode": 3,
+    "name": "Quit",
+    "points": -2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "22": {
+  "id": 22,
+  "firstName": "Sharonda",
+  "lastName": "Cox",
+  "points": 8,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Savu",
+    "tribeColor": "#7b2cbf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     4,
+     5,
+     7,
+     8,
+     11,
+     14,
+     16,
+     19,
+     21
+    ]
+   },
+   {
+    "tribeName": "Dina",
+    "tribeColor": "#ff46a2",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     16,
+     8,
+     11,
+     9,
+     15
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1,
+   2,
+   2,
+   1
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 16,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "23": {
+  "id": 23,
+  "firstName": "Thien An",
+  "lastName": "Nguyen",
+  "points": 7,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 4,
+    "memberIds": [
+     3,
+     6,
+     9,
+     10,
+     12,
+     13,
+     17,
+     18,
+     20,
+     15,
+     7
+    ]
+   },
+   {
+    "tribeName": "Toka",
+    "tribeColor": "#ffc300",
+    "startReason": "Swapped tribes",
+    "startEpisode": 4,
+    "endEpisode": null,
+    "memberIds": [
+     14,
+     7,
+     18,
+     6,
+     17
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   3,
+   1,
+   0,
+   2
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 3,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   }
+  ]
+ }
+}

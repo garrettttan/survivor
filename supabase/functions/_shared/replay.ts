@@ -2,9 +2,12 @@
 // Types 
 // =====================================================================
 
-/** One row of the events_readable view: one thing that happened to one castaway. */
+/**
+ * One row of the events_readable view (or season_events_readable, which has no draft_id):
+ * one thing that happened to one castaway.
+ */
 export interface EventRow {
-  draft_id: number;
+  draft_id?: number;
   event_id: number;
   season: number;
   episode: number;
@@ -73,6 +76,16 @@ export interface CastawayState {
   expiredAdvantages: string[]; 
   pointsByEpisode: number[];     // index 0 = episode 1, index 1 = episode 2, ...
   log: LogRow[];                 // every event for this castaway, in order
+}
+
+// A castaway switching tribes on their own (not in a swap): always a tribe change by itself
+const SWITCHED_TRIBES = "Switched tribes";
+
+// Whether two back-to-back rows are part of the same swap: the same tribe-change event in the
+// same episode. A switch next to a swap, or two switches in a row, stay separate moves.
+function inSameBlock(a: EventRow, b: EventRow): boolean {
+  return a.changes_tribe && b.changes_tribe && a.episode === b.episode &&
+    a.event === b.event && a.event !== SWITCHED_TRIBES;
 }
 
 export function eventRowToLogRow(event: EventRow): LogRow {
@@ -189,17 +202,16 @@ export function replay(events: EventRow[], rosters: RosterRow[]): Map<number, Ca
       c.log.push(eventRowToLogRow(e));
     }
 
-    // Tribe changes. A swap is many tribe-change rows in a row. Handle the whole
-    // block at once, when we reach its FIRST row: everyone leaves their old tribe,
+    // Tribe changes. A swap is many rows of the same tribe-change event in a row. Handle the
+    // whole block at once, when we reach its FIRST row: everyone leaves their old tribe,
     // then everyone joins their new one. This stops people who swap early from
     // looking like they overlapped with people who left later in the same swap.
-    const startsBlock =
-      e.changes_tribe && !(i > 0 && events[i - 1].changes_tribe && events[i - 1].episode === e.episode);
+    const startsBlock = e.changes_tribe && !(i > 0 && inSameBlock(events[i - 1], e));
 
     if (startsBlock) {
       // Find where this block of tribe-change rows ends
-      let end = i;
-      while (end < events.length && events[end].changes_tribe && events[end].episode === e.episode) end++;
+      let end = i + 1;
+      while (end < events.length && inSameBlock(events[end - 1], events[end])) end++;
       const block = events.slice(i, end);
 
       for (const b of block) leaveTribe(b.castaway_id, b.episode);

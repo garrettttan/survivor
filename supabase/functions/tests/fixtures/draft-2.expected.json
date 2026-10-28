@@ -1,0 +1,3238 @@
+{
+ "24": {
+  "id": 24,
+  "firstName": "Cirie",
+  "lastName": "Fields",
+  "points": 6,
+  "active": false,
+  "exitEpisode": 12,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     25,
+     28,
+     33,
+     34,
+     35,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     25,
+     26,
+     37,
+     40,
+     41,
+     27
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 12,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [
+   "Extra vote"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   2,
+   2,
+   1,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 35,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote"
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "25": {
+  "id": 25,
+  "firstName": "Rick",
+  "lastName": "Devens",
+  "points": 9,
+  "active": false,
+  "exitEpisode": 12,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     24,
+     28,
+     33,
+     34,
+     35,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     24,
+     26,
+     37,
+     40,
+     41,
+     27
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 12,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Immunity idol (Mr. Beast)"
+  ],
+  "pointsByEpisode": [
+   0,
+   1,
+   2,
+   1,
+   0,
+   1,
+   1,
+   0,
+   0,
+   1,
+   2,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Mr. Beast)"
+   },
+   {
+    "episode": 11,
+    "name": "Played advantage successfully",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Immunity idol (Mr. Beast)"
+   },
+   {
+    "episode": 12,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "26": {
+  "id": 26,
+  "firstName": "Jonathan",
+  "lastName": "Young",
+  "points": 21.5,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     29,
+     30,
+     31,
+     37,
+     40,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     24,
+     25,
+     37,
+     40,
+     41,
+     27
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": null,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   2,
+   1,
+   0,
+   2,
+   0,
+   0,
+   0,
+   0,
+   4,
+   4,
+   5
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Brought on reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 11,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Won individual reward",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Received a jury vote",
+    "points": 3,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "27": {
+  "id": 27,
+  "firstName": "Rizo",
+  "lastName": "Velovic",
+  "points": 9,
+  "active": false,
+  "exitEpisode": 13,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     32,
+     36,
+     38,
+     39,
+     42,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     24,
+     25,
+     26,
+     37,
+     40,
+     41
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 13,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [
+   "Boomerang idol (Kalo)"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   2,
+   2,
+   2,
+   0,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 39,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Kalo)"
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Lost fire-making",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "28": {
+  "id": 28,
+  "firstName": "Joe",
+  "lastName": "Hunter",
+  "points": 14,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     24,
+     25,
+     33,
+     34,
+     35,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     29,
+     30,
+     31,
+     32,
+     38,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": null,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   1,
+   1,
+   2,
+   2,
+   1,
+   1,
+   2,
+   4,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "29": {
+  "id": 29,
+  "firstName": "Coach",
+  "lastName": "Wade",
+  "points": 10.5,
+  "active": false,
+  "exitEpisode": 8,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     30,
+     31,
+     37,
+     40,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     30,
+     31,
+     32,
+     38,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 8,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   3,
+   1.5,
+   1,
+   2,
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": "Supplies for tribe",
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "30": {
+  "id": 30,
+  "firstName": "Chrissy",
+  "lastName": "Hofbeck",
+  "points": 10.5,
+  "active": false,
+  "exitEpisode": 8,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     31,
+     37,
+     40,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     29,
+     31,
+     32,
+     38,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 8,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   1,
+   2,
+   2,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Brought on reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "31": {
+  "id": 31,
+  "firstName": "Tiffany",
+  "lastName": "Ervin",
+  "points": 20.5,
+  "active": false,
+  "exitEpisode": 13,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     30,
+     37,
+     40,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     29,
+     30,
+     32,
+     38,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 13,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   1,
+   2,
+   2,
+   2,
+   0,
+   2,
+   0,
+   4,
+   0,
+   4,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Brought on reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 8,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 12,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "32": {
+  "id": 32,
+  "firstName": "Aubry",
+  "lastName": "Bracco",
+  "points": 25,
+  "active": true,
+  "exitEpisode": null,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     36,
+     38,
+     39,
+     42,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     29,
+     30,
+     31,
+     38,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": null,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Boomerang idol (Cila)"
+  ],
+  "pointsByEpisode": [
+   2,
+   3,
+   1,
+   2,
+   2,
+   1,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   12
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 33,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Cila)"
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Played advantage successfully",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Cila)"
+   },
+   {
+    "episode": 13,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Received a jury vote",
+    "points": 8,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "33": {
+  "id": 33,
+  "firstName": "Christian",
+  "lastName": "Hubicki",
+  "points": 8,
+  "active": false,
+  "exitEpisode": 9,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     24,
+     25,
+     28,
+     34,
+     35,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     34,
+     35,
+     43,
+     36,
+     42,
+     44
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 9,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Boomerang idol (Cila)"
+  ],
+  "pointsByEpisode": [
+   0,
+   2,
+   0,
+   0,
+   0,
+   5,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Cila)"
+   },
+   {
+    "episode": 2,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 32,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Cila)"
+   },
+   {
+    "episode": 6,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 9,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "34": {
+  "id": 34,
+  "firstName": "Emily",
+  "lastName": "Flippen",
+  "points": 3,
+  "active": false,
+  "exitEpisode": 11,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     24,
+     25,
+     28,
+     33,
+     35,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     33,
+     35,
+     43,
+     36,
+     42,
+     44
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 11,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   1,
+   0,
+   0,
+   0,
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 11,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "35": {
+  "id": 35,
+  "firstName": "Ozzy",
+  "lastName": "Lusth",
+  "points": 9,
+  "active": false,
+  "exitEpisode": 11,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     24,
+     25,
+     28,
+     33,
+     34,
+     45,
+     47
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     33,
+     34,
+     43,
+     36,
+     42,
+     44
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 11,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     36,
+     33,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [
+   "Boomerang idol (Vatu)"
+  ],
+  "expiredAdvantages": [
+   "Extra vote"
+  ],
+  "pointsByEpisode": [
+   2,
+   1,
+   0,
+   0,
+   0,
+   1,
+   5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote"
+   },
+   {
+    "episode": 1,
+    "name": "Received advantage",
+    "points": 1,
+    "otherCastawayId": 39,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Vatu)"
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 24,
+    "details": null,
+    "tribe": null,
+    "advantage": "Extra vote"
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 11,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "36": {
+  "id": 36,
+  "firstName": "Stephenie",
+  "lastName": "LaGrossa Kendrick",
+  "points": 13,
+  "active": false,
+  "exitEpisode": 10,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     32,
+     38,
+     39,
+     42,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     33,
+     34,
+     35,
+     43,
+     42,
+     44
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 10,
+    "memberIds": [
+     40,
+     39,
+     38,
+     37,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [
+   "Steal-a-Vote"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   2,
+   0,
+   0,
+   0,
+   7,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won individual reward",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Steal-a-Vote"
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 10,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "37": {
+  "id": 37,
+  "firstName": "Dee",
+  "lastName": "Valladares",
+  "points": 12.5,
+  "active": false,
+  "exitEpisode": 7,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     30,
+     31,
+     40,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     24,
+     25,
+     26,
+     40,
+     41,
+     27
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 7,
+    "memberIds": [
+     40,
+     39,
+     38,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   2,
+   1,
+   0,
+   5,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won individual immunity",
+    "points": 4,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 7,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "38": {
+  "id": 38,
+  "firstName": "Colby",
+  "lastName": "Donaldson",
+  "points": 10,
+  "active": false,
+  "exitEpisode": 6,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     32,
+     36,
+     39,
+     42,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     29,
+     30,
+     31,
+     32,
+     39
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 6,
+    "memberIds": [
+     40,
+     39,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   2,
+   1,
+   2,
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "39": {
+  "id": 39,
+  "firstName": "Genevieve",
+  "lastName": "Mushaluk",
+  "points": 12,
+  "active": false,
+  "exitEpisode": 6,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     32,
+     36,
+     38,
+     42,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     28,
+     29,
+     30,
+     31,
+     32,
+     38
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 6,
+    "memberIds": [
+     40,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [
+   "Boomerang idol (Vatu)",
+   "Boomerang idol (Kalo)"
+  ],
+  "pointsByEpisode": [
+   3,
+   2,
+   1,
+   3,
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Vatu)"
+   },
+   {
+    "episode": 1,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 35,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Vatu)"
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Kalo)"
+   },
+   {
+    "episode": 4,
+    "name": "Gave away advantage",
+    "points": 0,
+    "otherCastawayId": 27,
+    "details": null,
+    "tribe": null,
+    "advantage": "Boomerang idol (Kalo)"
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "40": {
+  "id": 40,
+  "firstName": "Kamilla",
+  "lastName": "Karthigesu",
+  "points": 8.5,
+  "active": false,
+  "exitEpisode": 6,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     30,
+     31,
+     37,
+     41,
+     43
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 6,
+    "memberIds": [
+     24,
+     25,
+     26,
+     37,
+     41,
+     27
+    ]
+   },
+   {
+    "tribeName": "Manulevu",
+    "tribeColor": "#ffeb3b",
+    "startReason": "Merged",
+    "startEpisode": 6,
+    "endEpisode": 6,
+    "memberIds": [
+     39,
+     38,
+     37,
+     36,
+     33,
+     35,
+     27,
+     24,
+     28,
+     26,
+     31,
+     30,
+     25,
+     34,
+     29,
+     32
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   2,
+   1,
+   0,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Brought on reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "41": {
+  "id": 41,
+  "firstName": "Charlie",
+  "lastName": "Davis",
+  "points": 6.5,
+  "active": false,
+  "exitEpisode": 5,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     30,
+     31,
+     37,
+     40,
+     43
+    ]
+   },
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 5,
+    "memberIds": [
+     24,
+     25,
+     26,
+     37,
+     40,
+     27
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "42": {
+  "id": 42,
+  "firstName": "Angelina",
+  "lastName": "Keeley",
+  "points": 4,
+  "active": false,
+  "exitEpisode": 5,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     32,
+     36,
+     38,
+     39,
+     44,
+     46
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 5,
+    "memberIds": [
+     33,
+     34,
+     35,
+     43,
+     36,
+     44
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "43": {
+  "id": 43,
+  "firstName": "Mike",
+  "lastName": "White",
+  "points": 3.5,
+  "active": false,
+  "exitEpisode": 4,
+  "tribes": [
+   {
+    "tribeName": "Kalo",
+    "tribeColor": "#2dd4bf",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     26,
+     29,
+     30,
+     31,
+     37,
+     40,
+     41
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 4,
+    "memberIds": [
+     33,
+     34,
+     35,
+     36,
+     42,
+     44
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   1.5,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward (2nd place)",
+    "points": 0.5,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Kalo",
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "44": {
+  "id": 44,
+  "firstName": "Q",
+  "lastName": "Burdette",
+  "points": 4,
+  "active": false,
+  "exitEpisode": 3,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 3,
+    "memberIds": [
+     27,
+     32,
+     36,
+     38,
+     39,
+     42,
+     46
+    ]
+   },
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Swapped tribes",
+    "startEpisode": 3,
+    "endEpisode": 3,
+    "memberIds": [
+     33,
+     34,
+     35,
+     43,
+     36,
+     42
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "45": {
+  "id": 45,
+  "firstName": "Savannah",
+  "lastName": "Louie",
+  "points": 2,
+  "active": false,
+  "exitEpisode": 2,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 2,
+    "memberIds": [
+     24,
+     25,
+     28,
+     33,
+     34,
+     35,
+     47
+    ]
+   }
+  ],
+  "advantages": [
+   "Block-a-Vote"
+  ],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Found advantage",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Block-a-Vote"
+   },
+   {
+    "episode": 2,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Cila",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "46": {
+  "id": 46,
+  "firstName": "Kyle",
+  "lastName": "Fraser",
+  "points": 2,
+  "active": false,
+  "exitEpisode": 1,
+  "tribes": [
+   {
+    "tribeName": "Vatu",
+    "tribeColor": "#f472b6",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 1,
+    "memberIds": [
+     27,
+     32,
+     36,
+     38,
+     39,
+     42,
+     44
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   2,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Won team reward",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Vatu",
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Medically evacuated",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ },
+ "47": {
+  "id": 47,
+  "firstName": "Jenna",
+  "lastName": "Lewis-Dougherty",
+  "points": 0,
+  "active": false,
+  "exitEpisode": 1,
+  "tribes": [
+   {
+    "tribeName": "Cila",
+    "tribeColor": "#fb923c",
+    "startReason": "Starting tribe",
+    "startEpisode": 1,
+    "endEpisode": 1,
+    "memberIds": [
+     24,
+     25,
+     28,
+     33,
+     34,
+     35,
+     45
+    ]
+   }
+  ],
+  "advantages": [],
+  "expiredAdvantages": [],
+  "pointsByEpisode": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "log": [
+   {
+    "episode": 1,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   }
+  ]
+ }
+}
