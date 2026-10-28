@@ -61,8 +61,11 @@ function renderTeamChart({ teams, teamNames, episodeCount }) {
     borderColor: teams[t].color,
     backgroundColor: teams[t].color + '18',
     borderWidth: 2.5,
-    pointRadius: 0,
+    cubicInterpolationMode: 'monotone', // smooth, but never bends past a point (no fake dips, nothing above 1st)
+    pointRadius: 2.5,
     pointHoverRadius: 5,
+    pointBackgroundColor: teams[t].color,
+    pointBorderColor: teams[t].color,
     clip: false, // in rank view, don't cut the 1st and last place lines in half at the chart's edges
   }));
   // Set min-width so the chart is scrollable on mobile for many episodes

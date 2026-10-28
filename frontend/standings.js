@@ -29,7 +29,7 @@ function renderStandings({ teams, teamNames, finished }) {
 
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
       <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
-      <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
+      <td><span class="player-name" style="color:${tm.color}">${escapeHtml(t)}</span></td>
       <td class="fit-col"><span class="active-count">${finished ? tm.members.length : tm.activeCount}</span></td>
       <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.points)}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>

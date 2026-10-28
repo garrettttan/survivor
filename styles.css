@@ -224,13 +224,6 @@ html { scroll-behavior: smooth; }
   font-family: 'Oswald', sans-serif;
   font-size: 1.05rem;
 }
-.color-dot {
-  display: inline-block;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-}
 .points-cell {
   font-family: 'Oswald', sans-serif;
   font-size: 1.4rem;
