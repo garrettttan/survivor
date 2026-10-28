@@ -36,6 +36,8 @@ function chevronIcon(points, className = '') {
 const ICONS = {
   chevronRight: chevronIcon('9 6 15 12 9 18', 'row-chevron'),
   chevronDown: chevronIcon('6 9 12 15 18 9'),
+  chevronUp: chevronIcon('6 15 12 9 18 15'),
+  close: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   chevronLeft: chevronIcon('15 6 9 12 15 18'),
   lock: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
 };

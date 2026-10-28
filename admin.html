@@ -11,19 +11,22 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
   <script defer src="config.js"></script>
-  <!-- Backend: the season list and admin sign-in (no DOM) -->
-  <script defer src="backend/load.js"></script>
+  <!-- Backend: admin sign-in and the episode-entry function (no DOM) -->
   <script defer src="backend/auth.js"></script>
+  <script defer src="backend/admin-data.js"></script>
   <!-- Frontend -->
   <script defer src="frontend/util.js"></script>
+  <script defer src="frontend/colors.js"></script>
   <script defer src="frontend/sign-in-form.js"></script>
+  <script defer src="frontend/admin-cards.js"></script>
   <script defer src="frontend/admin.js"></script>
 </head>
 <body>
 
 <header>
   <a class="back-link" id="back-link" href="index.html"></a>
-  <h1 class="header-logo-text" id="admin-title">Admin</h1>
+  <h1 class="header-logo-text">Add events</h1>
+  <p class="header-subtitle" id="admin-season"></p>
 </header>
 
 <main id="admin-body"></main>

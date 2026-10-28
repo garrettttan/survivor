@@ -8,6 +8,8 @@
   --text:        #2b1d0e;
   --muted:       #7a6a4f;
   --active:      #15803d;
+  --adv:         #7e22ce;  /* idols and advantages */
+  --adv-light:   #a855f7;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -109,6 +111,16 @@ header {
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--fire);
+  text-transform: uppercase;
+}
+/* The admin page's season, under its title */
+.header-subtitle {
+  margin-top: 0.15rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--muted);
   text-transform: uppercase;
 }
 
@@ -459,7 +471,7 @@ html { scroll-behavior: smooth; }
   letter-spacing: 0.3px;
 }
 .badge-tribe { border: 1px solid; } /* color set inline per tribe */
-.badge-adv   { background: rgba(168,85,247,0.15); color: #7e22ce; border: 1px solid rgba(168,85,247,0.25); }
+.badge-adv   { background: rgba(168,85,247,0.15); color: var(--adv); border: 1px solid rgba(168,85,247,0.25); }
 
 
 .scoring-grid {
@@ -653,7 +665,7 @@ html { scroll-behavior: smooth; }
 
 /* Admin sign-in and menu, shown in the detail panel (inputs at 16px so iOS doesn't zoom on focus) */
 .admin-form { display: flex; flex-direction: column; gap: 0.6rem; }
-.admin-form input {
+.admin-form input, .entry-input {
   font: inherit;
   font-size: 16px;
   padding: 0.55rem 0.7rem;
@@ -662,7 +674,7 @@ html { scroll-behavior: smooth; }
   background: var(--card-bg);
   color: var(--text);
 }
-.admin-form input:focus { outline: 2px solid var(--fire); outline-offset: -1px; border-color: transparent; }
+.admin-form input:focus, .entry-input:focus { outline: 2px solid var(--fire); outline-offset: -1px; border-color: transparent; }
 .admin-note { color: var(--muted); font-size: 0.85rem; margin: 0.3rem 0 0.9rem; }
 .admin-error { color: var(--ember); font-size: 0.85rem; }
 .admin-submit {
@@ -725,6 +737,246 @@ html { scroll-behavior: smooth; }
 @media (hover: hover) {
   .back-link:hover { border-color: var(--fire); }
 }
+
+/* ── Episode entry (admin page) ─────────────────────────── */
+/* One column: episode, game state, cards, episode-wide errors and warnings, save. Inputs share the sign-in
+   form's look (.admin-form input) and are 16px so iOS doesn't zoom on focus. */
+.entry-page { max-width: 720px; margin: 0 auto; }
+.entry-panel {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+}
+#entry-cards { margin-bottom: 1.5rem; }
+#entry-notes:not(:empty) { margin-bottom: 1.5rem; }
+#entry-notes .entry-errors:first-child, #entry-notes .entry-warnings:first-child { margin-top: 0; }
+.entry-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.6rem;
+}
+.entry-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.entry-hint { font-size: 0.85rem; color: var(--muted); margin-top: 0.4rem; }
+.entry-warn { color: var(--fire); }
+.entry-loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--muted);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+}
+
+.entry-input { width: 100%; min-width: 0; padding: 0.45rem 0.6rem; }
+.entry-count { width: 5.5rem; }
+.entry-episode-picker { display: flex; align-items: center; gap: 0.6rem; }
+.entry-episode-picker .entry-label { margin: 0; font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--text); }
+
+/* Fields: stacked, two to a row on wider screens */
+.entry-field { display: block; margin-top: 0.7rem; }
+.entry-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.75rem; }
+@media (max-width: 640px) {
+  .entry-row { grid-template-columns: 1fr; }
+}
+.entry-check { display: flex; align-items: center; gap: 0.45rem; margin-top: 0.7rem; font-size: 0.9rem; }
+.entry-check input { width: 18px; height: 18px; accent-color: var(--fire); }
+/* A name and its control on one line (Tribal and jury votes) */
+.entry-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--surface-2);
+}
+.entry-pair:last-child { border-bottom: none; }
+.entry-pair-name { flex: 1; min-width: 0; font-size: 0.9rem; }
+.entry-pair .entry-input { flex: 1.4; width: auto; }
+
+/* Pill choices: a hidden checkbox or radio inside a label, with the pill drawn on the span after it. Plain chips
+   fill orange when ticked. */
+.entry-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.entry-chip { position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.entry-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.entry-chip span {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+}
+.entry-chip input:checked + span { background: var(--fire); border-color: var(--fire); color: #fff; }
+.entry-chip input:focus-visible + span { outline: 2px solid var(--fire); outline-offset: 2px; }
+/* Colored pills (--tribe, --tribe-contrast and --tribe-tint set inline) fill with the tribe or team color when
+   picked. Tribe buttons are tinted in their color; in a swap or team sort, a castaway placed in another group is
+   dimmed. */
+.entry-tribe-choice input:checked + span,
+.entry-swap-chip input:checked + span {
+  background: var(--tribe);
+  border-color: var(--tribe);
+  color: var(--tribe-contrast);
+  font-weight: 600;
+}
+.entry-tribe-choice span { font-weight: 600; border-color: var(--tribe); background: var(--tribe-tint); }
+.entry-swap-chip.elsewhere span { opacity: 0.4; }
+.entry-swap { display: flex; flex-direction: column; gap: 0.6rem; }
+
+/* Game state: one tinted block per tribe in its color, then who's out */
+.entry-tribes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; }
+.entry-tribe {
+  padding: 0.5rem 0.6rem 0.6rem;
+  border-radius: 8px;
+  background: var(--tribe-tint);
+  border-left: 4px solid var(--tribe);
+}
+.entry-tribe-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.35rem;
+}
+/* Members as pills; an advantage holder's pill has a purple outline and dot, and each advantage is a line below
+   (with the same dot) */
+.entry-member {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+}
+.entry-member.holds-adv { border-color: var(--adv-light); }
+.entry-member.holds-adv::before,
+.entry-held li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--adv-light);
+  flex-shrink: 0;
+}
+.entry-member.out {
+  background: transparent;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.entry-held { list-style: none; margin-top: 0.45rem; font-size: 0.75rem; color: var(--adv); }
+.entry-held li { display: flex; align-items: baseline; gap: 0.35rem; }
+.entry-held li::before { transform: translateY(-1px); }
+.entry-held strong { font-weight: 600; }
+.entry-out { margin-top: 0.75rem; }
+
+/* Tribal vote count: a pill per castaway getting votes, with the number in bold */
+.entry-vote-counts { margin-bottom: 0.4rem; }
+.entry-vote-count {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--card-border);
+}
+.entry-vote-count strong { color: var(--fire); margin-left: 0.15rem; }
+
+/* Cards: a numbered card per thing that happened, with move and delete in its header */
+.entry-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.entry-card {
+  padding: 0.75rem 1rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--fire);
+  border-radius: 10px;
+}
+.entry-card.has-errors { border-color: var(--ember); border-left-color: var(--ember); }
+.entry-card-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.entry-card-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; }
+.entry-card-actions { display: flex; gap: 0.25rem; }
+.entry-icon-button {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.entry-icon-button:disabled { opacity: 0.35; cursor: default; }
+.entry-icon-button:not(:disabled):active { background: var(--surface-2); }
+@media (hover: hover) {
+  .entry-icon-button:not(:disabled):hover { color: var(--fire); border-color: var(--fire); }
+}
+.entry-errors, .entry-warnings { list-style: none; margin-top: 0.7rem; font-size: 0.85rem; }
+.entry-errors li { color: var(--ember); }
+.entry-warnings li { color: var(--fire); }
+.entry-errors li::before { content: '⚠ '; }
+.entry-warnings li::before { content: '• '; }
+
+.entry-add-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+.entry-add {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(194,65,12,0.5);
+  background: transparent;
+  color: var(--fire);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.entry-add:active { background: var(--surface-2); }
+@media (hover: hover) {
+  .entry-add:hover { border-style: solid; }
+}
+
+.entry-restore, .entry-flash {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+.entry-restore { background: var(--surface-2); }
+.entry-restore-actions { display: flex; gap: 1rem; }
+.entry-flash { background: rgba(21,128,61,0.1); color: var(--active); }
+.entry-flash a { color: inherit; font-weight: 600; }
+
+/* Save: stuck to the bottom of the screen so it's always in reach */
+.entry-save-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-top: 1px solid var(--card-border);
+}
+.entry-save-status { flex: 1; font-size: 0.85rem; color: var(--muted); }
+.entry-save-bar .admin-submit { width: auto; padding: 0.6rem 1.4rem; }
 
 .sheet-top {
   display: flex; justify-content: space-between; align-items: baseline;

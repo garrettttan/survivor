@@ -34,6 +34,13 @@ function contrastText(hex) {
   return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#2b1d0e' : '#ffffff';
 }
 
+// Inline CSS variables for something drawn in a tribe's (or team's) color: --tribe, --tribe-contrast for text on
+// it, and --tribe-tint for a light fill (`tint` = its opacity)
+function tribeStyleVars(color, tint = 0.1) {
+  const c = color || FALLBACK_COLOR;
+  return `--tribe:${c};--tribe-contrast:${contrastText(c)};--tribe-tint:${hexToRgba(c, tint)}`;
+}
+
 // A tribe stint's color
 function tribeColor(stint) {
   return stint.tribeColor || FALLBACK_COLOR;
