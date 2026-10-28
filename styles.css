@@ -924,6 +924,16 @@ html { scroll-behavior: smooth; }
 @media (hover: hover) {
   .entry-icon-button:not(:disabled):hover { color: var(--fire); border-color: var(--fire); }
 }
+/* The rows a card will save: who and what, the other columns in muted text, points on the right */
+.entry-card-rows { margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px dashed var(--card-border); }
+.entry-card-rows ul { list-style: none; font-size: 0.85rem; }
+.entry-card-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; padding: 0.15rem 0; }
+.entry-row-main strong { font-weight: 600; margin-right: 0.25rem; }
+.entry-row-details { color: var(--muted); margin-left: 0.4rem; }
+.entry-row-details::before { content: '· '; }
+.entry-row-points { font-weight: 600; color: var(--active); white-space: nowrap; }
+.entry-row-points.neg { color: var(--ember); }
+.entry-row-points.zero { color: var(--muted); font-weight: 400; }
 .entry-errors, .entry-warnings { list-style: none; margin-top: 0.7rem; font-size: 0.85rem; }
 .entry-errors li { color: var(--ember); }
 .entry-warnings li { color: var(--fire); }

@@ -463,13 +463,32 @@ function rowFieldsHtml(row, ctx) {
 }
 
 // ── Card frame ────────────────────────────────────────────────────────────
+// The events rows a card will save (from the latest preview), one line each: who, what, the other columns, points
+function cardRowsHtml(rows, ctx) {
+  if (!rows.length) return '';
+  const lines = rows.map(r => {
+    const advantage = typeof r.advantage === 'number' ? ctx.advantages.find(a => a.id === r.advantage)?.name : r.advantage;
+    const details = [
+      r.otherCastawayId != null && ctx.short.get(r.otherCastawayId),
+      advantage,
+      r.tribeId != null && ctx.tribes.find(t => t.id === r.tribeId)?.name,
+      r.quantity != null && r.quantity !== 1 && `×${r.quantity}`,
+      r.details,
+    ].filter(Boolean).join(' · ');
+    return `<li><span class="entry-row-main"><strong>${escapeHtml(ctx.short.get(r.castawayId) || '')}</strong>
+        ${escapeHtml(r.eventType)}${details ? `<span class="entry-row-details">${escapeHtml(details)}</span>` : ''}</span>
+      <span class="entry-row-points${r.points < 0 ? ' neg' : r.points === 0 ? ' zero' : ''}">${r.points > 0 ? '+' : ''}${fmt(r.points)}</span></li>`;
+  }).join('');
+  return `<div class="entry-card-rows"><span class="entry-label">Saves</span><ul>${lines}</ul></div>`;
+}
+
 function errorListHtml(errors) {
   if (!errors.length) return '';
   return `<ul class="entry-errors">${errors.map(e => `<li>${escapeHtml(e.message)}</li>`).join('')}</ul>`;
 }
 
-// One numbered card with move and delete buttons, around its form
-function cardHtml(card, index, count, ctx, errors) {
+// One numbered card with move and delete buttons, around its form, then the rows it will save and its errors
+function cardHtml(card, index, count, ctx, errors, rows) {
   const type = CARD_TYPES[card.type];
   return `<div class="entry-card${errors.length ? ' has-errors' : ''}" data-card="${index}">
     <div class="entry-card-head">
@@ -481,6 +500,7 @@ function cardHtml(card, index, count, ctx, errors) {
       </span>
     </div>
     ${type.html(card, ctx)}
+    ${cardRowsHtml(rows, ctx)}
     ${errorListHtml(errors)}
   </div>`;
 }

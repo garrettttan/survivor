@@ -92,6 +92,11 @@ function errorsFor(index) {
   return (entry.preview?.errors || []).filter(e => e.card === index);
 }
 
+// The rows card `index` will save, as of the latest preview
+function rowsFor(index) {
+  return (entry.preview?.rows || []).filter(r => r.card === index);
+}
+
 // ── Loading an episode ────────────────────────────────────────────────────
 async function loadEpisode(episode) {
   clearTimeout(entry.previewTimer);
@@ -250,7 +255,7 @@ function cardBlockHtml(index) {
   const card = entry.cards[index];
   const ctx = cardCtx(index);
   drawnWith.set(card, JSON.stringify(ctx.game));
-  return cardHtml(card, index, entry.cards.length, ctx, errorsFor(index));
+  return cardHtml(card, index, entry.cards.length, ctx, errorsFor(index), rowsFor(index));
 }
 
 function redrawCard(index) {
@@ -259,21 +264,24 @@ function redrawCard(index) {
   document.querySelector(`[data-card="${index}"]`).replaceWith(wrap.firstElementChild);
 }
 
-// Updates a card's error list in place, leaving its inputs (and focus) alone
-function updateErrors(el, errors) {
+// Updates a card's rows and errors in place, leaving its inputs (and focus) alone
+function updateCardResults(el, index) {
+  const errors = errorsFor(index);
   el.classList.toggle('has-errors', errors.length > 0);
+  el.querySelector('.entry-card-rows')?.remove();
   el.querySelector('.entry-errors')?.remove();
-  el.insertAdjacentHTML('beforeend', errorListHtml(errors));
+  el.insertAdjacentHTML('beforeend', cardRowsHtml(rowsFor(index), cardCtx(index)) + errorListHtml(errors));
 }
 
-// After a preview: redraw cards whose game changed (unless you're typing in one), and refresh every error list
+// After a preview: redraw cards whose game changed (unless you're typing in one), and refresh every card's rows
+// and errors
 function refreshAfterPreview() {
   renderGame();
   entry.cards.forEach((card, i) => {
     const el = document.querySelector(`[data-card="${i}"]`);
     if (!el) return;
     if (drawnWith.get(card) !== JSON.stringify(gameBefore(i)) && !el.contains(document.activeElement)) redrawCard(i);
-    else updateErrors(el, errorsFor(i));
+    else updateCardResults(el, i);
   });
   renderNotes();
   renderSaveBar();

@@ -5,6 +5,8 @@
 //   GameState  { tribeOf: { [castawayId]: tribeId }, out: [castawayId], held: { [castawayId]: [{ id, name }] } }
 //              (out is in the order they left the game)
 //              (a held advantage's id is null while it's a new one from an earlier card, not saved yet)
+//   Row        { card, seq, castawayId, eventType, otherCastawayId, advantage, tribeId, quantity, details, points }
+//              (card = index of the card that makes it; eventType = its name; advantage = an id, or a new one's name)
 //   Error      { card?, message } (no card = about the whole episode)
 //
 // Card shapes are listed in frontend/admin-cards.js. Wherever a card names an advantage, it's a number
@@ -30,9 +32,9 @@ function getEpisodeState(season, episode) {
   return callEpisodeEntry({ action: 'state', season, episode });
 }
 
-// What saving `cards` would do, checked but not written: { rows, errors: [Error], warnings: [string],
-// states: [GameState] } (rows = the events rows they'd make, which the page only counts; states has one more entry
-// than cards: states[i] = the game just before card i, the last = after every card)
+// What saving `cards` would do, checked but not written: { rows: [Row], errors: [Error], warnings: [string],
+// states: [GameState] } (rows = the events rows they'd make, shown under the card that makes each; states has one
+// more entry than cards: states[i] = the game just before card i, the last = after every card)
 function previewEpisode(season, episode, cards) {
   return callEpisodeEntry({ action: 'preview', season, episode, cards });
 }
