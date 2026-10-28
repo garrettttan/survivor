@@ -14,3 +14,8 @@ verify_jwt = true
 # The list of drafts and their seasons, for the site's season picker
 [functions.get-drafts]
 verify_jwt = true
+
+# The admin page's episode entry: turns cards into events rows and saves them. It checks the caller is a signed-in
+# admin itself (with Supabase Auth), as Supabase recommends, so the gateway's JWT check is off.
+[functions.episode-entry]
+verify_jwt = false
