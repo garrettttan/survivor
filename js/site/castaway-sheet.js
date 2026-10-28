@@ -1,8 +1,35 @@
 // Site: the castaway detail panel (bottom sheet on phones, modal on desktop).
 
-function openSheet(name) {
+// The castaways opened in the panel, oldest first, with where each was scrolled to. Tapping a name inside the panel
+// adds one and the back pill returns to the one before. Each also gets a browser history entry ({ sheet: depth }),
+// so the phone's or browser's Back does the same, and closes the panel from the first castaway.
+let sheetStack = [];
+let unwindingSheetHistory = false;   // closing removes the panel's history entries; ignore the popstate that causes
+
+// `fromSheet`: opened from a name inside the panel, so Back returns to the castaway shown now
+function openSheet(name, fromSheet = false) {
+  if (!appData.castaways.some(x => x.name === name)) return;
+  if (fromSheet && sheetStack.length) {
+    sheetStack[sheetStack.length - 1].scrollTop = document.getElementById('sheet-body').scrollTop;
+  } else {
+    sheetStack = [];
+  }
+  sheetStack.push({ name, scrollTop: 0 });
+  history.pushState({ sheet: sheetStack.length }, '');
+  showCastaway(sheetStack.length > 1);
+}
+
+// Draws the castaway on top of the stack, scrolled to where they were left. `animate` eases the change from the
+// castaway shown before; off when the panel is just opening.
+function showCastaway(animate = false) {
+  const sheet = document.getElementById('bottom-sheet');
+  const oldHeight = sheet.offsetHeight;
+  const { name, scrollTop } = sheetStack[sheetStack.length - 1];
   const c = appData.castaways.find(x => x.name === name);
-  if (!c) return;
+  const previous = sheetStack[sheetStack.length - 2];
+  const backHtml = previous
+    ? `<button type="button" class="sheet-back" id="sheet-back">${ICONS.chevronLeft}${escapeHtml(shortNames(appData.castaways).get(previous.name))}</button>`
+    : '';
 
   const ownerColor = teamColor(c.teams[0]);
   const statusBadge = c.finish === 'winner' ? '<span class="active-badge">🏆 Winner</span>'
@@ -16,6 +43,7 @@ function openSheet(name) {
   ].join(' ');
 
   showSheet(`
+    ${backHtml}
     <div class="sheet-top">
       <div class="sheet-hero-name">${escapeHtml(c.name)}</div>
       <span class="sheet-pts" style="color:${ownerColor}">${fmt(c.points)} pts</span>
@@ -26,6 +54,20 @@ function openSheet(name) {
     </div>
     ${timelineHtml(c)}
   `);
+  document.getElementById('sheet-body').scrollTop = scrollTop;
+  if (animate) animateSheetChange(oldHeight);
+}
+
+// Fades the new castaway in and slides the panel's edge between the two heights, instead of both jumping
+function animateSheetChange(oldHeight) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const sheet = document.getElementById('bottom-sheet');
+  const easing = 'cubic-bezier(0.2, 0, 0, 1)';   // fast start, gentle stop
+  const newHeight = sheet.offsetHeight;
+  if (newHeight !== oldHeight) {
+    sheet.animate({ height: [`${oldHeight}px`, `${newHeight}px`] }, { duration: 250, easing });
+  }
+  document.getElementById('sheet-body').animate({ opacity: [0, 1] }, { duration: 220, easing });
 }
 
 // Fill the panel and open it (also used by the admin sign-in)
@@ -130,15 +172,44 @@ function timelineHtml(c) {
     </div>`;
 }
 
-// Toggle a timeline band to show its tribemates
+// Toggle a timeline band to show its tribemates; the back pill goes through history, like the browser's Back
 document.getElementById('sheet-body').addEventListener('click', e => {
+  if (e.target.closest('#sheet-back')) return history.back();
   const btn = e.target.closest('.band-header');
   if (!btn) return;
   const open = btn.parentElement.classList.toggle('open');
   btn.setAttribute('aria-expanded', open);
 });
 
+// Back (the pill, or the phone's or browser's): to the castaway before, or closed from the first one
+window.addEventListener('popstate', e => {
+  if (unwindingSheetHistory) {
+    unwindingSheetHistory = false;
+    return;
+  }
+  if (!sheetStack.length) return;
+  const depth = e.state?.sheet || 0;
+  if (depth === 0) {
+    sheetStack = [];
+    hideSheet();
+  } else if (depth < sheetStack.length) {
+    sheetStack.length = depth;
+    showCastaway(true);
+  }
+});
+
+// Closed some other way (overlay, Escape, drag): also drop the panel's history entries, so Back doesn't reopen it
 function closeSheet() {
+  const depth = sheetStack.length ? history.state?.sheet || 0 : 0;
+  sheetStack = [];
+  hideSheet();
+  if (depth) {
+    unwindingSheetHistory = true;
+    history.go(-depth);
+  }
+}
+
+function hideSheet() {
   const sheet = document.getElementById('bottom-sheet');
   sheet.classList.remove('dragging');
   sheet.style.transform = '';
@@ -191,5 +262,5 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet()
 // Open the detail sheet for any element (or row) tagged with data-castaway
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-castaway]');
-  if (el) openSheet(el.dataset.castaway);
+  if (el) openSheet(el.dataset.castaway, !!el.closest('#bottom-sheet'));
 });
