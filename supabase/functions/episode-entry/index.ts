@@ -84,7 +84,7 @@ async function preview(supabase: SupabaseClient, season: number, episode: number
   result.states.push(gameState(replayed, tribeIds, advantageIds));
 
   cards.forEach((card, index) => {
-    const { rows, errors } = cardRows(card, data);
+    const { rows, errors } = cardRows(card, data, result.states[result.states.length - 1]);
     for (const message of errors) result.errors.push({ card: index, message });
     for (const row of rows) {
       const seq = result.rows.length + 1;
@@ -102,7 +102,7 @@ async function preview(supabase: SupabaseClient, season: number, episode: number
 function pageRows(p: Preview) {
   return p.rows.map(r => ({
     card: r.card, seq: r.seq, castawayId: r.castawayId, eventType: r.eventType.name,
-    otherCastawayId: r.otherCastawayId, advantage: r.advantageId, tribeId: r.tribeId,
+    otherCastawayId: r.otherCastawayId, advantage: r.advantageId ?? r.newAdvantage, tribeId: r.tribeId,
     quantity: r.quantity, details: r.details, points: r.eventType.points * r.quantity,
   }));
 }
@@ -113,12 +113,15 @@ async function save(supabase: SupabaseClient, season: number, episode: number, c
   if (!p.errors.length && !p.rows.length) p.errors.push({ message: "Add a card to save." });
   if (p.errors.length) return { status: 400, body: { errors: p.errors } };
 
+  // Advantages first found this episode are created by the save, before the rows that name them by key
+  const newAdvantages = [...new Set(p.rows.map(r => r.newAdvantage).filter((n): n is string => n !== null))];
   const { data, error } = await supabase.rpc("insert_episode_events", {
     p_season: season,
     p_episode: episode,
-    p_new_advantages: [],
+    p_new_advantages: newAdvantages.map(name => ({ key: `new:${name}`, name })),
     p_rows: p.rows.map(r => ({
       seq: r.seq, castaway_id: r.castawayId, event_type_id: r.eventType.id, advantage_id: r.advantageId,
+      advantage_key: r.newAdvantage === null ? null : `new:${r.newAdvantage}`,
       other_castaway_id: r.otherCastawayId, tribe_id: r.tribeId, quantity: r.quantity, details: r.details,
     })),
   });
