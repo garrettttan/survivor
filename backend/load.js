@@ -15,13 +15,36 @@ async function fetchDraftData(season, draftId) {
   return { castaways, teams, scoring };
 }
 
+// One season picker entry. draftId is get-draft-data's draft_id; a season without a logos/N.png shows its
+// title as text.
+function makeSeasonEntry(season, draftId) {
+  return { season, draftId, title: `Season ${season}`, logo: `logos/${season}.png` };
+}
+
+function defaultSeason() {
+  return makeSeasonEntry(CONFIG.DEFAULT_SEASON.season, CONFIG.DEFAULT_SEASON.draftId);
+}
+
+// Every draft from the get-drafts edge function as a season entry, newest season first (the first draft wins
+// if a season has several). The default season is always included, and is all there is if the request fails.
+async function fetchSeasons() {
+  const url = `${CONFIG.SUPABASE_URL}/functions/v1/get-drafts`;
+  const res = await fetch(url, { headers: { apikey: CONFIG.SUPABASE_ANON_KEY } }).catch(() => null);
+  const body = res && res.ok ? await res.json().catch(() => ({})) : {};
+  const entries = [defaultSeason()];
+  for (const { id, season } of body.data || []) {
+    if (!entries.some(e => e.season === season)) entries.push(makeSeasonEntry(season, id));
+  }
+  return entries.sort((a, b) => b.season - a.season);
+}
+
 // Everything the frontend needs for one draft: linked castaways and teams, plus the scoring rules.
-// `entry` is one of CONFIG.SEASONS.
+// `entry` is one of fetchSeasons()'s entries.
 async function loadSeason(entry) {
   const { castaways, teams, scoring } = await fetchDraftData(entry.season, entry.draftId);
   return { data: processDraftData(castaways, teams), scoring };
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { fetchDraftData, loadSeason };
+  module.exports = { fetchDraftData, defaultSeason, fetchSeasons, loadSeason };
 }

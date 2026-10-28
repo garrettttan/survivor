@@ -1,5 +1,6 @@
 // Frontend: page setup — asks the backend for the draft's data, then renders every section.
 
+let currentEntry = null;     // the season entry being shown (see makeSeasonEntry)
 let appData = null;          // backend result for the current draft, plus colors from assignColors
 let scoring = {};            // category → [{ name, description, points }] shown on the scoring tab
 
@@ -75,21 +76,18 @@ function setUpLogo(entry) {
 // ── Season picker ─────────────────────────────────────────────────────────
 // A small "S51 ▾" pill in the header's top left. The native select sits invisibly over it, so tapping opens
 // the platform picker; choosing a season reloads the page with it in the URL (dropped for the default).
-function setUpSeasonPicker(entry) {
-  if (CONFIG.SEASONS.length < 2) return;
+function setUpSeasonPicker(entry, seasons) {
+  if (seasons.length < 2) return;
   const picker = document.getElementById('season-picker');
   picker.innerHTML = `
     S${entry.season}${ICONS.chevronDown}
     <select aria-label="Season">
-      ${CONFIG.SEASONS.map(s => `<option value="${s.season}"${s === entry ? ' selected' : ''}>${escapeHtml(s.title)}</option>`).join('')}
+      ${seasons.map(s => `<option value="${s.season}"${s.season === entry.season ? ' selected' : ''}>${escapeHtml(s.title)}</option>`).join('')}
     </select>
   `;
   picker.hidden = false;
   picker.querySelector('select').addEventListener('change', e => {
-    const url = new URL(location.href);
-    if (e.target.value === String(CONFIG.SEASONS[0].season)) url.searchParams.delete('season');
-    else url.searchParams.set('season', e.target.value);
-    location.href = url.href;
+    location.href = seasonUrl('index.html', Number(e.target.value));
   });
 }
 
@@ -101,9 +99,10 @@ function showError(message) {
 }
 
 async function main() {
-  const entry = currentSeason();
+  const seasonsPromise = fetchSeasons();
+  const entry = currentEntry = await currentSeason(seasonsPromise);
   setUpLogo(entry);
-  setUpSeasonPicker(entry);
+  seasonsPromise.then(seasons => setUpSeasonPicker(entry, seasons));
   setUpAdminButton();
   try {
     const season = await loadSeason(entry);

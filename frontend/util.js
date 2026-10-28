@@ -40,10 +40,17 @@ const ICONS = {
   lock: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
 };
 
-// The season in the URL (?season=N), or the first in CONFIG.SEASONS
-function currentSeason() {
+// The season entry for the URL's ?season=N. The default season needs no lookup; any other waits for
+// `seasonsPromise` (from fetchSeasons) and falls back to the default if it isn't there.
+async function currentSeason(seasonsPromise) {
   const param = new URLSearchParams(location.search).get('season');
-  return CONFIG.SEASONS.find(s => String(s.season) === param) || CONFIG.SEASONS[0];
+  if (!param || param === String(CONFIG.DEFAULT_SEASON.season)) return defaultSeason();
+  return (await seasonsPromise).find(s => String(s.season) === param) || defaultSeason();
+}
+
+// The page URL for a season, with ?season=N dropped for the default
+function seasonUrl(page, season) {
+  return season === CONFIG.DEFAULT_SEASON.season ? page : `${page}?season=${season}`;
 }
 
 // Match the `@media (max-width: 640px)` and `(min-width: 768px)` breakpoints in styles.css
