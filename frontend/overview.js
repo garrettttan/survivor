@@ -10,11 +10,11 @@ const OVERVIEW_SORTS = {
   tribe:  { dir: 'asc',  val: c => c.tribes.length ? c.tribes[c.tribes.length - 1].tribeName : '' },
   points: { dir: 'desc', val: c => c.points },
   teams:  { dir: 'asc',  val: c => c.teams.join(', ') },
-  // Active castaways first, then eliminated in reverse order (last out first)
-  status: { dir: 'desc', val: c => c.active ? 9999 : (c.exitEpisode ?? 999) },
+  // The winner, then everyone still in, then eliminated in reverse order (last out first)
+  status: { dir: 'desc', val: c => c.finish === 'winner' ? 10000 : c.active ? 9999 : (c.exitEpisode ?? 999) },
 };
 
-function renderOverviewTable({ castaways, merged }) {
+function renderOverviewTable({ castaways, merged, finished }) {
   // Built from every castaway, not the filtered subset, so short names don't change when filtering
   const short = shortNames(castaways);
   const rows = overviewActiveOnly ? castaways.filter(c => c.active) : [...castaways];
@@ -37,11 +37,13 @@ function renderOverviewTable({ castaways, merged }) {
       ? advValues.map(a => `<span class="badge badge-adv">${escapeHtml(a)}</span>`).join(' ')
       : '<span class="muted">—</span>';
 
-    const statusHtml = c.active
-      ? '🟢'
+    const statusHtml = c.finish === 'winner' ? '🏆 Winner'
+      : c.finish === 'finalist' ? 'Finalist'
+      : c.active ? '🟢'
       : (c.exitEpisode != null ? `☠️ Ep ${c.exitEpisode}` : '☠️');
 
-    return `<tr class="clickable-row ${c.active ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
+    // A finished season doesn't fade or cross out who went home: everyone's finish is in the Status column
+    return `<tr class="clickable-row ${c.active || finished ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
       <td><span class="castaway-name-cell clickable"><span class="name-full">${escapeHtml(c.name)}</span><span class="name-short">${escapeHtml(short.get(c.name))}</span></span></td>
       <td><div class="overview-badges">${tribeHtml}</div></td>
       <td><span class="points-cell">${fmt(c.points)}</span></td>
@@ -88,12 +90,17 @@ function onOverviewHeaderClick(e, key) {
   renderOverviewTable(appData);
 }
 
-function renderOverviewFilters() {
+// A finished season shows everyone, sorted by how far they got, with no Active only switch (nobody is still playing)
+function renderOverviewFilters({ finished }) {
+  if (finished) {
+    overviewActiveOnly = false;
+    overviewSort = [{ key: 'status', dir: OVERVIEW_SORTS.status.dir }];
+  }
   document.getElementById('overview-filters').innerHTML = `
-    <div class="toggle-wrap ${overviewActiveOnly ? 'on' : ''}" data-toggle="activeOnly">
+    ${finished ? '' : `<div class="toggle-wrap ${overviewActiveOnly ? 'on' : ''}" data-toggle="activeOnly">
       <div class="toggle-track"><div class="toggle-thumb"></div></div>
       <span class="toggle-label">Active only</span>
-    </div>
+    </div>`}
     <div class="toggle-wrap ${overviewMultiSort ? 'on' : ''}" data-toggle="multiSort">
       <div class="toggle-track"><div class="toggle-thumb"></div></div>
       <span class="toggle-label">Multi-sort</span>

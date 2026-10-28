@@ -5,8 +5,9 @@ function openSheet(name) {
   if (!c) return;
 
   const ownerColor = appData.teamColor[c.teams[0]] || FALLBACK_COLOR;
-  const statusBadge = c.active
-    ? '<span class="active-badge">Active</span>'
+  const statusBadge = c.finish === 'winner' ? '<span class="active-badge">🏆 Winner</span>'
+    : c.finish === 'finalist' ? '<span class="active-badge">Finalist</span>'
+    : c.active ? '<span class="active-badge">Active</span>'
     : '<span class="eliminated-label">☠️ Eliminated</span>';
 
   const advHtml = [

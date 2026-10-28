@@ -116,7 +116,7 @@ async function main() {
     renderStandings(appData);
     renderTeamChartControls();
     renderTeamChart(appData);
-    renderOverviewFilters();
+    renderOverviewFilters(appData);
     renderOverviewTable(appData);
     renderScoring();
     initSectionTabs();

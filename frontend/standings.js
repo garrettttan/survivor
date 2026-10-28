@@ -1,6 +1,8 @@
 // Frontend: the standings table — one row per team, expanding to show its castaways.
 
-function renderStandings({ teams, teamNames }) {
+// A finished season drops the Active column (only finalists are left), and winner picks show whether they won
+function renderStandings({ teams, teamNames, finished }) {
+  document.querySelector('#standings .standings-table').classList.toggle('finished', finished);
   const sorted = [...teamNames].sort((a, b) => teams[b].points - teams[a].points);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
     const tm = teams[t];
@@ -8,8 +10,10 @@ function renderStandings({ teams, teamNames }) {
     const guess = tm.winnerPick;
     const guessAlive = guess && guess.active;
 
+    const guessGood = finished ? guess?.finish === 'winner' : guessAlive;
+    const guessMark = finished ? (guessGood ? '✅' : '❌') : (guessAlive ? '🟢' : '☠️');
     const guessSection = guess ? `
-      <div class="roster-guess">🏆 <span class="${guessAlive ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessAlive ? '🟢' : '☠️'}</div>` : '';
+      <div class="roster-guess">🏆 <span class="${guessGood ? 'guess-alive' : 'guess-out'}">${escapeHtml(guess.name)}</span> ${guessMark}</div>` : '';
 
     const castawayRows = [...tm.members]
       .sort((a, b) => b.active - a.active || b.points - a.points)
@@ -24,7 +28,7 @@ function renderStandings({ teams, teamNames }) {
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
       <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
       <td><span class="color-dot" style="background:${tm.color}"></span><span class="player-name">${escapeHtml(t)}</span></td>
-      <td class="fit-col"><span class="active-count">${tm.activeCount}</span></td>
+      <td class="fit-col active-col"><span class="active-count">${tm.activeCount}</span></td>
       <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.points)}</span></td>
       <td class="expand-cell"><span class="expand-btn">${ICONS.chevronDown}</span></td>
     </tr>

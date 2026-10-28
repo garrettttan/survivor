@@ -161,7 +161,7 @@ const TYPES = ["Swapped tribes", "Switched tribes", "Merged", "Won team immunity
   "Won team reward", "Won team reward (2nd place)", "Won individual immunity", "Won individual reward",
   "Brought on reward", "Sat out of challenge", "Voted correctly", "Voted incorrectly", "Voted out",
   "Went home on rocks", "Medically evacuated", "Quit", "Lost fire-making", "Had an iconic moment",
-  "Cried on camera", "Received a jury vote"];
+  "Cried on camera", "Received a jury vote", "Became Sole Survivor"];
 const big: SeasonData = {
   season: 98,
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n }])),
@@ -267,9 +267,11 @@ Deno.test("exit and moments", () => {
   assertEquals(rowsOf({ type: "moment", kind: "cried", castawayId: 2 }), [["Bea", "Cried on camera", null]]);
 });
 
-Deno.test("final tribal: a row per juror's vote", () => {
+Deno.test("final tribal: a row per juror's vote, then the winner", () => {
   assertEquals(rowsOf({ type: "ftc", votes: { 8: 1, 7: 1 } }),
-    [["Ann", "Received a jury vote", "Gus"], ["Ann", "Received a jury vote", "Hal"]]);
+    [["Ann", "Received a jury vote", "Gus"], ["Ann", "Received a jury vote", "Hal"], ["Ann", "Became Sole Survivor", null]]);
+  assertEquals(rowsOf({ type: "ftc", votes: { 8: 2, 7: 2, 3: 1 } }, { ...g, out: [3, 7, 8] }).at(-1), ["Bea", "Became Sole Survivor", null]);
+  assertEquals(errorsOf({ type: "ftc", votes: { 8: 1, 7: 2 } }), ["The jury vote is tied."]);
   assertEquals(errorsOf({ type: "ftc", votes: { 2: 1 } }), ["Bea is still in the game, so isn't on the jury."]);
   assertEquals(errorsOf({ type: "ftc", votes: { 8: 7 } }), ["Hal's vote has to be for a finalist."]);
   assertEquals(errorsOf({ type: "ftc", votes: {} }), ["Enter the jury's votes."]);

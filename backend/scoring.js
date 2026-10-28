@@ -18,7 +18,13 @@ function processDraftData(rawCastaways, rawTeams) {
   const episodeCount = Math.max(0, ...castaways.map(c => (c.pointsByEpisode || []).length));
   const merged = castaways.some(c => c.tribes.some(t => /merge/i.test(t.startReason)));
 
-  return { castaways, teams, teamNames, episodeCount, merged };
+  // A season is finished once it has a winner (a Became Sole Survivor row); everyone else still in made the final
+  // tribal
+  const winner = castaways.find(c => c.log.some(e => e.name === 'Became Sole Survivor')) || null;
+  const finished = winner !== null;
+  castaways.forEach(c => { c.finish = c === winner ? 'winner' : finished && c.active ? 'finalist' : null; });
+
+  return { castaways, teams, teamNames, episodeCount, merged, winner, finished };
 }
 
 // Adds name, teams (filled in by processDraftData), tribe members and each log row's other castaway

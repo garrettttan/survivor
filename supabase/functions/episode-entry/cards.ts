@@ -273,21 +273,29 @@ function momentRows(card: Card, data: SeasonData, game: GameState): Result {
 }
 
 // One Received a jury vote row per juror's vote, for the finalist (everyone still in the game), pointing at the
-// juror (someone already out)
+// juror (someone already out), then a Became Sole Survivor row for whoever got the most votes
 function ftcRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
   const votes = entries(card.votes).filter(([, finalist]) => finalist !== null && finalist !== undefined);
   if (!votes.length) errors.push("Enter the jury's votes.");
   const received = eventType(data, "Received a jury vote", errors);
+  const won = eventType(data, "Became Sole Survivor", errors);
   const rows: CardRow[] = [];
+  const tally = new Map<number, number>();
   for (const [juror, finalist] of votes) {
     if (!game.out.includes(juror)) errors.push(`${name(data, juror)} is still in the game, so isn't on the jury.`);
     else if (typeof finalist !== "number" || game.out.includes(finalist) || !data.castawayById.has(finalist)) {
       errors.push(`${name(data, juror)}'s vote has to be for a finalist.`);
-    } else rows.push(row(finalist, received, { otherCastawayId: juror }));
+    } else {
+      rows.push(row(finalist, received, { otherCastawayId: juror }));
+      tally.set(finalist, (tally.get(finalist) ?? 0) + 1);
+    }
   }
+  const most = Math.max(...tally.values());
+  const leaders = [...tally].filter(([, count]) => count === most).map(([id]) => id);
+  if (leaders.length > 1) errors.push("The jury vote is tied.");
   if (errors.length) return { rows: [], errors };
-  return { rows, errors };
+  return { rows: [...rows, row(leaders[0], won)], errors };
 }
 
 // A row with only the columns set that most card rows use
