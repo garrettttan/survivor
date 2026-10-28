@@ -429,6 +429,16 @@ function idOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isInteger(value) ? value : null;
 }
 
+/**
+ * Why `episode` can't be entered, or null if it can: only the one after the last entered episode can, so a season
+ * has no gaps (editing an entered episode is a separate action, not built yet)
+ */
+export function episodeProblem(episode: number, maxEpisode: number): string | null {
+  if (episode <= maxEpisode) return `Episode ${episode} is already entered.`;
+  if (episode > maxEpisode + 1) return `Enter episode ${maxEpisode + 1} first.`;
+  return null;
+}
+
 /** A new row shaped like season_events_readable, so it can be replayed with the saved ones */
 export function toEventRow(row: CardRow, data: SeasonData, episode: number, seq: number): EventRow {
   const castaway = data.castawayById.get(row.castawayId)!;

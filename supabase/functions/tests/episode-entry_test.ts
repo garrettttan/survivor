@@ -4,7 +4,7 @@
 
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, toEventRow, type EventType, type SeasonData } from "../episode-entry/cards.ts";
+import { cardRows, episodeProblem, toEventRow, type EventType, type SeasonData } from "../episode-entry/cards.ts";
 import { gameState, type GameState } from "../episode-entry/game.ts";
 
 const FIXTURES = new URL("./fixtures/", import.meta.url);
@@ -273,4 +273,12 @@ Deno.test("final tribal: a row per juror's vote", () => {
   assertEquals(errorsOf({ type: "ftc", votes: { 2: 1 } }), ["Bea is still in the game, so isn't on the jury."]);
   assertEquals(errorsOf({ type: "ftc", votes: { 8: 7 } }), ["Hal's vote has to be for a finalist."]);
   assertEquals(errorsOf({ type: "ftc", votes: {} }), ["Enter the jury's votes."]);
+});
+
+Deno.test("only the episode after the last entered can be entered", () => {
+  assertEquals(episodeProblem(6, 5), null);
+  assertEquals(episodeProblem(1, 0), null);
+  assertEquals(episodeProblem(5, 5), "Episode 5 is already entered.");
+  assertEquals(episodeProblem(7, 5), "Enter episode 6 first.");
+  assertEquals(episodeProblem(3, 0), "Enter episode 1 first.");
 });

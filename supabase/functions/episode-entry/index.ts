@@ -11,7 +11,7 @@
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, toEventRow, type CardRow } from "./cards.ts";
+import { cardRows, episodeProblem, toEventRow, type CardRow } from "./cards.ts";
 import { loadRowsBefore, loadSeason, type Season } from "./data.ts";
 import { gameState, type GameState } from "./game.ts";
 
@@ -75,8 +75,9 @@ async function state(supabase: SupabaseClient, season: number, requested: number
 async function preview(supabase: SupabaseClient, season: number, episode: number, cards: any[]): Promise<Preview> {
   const data = await loadSeason(supabase, season);
   const result: Preview = { rows: [], errors: [], warnings: [], states: [] };
-  if (episode <= data.maxEpisode) {
-    result.errors.push({ message: `Episode ${episode} is already entered.` });
+  const problem = episodeProblem(episode, data.maxEpisode);
+  if (problem) {
+    result.errors.push({ message: problem });
     return result;
   }
   const replayed: EventRow[] = await loadRowsBefore(supabase, season, episode);
