@@ -6,7 +6,7 @@
   "points": 25,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -178,7 +178,7 @@
   "points": 26.5,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Lagi",
@@ -486,7 +486,7 @@
   "points": 29.5,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "winner",
   "tribes": [
    {
     "tribeName": "Civa",
@@ -626,6 +626,15 @@
     "episode": 13,
     "name": "Episode points",
     "points": 7,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Became Sole Survivor",
+    "points": 0,
     "otherCastawayId": null,
     "details": null,
     "tribe": null,
@@ -1515,7 +1524,7 @@
  },
  "95": {
   "id": 95,
-  "firstName": "Sai",
+  "firstName": "Saiounia",
   "lastName": "Hughley",
   "points": 7,
   "active": false,

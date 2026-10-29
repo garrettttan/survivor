@@ -6,7 +6,7 @@
   "points": 14,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Kele",
@@ -276,7 +276,7 @@
   "points": 31,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "winner",
   "tribes": [
    {
     "tribeName": "Uli",
@@ -410,6 +410,15 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Became Sole Survivor",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
    }
   ]
  },
@@ -420,7 +429,7 @@
   "points": 11,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Uli",
@@ -1216,7 +1225,7 @@
  },
  "111": {
   "id": 111,
-  "firstName": "MC",
+  "firstName": "Michelle",
   "lastName": "Chukwujekwu",
   "points": 17,
   "active": false,

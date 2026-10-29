@@ -290,7 +290,7 @@
   "points": 21.5,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Kalo",
@@ -617,7 +617,7 @@
   "points": 14,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Cila",
@@ -761,7 +761,7 @@
  },
  "29": {
   "id": 29,
-  "firstName": "Coach",
+  "firstName": "Benjamin",
   "lastName": "Wade",
   "points": 10.5,
   "active": false,
@@ -1267,7 +1267,7 @@
   "points": 25,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "winner",
   "tribes": [
    {
     "tribeName": "Vatu",
@@ -1431,6 +1431,15 @@
     "episode": 13,
     "name": "Received a jury vote",
     "points": 8,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 13,
+    "name": "Became Sole Survivor",
+    "points": 0,
     "otherCastawayId": null,
     "details": null,
     "tribe": null,
@@ -1695,7 +1704,7 @@
  },
  "35": {
   "id": 35,
-  "firstName": "Ozzy",
+  "firstName": "Oscar",
   "lastName": "Lusth",
   "points": 9,
   "active": false,
@@ -2961,7 +2970,7 @@
  },
  "44": {
   "id": 44,
-  "firstName": "Q",
+  "firstName": "Quintavius",
   "lastName": "Burdette",
   "points": 4,
   "active": false,

@@ -34,6 +34,7 @@
    0,
    0,
    0,
+   0,
    0
   ],
   "log": [
@@ -96,7 +97,8 @@
    1,
    2,
    1,
-   -1
+   -1,
+   0
   ],
   "log": [
    {
@@ -190,6 +192,7 @@
    -1,
    0,
    0,
+   0,
    0
   ],
   "log": [
@@ -226,7 +229,7 @@
   "id": 6,
   "firstName": "Brady",
   "lastName": "Booker",
-  "points": 7,
+  "points": 9,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -273,6 +276,7 @@
    4,
    -1,
    1,
+   2,
    2
   ],
   "log": [
@@ -332,6 +336,15 @@
    },
    {
     "episode": 5,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 6,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -411,7 +424,8 @@
    -1,
    3,
    1,
-   2
+   2,
+   0
   ],
   "log": [
    {
@@ -476,6 +490,15 @@
     "details": null,
     "tribe": "Toka",
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
    }
   ]
  },
@@ -483,7 +506,7 @@
   "id": 8,
   "firstName": "Cristian",
   "lastName": "Chavez",
-  "points": 8,
+  "points": 9,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -528,6 +551,7 @@
    1,
    2,
    2,
+   1,
    1
   ],
   "log": [
@@ -573,7 +597,7 @@
     "points": 0,
     "otherCastawayId": null,
     "details": null,
-    "tribe": null,
+    "tribe": "Dina",
     "advantage": null
    },
    {
@@ -584,6 +608,15 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
    }
   ]
  },
@@ -591,7 +624,7 @@
   "id": 9,
   "firstName": "Danny",
   "lastName": "Kilby",
-  "points": 11,
+  "points": 12,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -640,7 +673,8 @@
    3,
    1,
    2,
-   4
+   4,
+   1
   ],
   "log": [
    {
@@ -694,7 +728,7 @@
     "points": 0,
     "otherCastawayId": null,
     "details": null,
-    "tribe": null,
+    "tribe": "Dina",
     "advantage": null
    },
    {
@@ -722,6 +756,15 @@
     "otherCastawayId": 16,
     "details": null,
     "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
     "advantage": null
    }
   ]
@@ -778,6 +821,7 @@
    3,
    1,
    1,
+   0,
    0
   ],
   "log": [
@@ -852,6 +896,24 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 19,
+    "details": null,
+    "tribe": null,
+    "advantage": null
    }
   ]
  },
@@ -904,7 +966,8 @@
    1,
    2,
    0,
-   1
+   1,
+   0
   ],
   "log": [
    {
@@ -960,12 +1023,21 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
    }
   ]
  },
  "12": {
   "id": 12,
-  "firstName": "Jelly",
+  "firstName": "Angelica",
   "lastName": "Loblack",
   "points": 4,
   "active": true,
@@ -1015,7 +1087,8 @@
    5,
    -1,
    0,
-   1
+   1,
+   0
   ],
   "log": [
    {
@@ -1089,6 +1162,24 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted correctly",
+    "points": 1,
+    "otherCastawayId": 19,
+    "details": null,
+    "tribe": null,
+    "advantage": null
    }
   ]
  },
@@ -1142,6 +1233,7 @@
    3,
    1,
    -1,
+   0,
    0
   ],
   "log": [
@@ -1196,7 +1288,7 @@
   "id": 14,
   "firstName": "Kristin",
   "lastName": "Flickinger",
-  "points": 6,
+  "points": 10,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -1234,14 +1326,17 @@
     ]
    }
   ],
-  "advantages": [],
+  "advantages": [
+   "Tethered idol"
+  ],
   "expiredAdvantages": [],
   "pointsByEpisode": [
    2,
    1,
    2,
    1,
-   0
+   0,
+   4
   ],
   "log": [
    {
@@ -1288,6 +1383,24 @@
     "details": null,
     "tribe": "Toka",
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Found advantage",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": "Tethered idol"
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
    }
   ]
  },
@@ -1295,7 +1408,7 @@
   "id": 15,
   "firstName": "Lewis",
   "lastName": "Kelly",
-  "points": 10,
+  "points": 11,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -1343,7 +1456,8 @@
    3,
    1,
    2,
-   4
+   4,
+   1
   ],
   "log": [
    {
@@ -1408,6 +1522,15 @@
     "details": null,
     "tribe": null,
     "advantage": "Extra vote (alliance builder)"
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity (2nd place)",
+    "points": 1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
+    "advantage": null
    }
   ]
  },
@@ -1460,6 +1583,7 @@
    1,
    2,
    2,
+   0,
    0
   ],
   "log": [
@@ -1504,7 +1628,7 @@
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
-    "details": "Consensus after deadlock",
+    "details": null,
     "tribe": null,
     "advantage": null
    }
@@ -1514,7 +1638,7 @@
   "id": 17,
   "firstName": "Maggie",
   "lastName": "Nestor",
-  "points": 11,
+  "points": 13,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -1564,6 +1688,7 @@
    3,
    4,
    1,
+   2,
    2
   ],
   "log": [
@@ -1665,6 +1790,15 @@
     "details": null,
     "tribe": null,
     "advantage": "Extra vote (Toka)"
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
    }
   ]
  },
@@ -1672,7 +1806,7 @@
   "id": 18,
   "firstName": "Mike",
   "lastName": "Pinsky",
-  "points": 6,
+  "points": 8,
   "active": true,
   "exitEpisode": null,
   "finish": null,
@@ -1719,6 +1853,7 @@
    3,
    -1,
    1,
+   2,
    2
   ],
   "log": [
@@ -1775,6 +1910,15 @@
     "details": null,
     "tribe": "Toka",
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Won team immunity",
+    "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
    }
   ]
  },
@@ -1782,9 +1926,9 @@
   "id": 19,
   "firstName": "Ori",
   "lastName": "Jean-Charles",
-  "points": 5,
-  "active": true,
-  "exitEpisode": null,
+  "points": 4,
+  "active": false,
+  "exitEpisode": 6,
   "finish": null,
   "tribes": [
    {
@@ -1810,7 +1954,7 @@
     "tribeColor": "#7b2cbf",
     "startReason": "Swapped tribes",
     "startEpisode": 4,
-    "endEpisode": null,
+    "endEpisode": 6,
     "memberIds": [
      13,
      12,
@@ -1826,7 +1970,8 @@
    -1,
    2,
    1,
-   1
+   1,
+   -1
   ],
   "log": [
    {
@@ -1873,6 +2018,24 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Cried on camera",
+    "points": -1,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Voted out",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
    }
   ]
  },
@@ -1912,6 +2075,7 @@
    1,
    3,
    -1,
+   0,
    0,
    0
   ],
@@ -1999,6 +2163,7 @@
    4,
    0,
    -2,
+   0,
    0,
    0
   ],
@@ -2108,7 +2273,8 @@
    1,
    2,
    2,
-   1
+   1,
+   0
   ],
   "log": [
    {
@@ -2154,6 +2320,15 @@
     "otherCastawayId": 16,
     "details": null,
     "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Dina",
     "advantage": null
    }
   ]
@@ -2209,7 +2384,8 @@
    3,
    1,
    0,
-   2
+   2,
+   0
   ],
   "log": [
    {
@@ -2261,6 +2437,15 @@
     "episode": 5,
     "name": "Won team immunity",
     "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Sat out of challenge",
+    "points": 0,
     "otherCastawayId": null,
     "details": null,
     "tribe": "Toka",

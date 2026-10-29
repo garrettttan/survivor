@@ -6,7 +6,7 @@
   "points": 39,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "winner",
   "tribes": [
    {
     "tribeName": "Gata",
@@ -178,6 +178,15 @@
     "details": null,
     "tribe": null,
     "advantage": null
+   },
+   {
+    "episode": 14,
+    "name": "Became Sole Survivor",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": null,
+    "advantage": null
    }
   ]
  },
@@ -188,7 +197,7 @@
   "points": 18,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Gata",
@@ -343,7 +352,7 @@
   "points": 16,
   "active": true,
   "exitEpisode": null,
-  "finish": null,
+  "finish": "finalist",
   "tribes": [
    {
     "tribeName": "Tuku",
@@ -1969,7 +1978,7 @@
  },
  "82": {
   "id": 82,
-  "firstName": "TK",
+  "firstName": "Terran",
   "lastName": "Foster",
   "points": 2,
   "active": false,

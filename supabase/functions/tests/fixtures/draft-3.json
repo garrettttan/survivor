@@ -409,7 +409,7 @@
    "episode": 1,
    "seq": 17,
    "castaway_id": 82,
-   "castaway_first_name": "TK",
+   "castaway_first_name": "Terran",
    "castaway_last_name": "Foster",
    "category": "Tribes",
    "event": "Starting tribe",
@@ -859,7 +859,7 @@
    "episode": 1,
    "seq": 35,
    "castaway_id": 82,
-   "castaway_first_name": "TK",
+   "castaway_first_name": "Terran",
    "castaway_last_name": "Foster",
    "category": "Legacy",
    "event": "Episode points",
@@ -1234,7 +1234,7 @@
    "episode": 2,
    "seq": 13,
    "castaway_id": 82,
-   "castaway_first_name": "TK",
+   "castaway_first_name": "Terran",
    "castaway_last_name": "Foster",
    "category": "Eliminations",
    "event": "Voted out",
@@ -3651,6 +3651,31 @@
    "details": null,
    "quantity": 3,
    "points": 3
+  },
+  {
+   "draft_id": 3,
+   "event_id": 925,
+   "season": 47,
+   "episode": 14,
+   "seq": 5,
+   "castaway_id": 66,
+   "castaway_first_name": "Rachel",
+   "castaway_last_name": "LaMont",
+   "category": "Voting",
+   "event": "Became Sole Survivor",
+   "changes_tribe": false,
+   "ends_game": false,
+   "advantage_effect": null,
+   "advantage_id": null,
+   "advantage": null,
+   "tribe_id": null,
+   "tribe": null,
+   "tribe_color": null,
+   "other_castaway_id": null,
+   "other_castaway": null,
+   "details": null,
+   "quantity": 1,
+   "points": 0
   }
  ],
  "rosters": [
@@ -3771,7 +3796,7 @@
    "team_id": 17,
    "team": "Garrett",
    "castaway_id": 82,
-   "castaway": "TK Foster"
+   "castaway": "Terran Foster"
   },
   {
    "draft_id": 3,
