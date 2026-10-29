@@ -470,10 +470,11 @@ function idOrNull(value: unknown): number | null {
 }
 
 /**
- * Why `episode` can't be entered, or null if it can: only the one after the last entered episode can, so a season
- * has no gaps (editing an entered episode is a separate action, not built yet)
+ * Why `episode` can't be entered (or edited), or null if it can. A new episode has to be the one after the last
+ * entered, so a season has no gaps; an edit has to be to an entered episode.
  */
-export function episodeProblem(episode: number, maxEpisode: number): string | null {
+export function episodeProblem(episode: number, maxEpisode: number, editing = false): string | null {
+  if (editing) return episode <= maxEpisode ? null : `Episode ${episode} isn't entered yet, so there's nothing to edit.`;
   if (episode <= maxEpisode) return `Episode ${episode} is already entered.`;
   if (episode > maxEpisode + 1) return `Enter episode ${maxEpisode + 1} first.`;
   return null;

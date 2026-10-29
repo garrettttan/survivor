@@ -4,16 +4,23 @@
 // POST { action, season, episode, cards }:
 //   state    the season's castaways, tribes, event types, advantages and the game at the start of the episode
 //            (episode null = the one after the last entered)
-//   preview  the rows the cards would make, errors per card, warnings, and the game before each card
-//   save     preview's checks again, then one transaction through insert_episode_events
+//   preview  the rows the cards would make, errors per card, warnings, and the game before each card. With
+//            edit: true, for an entered episode: also what its rows change, and every later episode replayed after
+//            it (its errors and what its rows change)
+//   save     a new episode: preview's checks again, then its rows and cards through insert_episode_events
+//   replace  an edit: the edit preview's checks again, then the episode and every later one whose rows change,
+//            through replace_episodes
 // The exact request and response shapes are in js/api/admin-data.js. Only admins (app_metadata.role "admin") may
 // call it; reads and the save run as the caller, so RLS applies too.
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
-import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, episodeProblem, toEventRow, type CardRow } from "./cards.ts";
-import { loadRowsBefore, loadSeason, type Season } from "./data.ts";
-import { gameState, type GameState } from "./game.ts";
+import { episodeProblem, type CardRow } from "./cards.ts";
+import { loadSeason, loadSeasonRows, loadStoredCards } from "./data.ts";
+import {
+  episodeCards, pageRow, playEdit, playEpisode, type Card, type Changes, type LaterEpisode, type Lookups, type PageError,
+  type Played,
+} from "./edit.ts";
+import { gameState } from "./game.ts";
 
 // =====================================================================
 // HTTP
@@ -39,26 +46,25 @@ class HttpError extends Error {
 // Actions
 // =====================================================================
 
-interface PageError { card?: number; message: string }
-
-interface Preview {
-  rows: (CardRow & { card: number; seq: number })[];
-  errors: PageError[];
-  warnings: string[];
-  states: GameState[];
+// Everything one request needs about the season
+async function load(supabase: SupabaseClient, season: number) {
+  const [data, events, stored] = await Promise.all([
+    loadSeason(supabase, season), loadSeasonRows(supabase, season), loadStoredCards(supabase, season),
+  ]);
+  const lookups: Lookups = {
+    tribeIdByName: new Map(data.tribes.map(t => [t.name, t.id])),
+    advantageIdByName: new Map(data.advantages.map(a => [a.name, a.id])),
+  };
+  return { data, events, stored, lookups };
 }
 
-function lookups(data: Season) {
-  return [
-    new Map(data.tribes.map(t => [t.name, t.id])),
-    new Map(data.advantages.map(a => [a.name, a.id])),
-  ] as const;
-}
-
+// For an entered episode, also its cards: stored, or rebuilt from its rows (rebuilt: true, with any rows that
+// became custom cards as fallbacks). A new episode has cards: null.
 async function state(supabase: SupabaseClient, season: number, requested: number | null) {
-  const data = await loadSeason(supabase, season);
+  const { data, events, stored, lookups } = await load(supabase, season);
   const episode = requested ?? data.maxEpisode + 1;
-  const saved = await loadRowsBefore(supabase, season, episode);
+  const entered = episode <= data.maxEpisode && events.some(e => e.episode === episode);
+  const cards = entered ? episodeCards(episode, events, stored, data, lookups) : null;
   return {
     episode,
     castaways: data.castaways.map(c => ({ id: c.id, name: c.name, firstName: c.firstName, nickname: c.nickname })),
@@ -66,76 +72,108 @@ async function state(supabase: SupabaseClient, season: number, requested: number
     eventTypes: data.eventTypes.map(t => ({ id: t.id, name: t.name, points: t.points })),
     advantages: data.advantages,
     maxEpisode: data.maxEpisode,
-    game: gameState(saved, ...lookups(data)),
+    game: gameState(events.filter(e => e.episode < episode), lookups.tribeIdByName, lookups.advantageIdByName),
+    cards: cards?.cards ?? null,
+    rebuilt: cards?.rebuilt ?? false,
+    fallbacks: cards?.fallbacks ?? [],
   };
 }
 
-// Expands the cards in order, replaying after each so the next card's game is known
-// deno-lint-ignore no-explicit-any
-async function preview(supabase: SupabaseClient, season: number, episode: number, cards: any[]): Promise<Preview> {
-  const data = await loadSeason(supabase, season);
-  const result: Preview = { rows: [], errors: [], warnings: [], states: [] };
-  const problem = episodeProblem(episode, data.maxEpisode);
-  if (problem) {
-    result.errors.push({ message: problem });
-    return result;
+interface Preview {
+  played: Played;
+  errors: PageError[];                           // the episode's own, then any about the whole episode
+  warnings: string[];
+  changes?: Changes;                             // editing: this episode's rows against its saved ones
+  later?: LaterEpisode[];                        // editing: every later episode, replayed after the edit
+}
+
+// The cards played in order. Editing an entered episode also replays every later episode from its own cards.
+async function preview(
+  supabase: SupabaseClient, season: number, episode: number, cards: Card[], editing: boolean,
+): Promise<Preview> {
+  const { data, events, stored, lookups } = await load(supabase, season);
+  const problem = episodeProblem(episode, data.maxEpisode, editing);
+  if (problem) return { played: { rows: [], errors: [], states: [] }, errors: [{ message: problem }], warnings: [] };
+
+  let result: Preview;
+  if (editing) {
+    const edit = playEdit(episode, cards, events, stored, data, lookups);
+    result = { played: edit.played, errors: [...edit.played.errors], warnings: [], changes: edit.changes, later: edit.later };
+  } else {
+    const played = playEpisode(cards, episode, data, lookups, events.filter(e => e.episode < episode));
+    result = { played, errors: [...played.errors], warnings: [] };
   }
-  const replayed: EventRow[] = await loadRowsBefore(supabase, season, episode);
-  const [tribeIds, advantageIds] = lookups(data);
-  result.states.push(gameState(replayed, tribeIds, advantageIds));
-
-  const cried = new Set<number>();               // crying counts once per castaway per episode
-  cards.forEach((card, index) => {
-    const { rows, errors } = cardRows(card, data, result.states[result.states.length - 1]);
-    for (const row of rows.filter(r => r.eventType.name === "Cried on camera")) {
-      if (cried.has(row.castawayId)) errors.push(`${data.castawayById.get(row.castawayId)?.name} already cried this episode.`);
-      cried.add(row.castawayId);
-    }
-    if (errors.length) rows.length = 0;
-    for (const message of errors) result.errors.push({ card: index, message });
-    for (const row of rows) {
-      const seq = result.rows.length + 1;
-      result.rows.push({ ...row, card: index, seq });
-      replayed.push(toEventRow(row, data, episode, seq));
-    }
-    result.states.push(gameState(replayed, tribeIds, advantageIds));
-  });
-
-  if (cards.length && !result.rows.some(r => r.eventType.endsGame)) result.warnings.push("No one went home this episode.");
+  if (cards.length && !result.played.rows.some(r => r.eventType.endsGame)) result.warnings.push("No one went home this episode.");
   return result;
 }
 
-// The page's view of a row: event type by name, and its points
-function pageRows(p: Preview) {
-  return p.rows.map(r => ({
-    card: r.card, seq: r.seq, castawayId: r.castawayId, eventType: r.eventType.name,
-    otherCastawayId: r.otherCastawayId, advantage: r.advantageId ?? r.newAdvantage, tribeId: r.tribeId,
-    quantity: r.quantity, details: r.details, points: r.eventType.points * r.quantity,
-  }));
+// What the page gets back from a preview
+function previewReply(p: Preview) {
+  return {
+    rows: p.played.rows.map(r => ({ card: r.card, seq: r.seq, ...pageRow(r) })),
+    errors: p.errors,
+    warnings: p.warnings,
+    states: p.played.states,
+    ...(p.changes && { changes: p.changes }),
+    ...(p.later && {
+      later: p.later.map(l => ({ episode: l.episode, errors: l.played.errors, changes: l.changes })),
+    }),
+  };
 }
 
-// deno-lint-ignore no-explicit-any
-async function save(supabase: SupabaseClient, season: number, episode: number, cards: any[]) {
-  const p = await preview(supabase, season, episode, cards);
-  if (!p.errors.length && !p.rows.length) p.errors.push({ message: "Add a card to save." });
-  if (p.errors.length) return { status: 400, body: { errors: p.errors } };
-
-  // Advantages first found this episode are created by the save, before the rows that name them by key
-  const newAdvantages = [...new Set(p.rows.map(r => r.newAdvantage).filter((n): n is string => n !== null))];
-  const { data, error } = await supabase.rpc("insert_episode_events", {
-    p_season: season,
-    p_episode: episode,
-    p_new_advantages: newAdvantages.map(name => ({ key: `new:${name}`, name })),
-    p_rows: p.rows.map(r => ({
-      seq: r.seq, castaway_id: r.castawayId, event_type_id: r.eventType.id, advantage_id: r.advantageId,
+// One episode as insert_episode_events takes it. Advantages first found this episode are created by the save,
+// before the rows that name them by key.
+function savedEpisode(rows: CardRow[]) {
+  const newAdvantages = [...new Set(rows.map(r => r.newAdvantage).filter((n): n is string => n !== null))];
+  return {
+    new_advantages: newAdvantages.map(name => ({ key: `new:${name}`, name })),
+    rows: rows.map((r, i) => ({
+      seq: i + 1, castaway_id: r.castawayId, event_type_id: r.eventType.id, advantage_id: r.advantageId,
       advantage_key: r.newAdvantage === null ? null : `new:${r.newAdvantage}`,
       other_castaway_id: r.otherCastawayId, tribe_id: r.tribeId, quantity: r.quantity, details: r.details,
     })),
-  });
-  // A database check (the check_event_fields trigger, a unique key, an entered episode) is a problem to fix,
-  // not a crash, so it goes back as an error the page shows
+  };
+}
+
+// A database check (the check_event_fields trigger, a unique key, an entered episode) is a problem to fix, not a
+// crash, so it goes back as an error the page shows
+function saveResult(data: unknown, error: { message: string } | null) {
   if (error) return { status: 400, body: { errors: [{ message: error.message }] } };
   return { status: 200, body: { inserted: data } };
+}
+
+// A new episode: preview's checks again, then its rows and cards in one transaction
+async function save(supabase: SupabaseClient, season: number, episode: number, cards: Card[]) {
+  const p = await preview(supabase, season, episode, cards, false);
+  if (!p.errors.length && !p.played.rows.length) p.errors.push({ message: "Add a card to save." });
+  if (p.errors.length) return { status: 400, body: { errors: p.errors } };
+
+  const { new_advantages, rows } = savedEpisode(p.played.rows);
+  const { data, error } = await supabase.rpc("insert_episode_events", {
+    p_season: season, p_episode: episode, p_new_advantages: new_advantages, p_rows: rows, p_cards: cards,
+  });
+  return saveResult(data, error);
+}
+
+// An edit: the same replay as its preview, then the edited episode and every later one whose rows change, all in
+// one transaction. Nothing is saved if any of them has an error; a later episode's error names that episode.
+async function replace(supabase: SupabaseClient, season: number, episode: number, cards: Card[]) {
+  const p = await preview(supabase, season, episode, cards, true);
+  if (!p.errors.length && !p.played.rows.length) p.errors.push({ message: "Add a card to save." });
+  const laterErrors = (p.later ?? []).flatMap(l => l.played.errors.map(e =>
+    ({ message: `Episode ${l.episode}${e.card === undefined ? "" : `, card ${e.card + 1}`}: ${e.message}` })));
+  if (p.errors.length || laterErrors.length) return { status: 400, body: { errors: [...p.errors, ...laterErrors] } };
+
+  const changed = (p.later ?? []).filter(l => l.changes.added.length || l.changes.removed.length);
+  const { data, error } = await supabase.rpc("replace_episodes", {
+    p_season: season,
+    p_episodes: [
+      { episode, cards, ...savedEpisode(p.played.rows) },
+      ...changed.map(l => ({ episode: l.episode, cards: l.cards, ...savedEpisode(l.played.rows) })),
+    ],
+  });
+  if (error) return saveResult(data, error);
+  return { status: 200, body: { replaced: data, episodes: [episode, ...changed.map(l => l.episode)] } };
 }
 
 // =====================================================================
@@ -184,12 +222,14 @@ Deno.serve(async (req) => {
         return json(await state(supabase, season, body.episode == null ? null : wholeNumber(body.episode, "episode")));
       case "preview": {
         const cards = Array.isArray(body.cards) ? body.cards : [];
-        const p = await preview(supabase, season, wholeNumber(body.episode, "episode"), cards);
-        return json({ rows: pageRows(p), errors: p.errors, warnings: p.warnings, states: p.states });
+        const p = await preview(supabase, season, wholeNumber(body.episode, "episode"), cards, body.edit === true);
+        return json(previewReply(p));
       }
-      case "save": {
+      case "save":
+      case "replace": {
         const cards = Array.isArray(body.cards) ? body.cards : [];
-        const { status, body: result } = await save(supabase, season, wholeNumber(body.episode, "episode"), cards);
+        const write = body.action === "save" ? save : replace;
+        const { status, body: result } = await write(supabase, season, wholeNumber(body.episode, "episode"), cards);
         return json(result, status);
       }
       default:

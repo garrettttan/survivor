@@ -1,5 +1,5 @@
-// Loads what episode-entry needs for one season: its castaways, tribes, event types with points, advantages, and
-// the saved events before the episode being entered. Reads go through the caller's client, so RLS applies.
+// Loads what episode-entry needs for one season: its castaways, tribes, event types with points, advantages, its
+// saved events and the cards episodes were saved from. Reads go through the caller's client, so RLS applies.
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import type { EventRow } from "../_shared/replay.ts";
@@ -56,10 +56,22 @@ export async function loadSeason(supabase: SupabaseClient, season: number): Prom
   return data;
 }
 
-/** The season's saved events before `episode`, oldest first, ready to replay */
-export async function loadRowsBefore(supabase: SupabaseClient, season: number, episode: number): Promise<EventRow[]> {
+/** The season's saved events, oldest first, ready to replay */
+export async function loadSeasonRows(supabase: SupabaseClient, season: number): Promise<EventRow[]> {
   return rowsOf(await supabase.from("season_events_readable").select("*")
-    .eq("season", season).lt("episode", episode)
+    .eq("season", season)
     .order("episode").order("seq")
     .range(0, 9999)) as EventRow[];              // Supabase returns at most 1,000 rows unless told otherwise
+}
+
+// The card shapes episode_cards.format 1 holds (js/admin/admin-cards.js)
+const CARD_FORMAT = 1;
+
+/** Episode → the cards it was saved from, for the episodes that have them */
+// deno-lint-ignore no-explicit-any
+export async function loadStoredCards(supabase: SupabaseClient, season: number): Promise<Map<number, any[]>> {
+  const rows = rowsOf(await supabase.from("episode_cards").select("episode, cards, format").eq("season", season));
+  const old = rows.find(r => r.format !== CARD_FORMAT);
+  if (old) throw new Error(`Episode ${old.episode}'s cards were saved in format ${old.format}, which this version can't read.`);
+  return new Map(rows.map(r => [r.episode as number, r.cards]));
 }

@@ -327,3 +327,9 @@ Deno.test("only the episode after the last entered can be entered", () => {
   assertEquals(episodeProblem(7, 5), "Enter episode 6 first.");
   assertEquals(episodeProblem(3, 0), "Enter episode 1 first.");
 });
+
+Deno.test("any entered episode can be edited, and nothing else", () => {
+  assertEquals(episodeProblem(1, 5, true), null);
+  assertEquals(episodeProblem(5, 5, true), null);
+  assertEquals(episodeProblem(6, 5, true), "Episode 6 isn't entered yet, so there's nothing to edit.");
+});
