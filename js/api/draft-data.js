@@ -17,9 +17,10 @@ function processDraftData({ castaways: rawCastaways, teams: rawTeams, episodeCou
   return { castaways, teams, teamNames, episodeCount, merged, finished };
 }
 
-// Adds name, teams (filled in by processDraftData), tribe members and each log row's other castaway
+// Adds name (with any nickname in quotes: 'Oscar "Ozzy" Lusth'), teams (filled in by processDraftData), tribe
+// members and each log row's other castaway
 function addCastawayFields(c, byId) {
-  c.name = [c.firstName, c.lastName].filter(Boolean).join(' ');
+  c.name = [c.firstName, c.nickname && `"${c.nickname}"`, c.lastName].filter(Boolean).join(' ');
   c.teams = [];
   c.tribes = c.tribes || [];
   c.tribes.forEach(t => { t.members = (t.memberIds || []).map(id => byId.get(id)).filter(Boolean); });

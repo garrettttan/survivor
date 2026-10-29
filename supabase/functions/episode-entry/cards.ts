@@ -7,7 +7,7 @@
 import type { EventRow } from "../_shared/replay.ts";
 import type { GameState } from "./game.ts";
 
-export interface Castaway { id: number; firstName: string; lastName: string; name: string }
+export interface Castaway { id: number; firstName: string; lastName: string; name: string; nickname: string | null }
 export interface Tribe { id: number; name: string; color: string }
 export interface EventType {
   id: number;

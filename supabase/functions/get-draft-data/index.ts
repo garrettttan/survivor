@@ -42,7 +42,7 @@ export default {
     if (typeof season === "string") return Response.json({ error: season }, { status: 400 });
     if (typeof draftId === "string") return Response.json({ error: draftId }, { status: 400 });
 
-    const [teams, events, rosters, scoring] = await Promise.all([
+    const [teams, events, rosters, scoring, nicknames] = await Promise.all([
       supabase
         .from("teams")
         .select("name, winner_pick_id, ghost_count")
@@ -65,9 +65,14 @@ export default {
         .eq("season", season)
         .order("event_types(category)")
         .order("event_types(name)"),
+      supabase
+        .from("castaways")
+        .select("id, nickname")
+        .eq("season", season)
+        .not("nickname", "is", null),
     ]);
 
-    const error = teams.error ?? events.error ?? rosters.error ?? scoring.error;
+    const error = teams.error ?? events.error ?? rosters.error ?? scoring.error ?? nicknames.error;
     if (error) {
       return Response.json({ error: error.message }, { status: 500 });
     }
@@ -140,9 +145,15 @@ export default {
       value instanceof Map ? Object.fromEntries(value) :
       value;
 
+    // Each castaway's nickname (null for none), which the page shows in place of their first name
+    const nicknameById = new Map<number, string>((nicknames.data ?? []).map((n) => [n.id, n.nickname]));
+    const castawaysWithNicknames = new Map(
+      [...castaways].map(([id, c]) => [id, { ...c, nickname: nicknameById.get(id) ?? null }]),
+    );
+
     const body = {
         teams: teamToInfo,
-        castaways: castaways, 
+        castaways: castawaysWithNicknames, 
         scoring: scoringParsed, 
         episodeCount,
         merged,

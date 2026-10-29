@@ -45,9 +45,9 @@ function type(name: string, extra: Partial<EventType> = {}): EventType {
 const data: SeasonData = {
   season: 99,
   castawayById: new Map([
-    [1, { id: 1, firstName: "Ann", lastName: "Lee", name: "Ann Lee" }],
-    [2, { id: 2, firstName: "Bea", lastName: "Ng", name: "Bea Ng" }],
-    [3, { id: 3, firstName: "Cal", lastName: "Ito", name: "Cal Ito" }],
+    [1, { id: 1, firstName: "Ann", lastName: "Lee", name: "Ann Lee", nickname: null }],
+    [2, { id: 2, firstName: "Bea", lastName: "Ng", name: "Bea Ng", nickname: null }],
+    [3, { id: 3, firstName: "Cal", lastName: "Ito", name: "Cal Ito", nickname: null }],
   ]),
   tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }]]),
   eventTypeByName: new Map([
@@ -164,7 +164,7 @@ const TYPES = ["Swapped tribes", "Switched tribes", "Merged", "Won team immunity
   "Cried on camera", "Received a jury vote", "Became Sole Survivor"];
 const big: SeasonData = {
   season: 98,
-  castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n }])),
+  castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),
   tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }], [11, { id: 11, name: "Blue", color: "#0284c7" }],
     [12, { id: 12, name: "Green", color: "#16a34a" }], [13, { id: 13, name: "Merged", color: "#7c3aed" }]]),
   eventTypeByName: new Map(TYPES.map(t => [t, type(t, { endsGame: /Voted out|rocks|evacuated|Quit|fire/.test(t),

@@ -81,16 +81,9 @@ function showSheet(html) {
 // Everyone else who was on the tribe during this stint (listed by the server)
 function sortTribemates(members) {
   const cmp = (x, y) => x.localeCompare(y, undefined, { sensitivity: 'base' });
-  const splitName = n => {
-    const [first, ...rest] = n.split(' ');
-    return [first, rest.join(' ')];
-  };
   // Active first, then by first name, then last name
-  return [...members].sort((a, b) => {
-    const [aFirst, aLast] = splitName(a.name);
-    const [bFirst, bLast] = splitName(b.name);
-    return b.active - a.active || cmp(aFirst, bFirst) || cmp(aLast, bLast);
-  });
+  return [...members].sort((a, b) =>
+    b.active - a.active || cmp(a.firstName || '', b.firstName || '') || cmp(a.lastName || '', b.lastName || ''));
 }
 
 // A stint's tribemates as name chips (short names; out players dashed and struck through) in a panel tinted

@@ -21,7 +21,7 @@ function rowsOf<T>(result: { data: T[] | null; error: { message: string } | null
 
 export async function loadSeason(supabase: SupabaseClient, season: number): Promise<Season> {
   const [castaways, tribes, eventTypes, scoring, advantages, last] = await Promise.all([
-    supabase.from("castaways").select("id, first_name, last_name, name").eq("season", season).order("id"),
+    supabase.from("castaways").select("id, first_name, last_name, name, nickname").eq("season", season).order("id"),
     supabase.from("tribes").select("id, name, color").eq("season", season).order("id"),
     supabase.from("event_types").select("id, category, name, changes_tribe, ends_game, advantage_effect")
       .neq("category", "Legacy").order("id"),
@@ -35,6 +35,7 @@ export async function loadSeason(supabase: SupabaseClient, season: number): Prom
     season,
     castaways: rowsOf(castaways).map(c => ({
       id: c.id, firstName: c.first_name, lastName: c.last_name, name: c.name ?? `${c.first_name} ${c.last_name}`,
+      nickname: c.nickname,
     })),
     tribes: rowsOf(tribes) as Tribe[],
     eventTypes: rowsOf(eventTypes).map(t => ({

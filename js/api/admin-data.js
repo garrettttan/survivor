@@ -25,7 +25,7 @@ async function callEpisodeEntry(body) {
 
 // Everything the form needs for `episode` (null = the one after the last entered), with the game as it stood
 // when the episode began:
-// { episode, castaways: [{ id, name, firstName }], tribes: [{ id, name, color }], eventTypes: [{ id, name, points }],
+// { episode, castaways: [{ id, name, firstName, nickname }], tribes: [{ id, name, color }], eventTypes: [{ id, name, points }],
 //   advantages: [{ id, name }], maxEpisode, game: GameState }
 // (maxEpisode = the highest episode with rows, 0 for none)
 function getEpisodeState(season, episode) {

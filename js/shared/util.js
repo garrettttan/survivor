@@ -11,16 +11,17 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
-// Short display names, keyed by full name: the castaway's first name (e.g. "Thien An") if set, else the first word.
+// Short display names, keyed by full name: the castaway's nickname (e.g. "Jelly") if set, else their first name
+// (e.g. "Thien An"), else the first word.
 // Adds a last initial when short names clash ("John A.", "John C."), and the full name if that still clashes.
 function shortNames(castaways) {
   const parts = new Map();
-  castaways.forEach(({ name, firstName }) => {
+  castaways.forEach(({ name, firstName, lastName, nickname }) => {
     if (parts.has(name)) return;
     const words = name.trim().split(/\s+/);
-    const base = firstName || words[0];
-    // Last name is what follows the short name ("Thien An Nguyen" → "Nguyen"), or the words after the first
-    const rest = name.startsWith(base) ? name.slice(base.length).trim() : words.slice(1).join(' ');
+    const base = nickname || firstName || words[0];
+    // Last name if known, else what follows the short name ("Thien An Nguyen" → "Nguyen"), or the words after the first
+    const rest = lastName || (name.startsWith(base) ? name.slice(base.length).trim() : words.slice(1).join(' '));
     parts.set(name, { base, initialed: rest ? `${base} ${rest[0]}.` : base });
   });
   const counts = key => [...parts.values()].reduce((m, p) => m.set(p[key], (m.get(p[key]) || 0) + 1), new Map());

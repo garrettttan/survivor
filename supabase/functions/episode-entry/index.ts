@@ -61,7 +61,7 @@ async function state(supabase: SupabaseClient, season: number, requested: number
   const saved = await loadRowsBefore(supabase, season, episode);
   return {
     episode,
-    castaways: data.castaways.map(c => ({ id: c.id, name: c.name, firstName: c.firstName })),
+    castaways: data.castaways.map(c => ({ id: c.id, name: c.name, firstName: c.firstName, nickname: c.nickname })),
     tribes: data.tribes,
     eventTypes: data.eventTypes.map(t => ({ id: t.id, name: t.name, points: t.points })),
     advantages: data.advantages,
