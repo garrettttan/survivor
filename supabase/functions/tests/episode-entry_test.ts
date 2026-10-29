@@ -6,6 +6,7 @@ import { assert, assertEquals } from "jsr:@std/assert@1";
 import type { EventRow } from "../_shared/replay.ts";
 import { cardRows, episodeProblem, toEventRow, type EventType, type SeasonData } from "../episode-entry/cards.ts";
 import { gameState, type GameState } from "../episode-entry/game.ts";
+import { rebuildEpisode } from "../episode-entry/rebuild.ts";
 import { fixtureSeasons } from "./fixture-season.ts";
 
 const FIXTURES = new URL("./fixtures/", import.meta.url);
@@ -177,7 +178,7 @@ const TYPES = ["Starting tribe", "Swapped tribes", "Switched tribes", "Merged", 
   "Won team reward", "Won team reward (2nd place)", "Won individual immunity", "Won individual reward",
   "Brought on reward", "Sat out of challenge", "Voted correctly", "Voted incorrectly", "Voted out",
   "Went home on rocks", "Medically evacuated", "Quit", "Lost fire-making", "Had an iconic moment",
-  "Cried on camera", "Received a jury vote", "Became Sole Survivor"];
+  "Cried on camera", "Received a jury vote", "Became Sole Survivor", "Played Shot in the Dark (not safe)", "Safe from Shot in the Dark"];
 const big: SeasonData = {
   season: 98,
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),
@@ -294,6 +295,50 @@ Deno.test("tribal: votes, then whoever went home", () => {
     ["Pick who Bea voted for, or No vote.", "Pick who Cal voted for, or No vote."]);
   assertEquals(cardRows({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 1, 2: 1, 3: 1 } }, big, red3).errors,
     ["Ann's vote has to be for someone else at this Tribal."]);
+});
+
+Deno.test("tribal: Shot in the Dark takes the place of a vote, with one row for how it went", () => {
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  const tribal = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, ...fields });
+  // Bea rolls and is saved; Ann and Cal vote for each other
+  assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: "shot", 3: 1 }, safe: { 2: "shot" } }), red3), [
+    ["Ann", "Voted correctly", "Cal"], ["Bea", "Safe from Shot in the Dark", null],
+    ["Cal", "Voted incorrectly", "Ann"], ["Cal", "Voted out", null],
+  ]);
+  // Bea rolls and isn't saved
+  assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: "shot", 3: 1 } }), red3).filter(r => r[0] === "Bea"),
+    [["Bea", "Played Shot in the Dark (not safe)", null]]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1 }, safe: { 2: "shot" } }), big, red3).errors,
+    ["Bea didn't play Shot in the Dark."]);
+});
+
+Deno.test("tribal: whoever is safe can't go home, and votes for them still count", () => {
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  const tribal = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, ...fields });
+  // Ann has an idol played on her: Bea's vote for her is incorrect, and saves no extra row
+  assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: 1, 3: 2 }, safe: { 1: "idol" } }), red3), [
+    ["Ann", "Voted correctly", "Cal"], ["Bea", "Voted incorrectly", "Ann"], ["Cal", "Voted incorrectly", "Bea"],
+    ["Cal", "Voted out", null],
+  ]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1 }, safe: { 3: "immunity" } }), big, red3).errors,
+    ["Cal was safe with immunity, so didn't go home."]);
+  assertEquals(cardRows(tribal({ bootId: 2, votes: { 1: 2, 2: "shot", 3: 2 }, safe: { 2: "shot" } }), big, red3).errors,
+    ["Bea was safe with Shot in the Dark, so didn't go home."]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1 }, safe: { 4: "idol" } }), big, red3).errors,
+    ["Dee wasn't at this Tribal, so can't be safe at it."]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1 }, safe: { 1: "luck" } }), big, red3).errors,
+    ["Pick why Ann was safe."]);
+});
+
+Deno.test("tribal: a Shot in the Dark Tribal rebuilds as the same card", () => {
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  const card = { type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 3, 2: "shot", 3: 1 }, safe: { 2: "shot" } };
+  const before = [1, 2, 3, 4, 5, 6].map((id, i) => toEventRow({ castawayId: id, eventType: big.eventTypeByName.get("Swapped tribes")!,
+    otherCastawayId: null, advantageId: null, newAdvantage: null, tribeId: red3.tribeOf[id], quantity: 1, details: null }, big, 1, i + 1));
+  const rows = cardRows(card, big, { ...red3, out: [] }).rows.map((r, i) => toEventRow(r, big, 2, i + 1));
+  const rebuilt = rebuildEpisode(rows, before, big, new Map([["Red", 10], ["Blue", 11], ["Green", 12]]), new Map());
+  assertEquals(rebuilt.fallbacks, []);
+  assertEquals(rebuilt.cards, [card]);
 });
 
 Deno.test("tribal: rocks takes no votes", () => {

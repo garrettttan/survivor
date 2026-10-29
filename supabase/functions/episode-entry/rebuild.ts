@@ -116,7 +116,9 @@ function customCard(r: EventRow): Card {
 type Guess = { card: Card; rows: EventRow[] } | null;
 
 const EXITS: Record<string, string> = { "Medically evacuated": "medevac", "Quit": "quit", "Lost fire-making": "fire" };
-const VOTES = new Set(["Voted correctly", "Voted incorrectly"]);
+const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
+const SAFE_SHOT = "Safe from Shot in the Dark";
+const VOTES = new Set(["Voted correctly", "Voted incorrectly", NOT_SAFE_SHOT, SAFE_SHOT]);
 const WIN = /^Won (team|individual) (immunity|reward)( \(2nd place\))?$/;
 
 function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Guess {
@@ -195,18 +197,21 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
 }
 
 // Votes, then whoever went home. Each castaway at Tribal (everyone on the boot's tribe) votes as their row says, or
-// No vote if they have none: a consensus after a deadlock leaves the deadlocked pair without votes. A Voted out row
-// with no votes before it isn't guessed as a Tribal, since its votes were never recorded.
+// No vote if they have none: a consensus after a deadlock leaves the deadlocked pair without votes. Either Shot in the
+// Dark row is a vote of "shot"; the safe one also marks them safe. Safety from immunity or an idol makes no row here,
+// so a rebuilt Tribal doesn't have it. A Voted out row with no votes before it isn't guessed as a Tribal, since its
+// votes were never recorded.
 function tribalGuess(votes: EventRow[], remaining: EventRow[], data: SeasonData, game: GameState): Guess {
   const boot = remaining[votes.length];
   if (!boot || boot.event !== "Voted out") return null;
   const tribeId = game.tribeOf[boot.castaway_id];
   if (tribeId === undefined) return null;
   const attendees = [...data.castawayById.keys()].filter(id => !game.out.includes(id) && game.tribeOf[id] === tribeId);
-  const cast = new Map(votes.map(e => [e.castaway_id, e.other_castaway_id]));
+  const cast = new Map(votes.map(e => [e.castaway_id, e.event === NOT_SAFE_SHOT || e.event === SAFE_SHOT ? "shot" : e.other_castaway_id]));
   const card = {
     type: "tribal", tribeId, outcome: "voted", bootId: boot.castaway_id,
     votes: Object.fromEntries(attendees.map(id => [id, cast.get(id) ?? "none"])),
+    safe: Object.fromEntries(votes.filter(e => e.event === SAFE_SHOT).map(e => [e.castaway_id, "shot"])),
   };
   return { card, rows: [...votes, boot] };
 }

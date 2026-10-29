@@ -287,8 +287,14 @@ function hideHolder() {
   renderGame();
 }
 
+// What card `index` is drawn from: the game just before it, and who won individual immunity since the episode's last
+// Tribal before it (as of the latest preview), for a Tribal card to mark safe
 function cardCtx(index) {
-  return { ...entry.ctx, game: gameBefore(index) };
+  const lastTribal = entry.cards.slice(0, index).map(c => c.type).lastIndexOf('tribal');
+  const immune = (entry.preview?.rows || [])
+    .filter(r => r.card > lastTribal && r.card < index && r.eventType === 'Won individual immunity')
+    .map(r => r.castawayId);
+  return { ...entry.ctx, game: gameBefore(index), immune };
 }
 
 function renderCards() {

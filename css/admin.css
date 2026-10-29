@@ -145,6 +145,7 @@
 .entry-pair:last-child { border-bottom: none; }
 .entry-pair-name { flex: 1; min-width: 0; font-size: 0.9rem; }
 .entry-pair .entry-input { flex: 1.4; width: auto; }
+.entry-shot-outcome { flex: none; flex-wrap: nowrap; }
 
 /* Pill choices: a hidden checkbox or radio inside a label, with the pill drawn on the span after it. Plain chips
    fill orange when ticked. */

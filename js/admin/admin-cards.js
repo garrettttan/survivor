@@ -14,7 +14,9 @@
 //                  (tribe: first/second = tribe ids; individual: first = a castaway id; teams, for teams that aren't
 //                  tribes: teamCount teams numbered from 1, teams = who was on each, first/second = team numbers;
 //                  anyone still in the game who isn't on a team sat out)
-//   tribal       { tribeId, votes: { [voterId]: targetId | 'none' }, outcome: 'voted'|'rocks'|'consensus', bootId }
+//   tribal       { tribeId, votes: { [voterId]: targetId | 'none' | 'shot' }, outcome: 'voted'|'rocks'|'consensus', bootId,
+//                  safe: { [castawayId]: 'immunity' | 'idol' | 'shot' } } ('shot' as a vote = played Shot in the Dark
+//                  instead of voting; safe = who couldn't go home, and why)
 //   advantage    { action: 'found'|'gave'|'played'|'expired', castawayId, advantage, recipientId, targetId,
 //                  changedOutcome } (played: targetId = who it was played on, null when they played it for themselves)
 //   exit         { reason: 'medevac'|'quit'|'fire', castawayId }
@@ -60,16 +62,25 @@ const CARD_TYPES = {
     // With one tribe in play (after the merge), it's the one at Tribal
     blank: ctx => {
       const tribes = tribesInPlay(ctx);
-      return { tribeId: tribes.length === 1 ? tribes[0].id : null, votes: {}, outcome: 'voted', bootId: null, _votesFor: null };
+      const card = { tribeId: tribes.length === 1 ? tribes[0].id : null, votes: {}, outcome: 'voted', bootId: null,
+        safe: {}, _votesFor: null, _immunityFilled: false };
+      prefillImmunity(card, ctx);
+      return card;
     },
     html: tribalHtml,
-    // A saved card's votes are as entered, so nothing is prefilled over them
-    load: card => ({ _votesFor: card.bootId }),
-    reset: { tribeId: { votes: {}, bootId: null, _votesFor: null } },
-    // Rocks takes no votes, so they're cleared (and filled in again if the outcome changes back)
+    // A saved card's votes and who was safe are as entered, so nothing is prefilled over them (cards saved before
+    // safety was recorded have none)
+    load: card => ({ _votesFor: card.bootId, safe: card.safe ?? {}, _immunityFilled: true }),
+    reset: { tribeId: { votes: {}, bootId: null, safe: {}, _votesFor: null, _immunityFilled: false } },
+    // Rocks takes no votes, so they're cleared (and filled in again if the outcome changes back). Only someone at
+    // this Tribal can be safe at it, and only someone who played Shot in the Dark can have been saved by it.
     tidy: (card, ctx) => {
       if (card.outcome === 'rocks') Object.assign(card, { votes: {}, _votesFor: null });
       else if (card.tribeId !== null) prefillVotes(card, membersOf(card.tribeId, ctx));
+      prefillImmunity(card, ctx);
+      const attendees = card.tribeId === null ? [] : membersOf(card.tribeId, ctx);
+      card.safe = Object.fromEntries(Object.entries(card.safe || {}).filter(([id, reason]) =>
+        attendees.includes(Number(id)) && (reason !== 'shot' || card.votes[id] === 'shot')));
     },
   },
   advantage: {
@@ -372,6 +383,16 @@ function prefillVotes(card, attendees) {
   card._votesFor = card.bootId;
 }
 
+// Once the tribe at Tribal is known, whoever won individual immunity earlier in the episode (ctx.immune, since the
+// last Tribal) is marked safe with it. Only once, so unmarking someone sticks.
+function prefillImmunity(card, ctx) {
+  if (card._immunityFilled || card.tribeId === null) return;
+  const attendees = membersOf(card.tribeId, ctx);
+  card.safe = { ...card.safe };
+  for (const id of ctx.immune || []) if (attendees.includes(id) && card.safe[id] === undefined) card.safe[id] = 'immunity';
+  card._immunityFilled = true;
+}
+
 function tribalHtml(card, ctx) {
   let html = groupHtml('Tribe', tribeChoicesHtml({ field: 'tribeId', num: true, rerender: true }, tribesInPlay(ctx), card.tribeId)) +
     fieldHtml('Outcome', selectHtml({ field: 'outcome', rerender: true },
@@ -379,13 +400,30 @@ function tribalHtml(card, ctx) {
   if (card.tribeId === null) return html + '<p class="entry-hint">Pick the tribe to choose who went home and enter the votes.</p>';
   const attendees = membersOf(card.tribeId, ctx);
   html += fieldHtml('Went home', castawaySelect('bootId', attendees, card.bootId, ctx, { rerender: true }));
+  // Who couldn't go home: immunity or an idol here, Shot in the Dark next to their vote
+  html += groupHtml('Safe', sortIntoGroupsHtml('safe',
+    [{ id: 'immunity', name: 'Immunity', color: null }, { id: 'idol', name: 'Idol', color: null }],
+    { ...card, safe: card.safe || {} }, ctx, attendees));
   if (card.outcome === 'rocks') return html;
+  // Shot in the Dark takes the place of a vote; Safe / Not safe appears once it's picked
   const votes = attendees.map(id => `<div class="entry-pair">
       <span class="entry-pair-name">${escapeHtml(ctx.short.get(id))}</span>
       ${selectHtml({ map: 'votes', key: id, num: true, rerender: true },
-        [...castawayPairs(attendees.filter(t => t !== id), ctx), ['none', 'No vote']], card.votes[id])}
+        [...castawayPairs(attendees.filter(t => t !== id), ctx), ['none', 'No vote'], ['shot', 'Shot in the Dark']], card.votes[id])}
+      ${card.votes[id] === 'shot' ? shotOutcomeHtml(id, card.safe?.[id] === 'shot') : ''}
     </div>`).join('');
   return html + groupHtml('Final-round votes', voteCountHtml(card, attendees, ctx) + votes);
+}
+
+// How a castaway's Shot in the Dark went: Not safe (the default, no safe mark) or Safe (marked safe with it). Radios
+// on the card's `safe` map, each pair with its own group name.
+let shotChoiceGroups = 0;
+function shotOutcomeHtml(id, safe) {
+  const name = `shot-choice-${++shotChoiceGroups}`;
+  const pill = (value, label, checked) => `<label class="entry-chip">
+      <input type="radio" name="${name}" value="${value}" data-map="safe" data-key="${id}" data-rerender${checked ? ' checked' : ''}>
+      <span>${label}</span></label>`;
+  return `<div class="entry-chips entry-shot-outcome">${pill('', 'Not safe', !safe)}${pill('shot', 'Safe', safe)}</div>`;
 }
 
 // How many votes each castaway is getting, most first; anyone without votes is left out

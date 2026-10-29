@@ -244,7 +244,16 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // ── Tribal Council ───────────────────────────────────────────────────────────
 // A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote),
 // then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
-// recorded like a vote.
+// recorded like a vote. Shot in the Dark (a vote of "shot") gives up the vote for one row: Safe from Shot in the Dark
+// if it saved them, else Played Shot in the Dark (not safe).
+//
+// `safe` says who was safe at this Tribal and why: individual immunity, an idol, or Shot in the Dark. A safe castaway
+// can't be the one who went home; votes for them still count, as incorrect. Immunity and idols are saved by their
+// own cards (the challenge, the advantage played), so here they're only checked; Shot in the Dark makes its row.
+const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
+const SAFE_SHOT = "Safe from Shot in the Dark";
+const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
+
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
   const tribeId = tribeInPlay(card.tribeId, "the tribe at Tribal", data, game, errors);
@@ -255,16 +264,28 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   if (bootId === null) errors.push("Pick who went home.");
   else if (!attendees.includes(bootId)) errors.push(`${name(data, bootId)} wasn't at this Tribal.`);
 
+  const safe = new Map(entries(card.safe));
+  for (const [id, reason] of safe) {
+    if (!attendees.includes(id)) errors.push(`${name(data, id)} wasn't at this Tribal, so can't be safe at it.`);
+    else if (typeof reason !== "string" || !SAFE_REASONS[reason]) errors.push(`Pick why ${name(data, id)} was safe.`);
+    else if (id === bootId) errors.push(`${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so didn't go home.`);
+  }
+
   const rows: CardRow[] = [];
   if (card.outcome !== "rocks") {
     const correct = eventType(data, "Voted correctly", errors);
     const incorrect = eventType(data, "Voted incorrectly", errors);
     const votes = new Map(entries(card.votes));
+    for (const [id, reason] of safe) {
+      if (reason === "shot" && votes.get(id) !== "shot") errors.push(`${name(data, id)} didn't play Shot in the Dark.`);
+    }
     for (const voter of attendees) {
       const target = votes.get(voter);
       if (target === undefined || target === null) errors.push(`Pick who ${name(data, voter)} voted for, or No vote.`);
       else if (target === "none") continue;
-      else if (typeof target !== "number" || !attendees.includes(target) || target === voter) {
+      else if (target === "shot") {
+        rows.push(row(voter, eventType(data, safe.get(voter) === "shot" ? SAFE_SHOT : NOT_SAFE_SHOT, errors)));
+      } else if (typeof target !== "number" || !attendees.includes(target) || target === voter) {
         errors.push(`${name(data, voter)}'s vote has to be for someone else at this Tribal.`);
       } else if (bootId !== null) {
         rows.push(row(voter, target === bootId ? correct : incorrect, { otherCastawayId: target }));
