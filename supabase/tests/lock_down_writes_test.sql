@@ -87,12 +87,7 @@ begin
     v_results := array_append(v_results, format('PASS: an entered episode can''t be saved again (%s)', sqlerrm));
   end;
 
-  v_count := public.replace_episode_events(51::smallint, 99::smallint, '[]', jsonb_build_array(v_rows -> 0));
-  if v_count = 1 and (select count(*) from public.events where season = 51 and episode = 99) = 1 then
-    v_results := array_append(v_results, 'PASS: replace_episode_events swapped the episode''s rows');
-  else
-    v_results := array_append(v_results, format('FAIL: replace wrote %s rows', v_count));
-  end if;
+  -- Replacing episodes is checked in episode_cards_test.sql (replace_episode_events became replace_episodes)
 
   if (select count(*) from public.season_events_readable where season = 51)
      = (select count(*) from public.events where season = 51) then
