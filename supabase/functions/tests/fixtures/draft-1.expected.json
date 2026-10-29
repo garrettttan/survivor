@@ -706,6 +706,15 @@
    },
    {
     "episode": 3,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -1122,6 +1131,15 @@
     "episode": 2,
     "name": "Won team immunity",
     "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Sat out of challenge",
+    "points": 0,
     "otherCastawayId": null,
     "details": null,
     "tribe": "Toka",
@@ -1739,6 +1757,15 @@
    },
    {
     "episode": 3,
+    "name": "Sat out of challenge",
+    "points": 0,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -1879,6 +1906,15 @@
     "episode": 2,
     "name": "Won team immunity",
     "points": 2,
+    "otherCastawayId": null,
+    "details": null,
+    "tribe": "Toka",
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Sat out of challenge",
+    "points": 0,
     "otherCastawayId": null,
     "details": null,
     "tribe": "Toka",

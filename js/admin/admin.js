@@ -2,7 +2,8 @@
 // an admin is signed in, then the episode entry form: pick the episode, describe it as cards, save. Each change
 // is checked in the background (a preview), which keeps the game panel, pickers and errors current. Every rule
 // lives in the episode-entry function (js/api/admin-data.js); this file keeps the form's state and draws it.
-// Episodes already entered can't be edited here yet.
+// An episode that's already entered opens as its cards, to edit: its preview also shows what the edit changes in
+// it and in every later episode, and saving replaces them all at once.
 
 // The season in the URL, taken as given: entering events doesn't need the season to have a draft
 const adminSeason = Number(new URLSearchParams(location.search).get('season')) || CONFIG.DEFAULT_SEASON.season;
@@ -14,7 +15,7 @@ const entry = {
   userId: null,          // the admin the form was drawn for (auth events repeat; only a new user redraws)
   episode: null,
   ctx: null,             // getEpisodeState's reply plus short names: what every card form draws from (admin-cards.js)
-  entered: false,        // the episode already has saved rows (editing them isn't supported yet)
+  editing: false,        // the episode is already entered: its cards were loaded, and saving replaces it
   cards: [],
   draftHandled: false,   // the restore offer was answered, or you started over
   preview: null,         // the latest previewEpisode result
@@ -23,7 +24,7 @@ const entry = {
   previewToken: 0,       // drops replies that a newer request has overtaken
   previewTimer: null,
   saving: false,
-  flash: null,           // { episode, inserted } after a save
+  flash: null,           // { episode, inserted } after saving a new episode, { episodes } after saving an edit
   shownHolder: null,     // the castaway whose advantages the game panel is showing (tap their pill)
 };
 
@@ -31,10 +32,10 @@ const entry = {
 const drawnWith = new WeakMap();
 
 // ── Draft autosave ────────────────────────────────────────────────────────
-// The cards are kept per season and episode until saved, so a closed tab loses nothing.
-// Storage can be unavailable (private mode), so every access is wrapped.
+// The cards are kept per season and episode until saved, so a closed tab loses nothing. An edit's draft is kept
+// apart from a new episode's. Storage can be unavailable (private mode), so every access is wrapped.
 function draftKey() {
-  return `episode-entry:${adminSeason}:${entry.episode}`;
+  return `episode-entry:${adminSeason}:${entry.episode}${entry.editing ? ':edit' : ''}`;
 }
 
 function saveDraft() {
@@ -68,7 +69,7 @@ function schedulePreview() {
 async function runPreview() {
   const token = ++entry.previewToken;
   try {
-    const result = await previewEpisode(adminSeason, entry.episode, entry.cards.map(cardPayload));
+    const result = await previewEpisode(adminSeason, entry.episode, entry.cards.map(cardPayload), entry.editing);
     if (token !== entry.previewToken) return;
     entry.preview = result;
     entry.previewError = null;
@@ -98,6 +99,24 @@ function rowsFor(index) {
   return (entry.preview?.rows || []).filter(r => r.card === index);
 }
 
+function hasChanges(changes) {
+  return changes.added.length > 0 || changes.removed.length > 0;
+}
+
+// The episodes an edit's latest preview changes: this one, then any later ones
+function changedEpisodes() {
+  const p = entry.preview;
+  if (!p?.changes) return [];
+  return [...(hasChanges(p.changes) ? [entry.episode] : []),
+    ...(p.later || []).filter(l => hasChanges(l.changes)).map(l => l.episode)];
+}
+
+// [4] → "episode 4", [4, 5, 6] → "episodes 4, 5 and 6"
+function episodeList(episodes) {
+  if (episodes.length === 1) return `episode ${episodes[0]}`;
+  return `episodes ${episodes.slice(0, -1).join(', ')} and ${episodes[episodes.length - 1]}`;
+}
+
 // ── Loading an episode ────────────────────────────────────────────────────
 async function loadEpisode(episode) {
   clearTimeout(entry.previewTimer);
@@ -114,13 +133,15 @@ async function loadEpisode(episode) {
   const short = shortNames(state.castaways);
   entry.ctx = { ...state, short: new Map(state.castaways.map(c => [c.id, short.get(c.name)])) };
   entry.episode = state.episode;
-  entry.entered = state.episode <= state.maxEpisode;
-  entry.cards = [];
+  entry.editing = state.cards !== null;
+  entry.cards = (state.cards || []).map(loadCard);
   entry.draftHandled = false;
   entry.preview = null;
   entry.previewError = null;
-  entry.previewPending = false;
+  entry.previewPending = entry.editing;
   renderForm();
+  // An entered episode is checked straight away, for its rows and so saving it unchanged shows no changes
+  if (entry.editing) runPreview();
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────
@@ -143,47 +164,67 @@ function renderAdminPage(user) {
   loadEpisode(null);
 }
 
-// An episode that's already entered shows only the episode picker, to pick another
+// An entered episode also gets the changes its edit makes, above the save bar
 function renderForm() {
   document.getElementById('entry-form').innerHTML = `
     <section class="entry-panel" id="entry-episode"></section>
     <div id="entry-flash"></div>
-    ${entry.entered ? '' : `
     <div id="entry-restore"></div>
     <section class="entry-panel" id="entry-game"></section>
     <section id="entry-cards"></section>
     <div id="entry-notes"></div>
-    <div class="entry-save-bar" id="entry-save-bar"></div>`}
+    ${entry.editing ? '<section class="entry-panel" id="entry-changes"></section>' : ''}
+    <div class="entry-save-bar" id="entry-save-bar"></div>
   `;
   renderEpisodeHeader();
   renderFlash();
-  if (entry.entered) return;
   renderRestoreOffer();
   renderGame();
   renderCards();
   renderNotes();
+  renderChanges();
   renderSaveBar();
 }
 
+// A button per entered episode, then one for the next, new episode; the open one is filled in
 function renderEpisodeHeader() {
-  const { maxEpisode } = entry.ctx;
-  const note = entry.entered
-    ? `Episode ${entry.episode} is already entered. Editing entered episodes isn't available yet.`
-    : maxEpisode ? `Episodes 1–${maxEpisode} are entered.` : 'No episodes entered yet.';
+  const { maxEpisode, rebuilt, fallbacks } = entry.ctx;
+  let note = maxEpisode ? `Entering episode ${entry.episode}, the next one.` : 'No episodes entered yet.';
+  if (entry.editing) {
+    note = `Editing episode ${entry.episode}, which is already entered. Saving replaces its rows, and the rows of any ` +
+      'later episode the edit changes.';
+    if (rebuilt) {
+      note += ' Its cards were rebuilt from its saved rows' + (fallbacks.length
+        ? `; ${fallbacks.length} ${fallbacks.length === 1 ? "row doesn't" : "rows don't"} match a card, so ${fallbacks.length === 1 ? 'it is a custom row' : 'they are custom rows'}.`
+        : '.');
+    }
+  }
+  const button = (episode, label, extra = '') => `<button type="button" class="entry-episode${extra}" data-episode="${episode}"
+    aria-pressed="${episode === entry.episode}">${label}</button>`;
+  const entered = Array.from({ length: maxEpisode }, (_, i) => button(i + 1, i + 1)).join('');
   document.getElementById('entry-episode').innerHTML = `
-    <label class="entry-episode-picker">
-      <span class="entry-label">Episode</span>
-      <input class="entry-input entry-count" type="number" min="1" inputmode="numeric" id="entry-episode-input" value="${entry.episode}">
-    </label>
-    <p class="entry-hint${entry.entered ? ' entry-warn' : ''}">${escapeHtml(note)}</p>
+    <div class="entry-episode-row">
+      <span class="entry-label" id="entry-episode-label">Episode</span>
+      <div class="entry-episodes" role="group" aria-labelledby="entry-episode-label">
+        ${entered}${button(maxEpisode + 1, `+ ${maxEpisode + 1}`, ' new')}
+      </div>
+      ${entry.editing ? '<span class="entry-editing">Editing</span>' : ''}
+    </div>
+    <p class="entry-hint${entry.editing ? ' entry-warn' : ''}">${escapeHtml(note)}</p>
   `;
 }
 
 function renderFlash() {
   const el = document.getElementById('entry-flash');
   const { flash } = entry;
-  el.innerHTML = flash ? `<p class="entry-flash">Saved episode ${flash.episode} (${flash.inserted} rows).
-    <a href="${seasonUrl('index.html', adminSeason)}">See the standings</a></p>` : '';
+  if (!flash) {
+    el.innerHTML = '';
+    return;
+  }
+  const what = flash.episodes ? `Saved changes to ${episodeList(flash.episodes)}.`
+    : `Saved episode ${flash.episode} (${flash.inserted} rows).`;
+  el.innerHTML = `<p class="entry-flash">${escapeHtml(what)}
+    <a href="${seasonUrl('index.html', adminSeason)}">See the standings</a></p>`;
 }
 
 function renderRestoreOffer() {
@@ -195,7 +236,7 @@ function renderRestoreOffer() {
   }
   const when = new Date(draft.savedAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
   el.innerHTML = `<div class="entry-restore">
-    <span>Unsaved work for episode ${entry.episode} from ${escapeHtml(when)}.</span>
+    <span>Unsaved ${entry.editing ? 'changes to' : 'work for'} episode ${entry.episode} from ${escapeHtml(when)}.</span>
     <span class="entry-restore-actions">
       <button type="button" class="admin-text-button" data-draft="restore">Restore</button>
       <button type="button" class="admin-text-button" data-draft="discard">Discard</button>
@@ -294,7 +335,39 @@ function refreshAfterPreview() {
     else updateCardResults(el, i);
   });
   renderNotes();
+  renderChanges();
   renderSaveBar();
+}
+
+// What an edit changes: this episode's rows added and removed, then each later episode the edit reaches, with
+// any error it now has (a Tribal that no longer adds up) and a button to open it
+function renderChanges() {
+  const el = document.getElementById('entry-changes');
+  if (!el) return;
+  const p = entry.preview;
+  const heading = '<h2 class="entry-heading">Changes</h2>';
+  // While this episode has problems its broken cards make no rows, so every later episode would look broken too
+  if (!p?.changes || p.errors.length) {
+    el.innerHTML = heading + `<p class="entry-hint">${entry.previewError || entry.preview
+      ? "Changes show once this episode's cards check out." : 'Checking…'}</p>`;
+    return;
+  }
+  const rows = changes => cardRowsHtml(changes.added, entry.ctx, 'Adds') + cardRowsHtml(changes.removed, entry.ctx, 'Removes');
+  const later = (p.later || []).filter(l => l.errors.length || hasChanges(l.changes));
+  const unchanged = (p.later || []).length - later.length;
+  el.innerHTML = heading + `
+    <div class="entry-change">
+      <h3 class="entry-change-title">Episode ${entry.episode} <span class="entry-hint">this episode</span></h3>
+      ${hasChanges(p.changes) ? rows(p.changes) : '<p class="entry-hint">No changes.</p>'}
+    </div>
+    ${later.map(l => `<div class="entry-change">
+      <h3 class="entry-change-title">Episode ${l.episode}
+        <button type="button" class="admin-text-button" data-open-episode="${l.episode}">Open</button></h3>
+      ${errorListHtml(l.errors.map(e => ({ message: e.card == null ? e.message : `Card ${e.card + 1}: ${e.message}` })))}
+      ${rows(l.changes)}
+    </div>`).join('')}
+    ${unchanged ? `<p class="entry-hint">${later.length ? 'Other later episodes' : 'Later episodes'} don't change.</p>` : ''}
+  `;
 }
 
 // What the latest preview says about the episode as a whole (problems with one card show on it), and
@@ -317,8 +390,14 @@ function saveState() {
   if (!entry.cards.length) return { ready: false, status: 'Add a card to start.' };
   if (entry.previewPending) return { ready: false, status: 'Checking…' };
   if (entry.previewError || !entry.preview) return { ready: false, status: "Can't save until the episode is checked." };
-  const errors = entry.preview.errors.length;
+  // A later episode's errors count only once this episode has none: until then they follow from its broken cards
+  const errors = entry.preview.errors.length || (entry.preview.later || []).reduce((n, l) => n + l.errors.length, 0);
   if (errors) return { ready: false, status: `Fix ${errors} ${errors === 1 ? 'problem' : 'problems'} to save.` };
+  if (entry.editing) {
+    const changed = changedEpisodes();
+    if (!changed.length) return { ready: false, status: 'No changes to save.' };
+    return { ready: true, status: `Changes ${episodeList(changed)}.` };
+  }
   const rows = entry.preview.rows.length;
   return { ready: true, status: `${rows} ${rows === 1 ? 'row' : 'rows'} ready.` };
 }
@@ -329,7 +408,7 @@ function renderSaveBar() {
   const { ready, status } = saveState();
   el.innerHTML = `
     <span class="entry-save-status">${escapeHtml(status)}</span>
-    <button type="button" class="admin-submit" id="entry-save"${ready ? '' : ' disabled'}>Save episode</button>
+    <button type="button" class="admin-submit" id="entry-save"${ready ? '' : ' disabled'}>${entry.editing ? 'Save changes' : 'Save episode'}</button>
   `;
 }
 
@@ -349,11 +428,13 @@ function formChanged() {
   schedulePreview();
 }
 
+// A new episode is saved and the next one opens; an edit is saved and the episode opens again, as saved
 async function save() {
   entry.saving = true;
   renderSaveBar();
   try {
-    const result = await saveEpisode(adminSeason, entry.episode, entry.cards.map(cardPayload));
+    const write = entry.editing ? replaceEpisode : saveEpisode;
+    const result = await write(adminSeason, entry.episode, entry.cards.map(cardPayload));
     entry.saving = false;
     if (result.errors?.length) {
       entry.preview = { ...entry.preview, errors: result.errors };
@@ -361,8 +442,8 @@ async function save() {
       return;
     }
     clearDraft();
-    entry.flash = { episode: entry.episode, inserted: result.inserted };
-    await loadEpisode(null);
+    entry.flash = entry.editing ? { episodes: result.episodes } : { episode: entry.episode, inserted: result.inserted };
+    await loadEpisode(entry.editing ? entry.episode : null);
   } catch (err) {
     entry.saving = false;
     renderSaveBar();
@@ -406,21 +487,13 @@ function restoreDraft() {
 function bindEntryForm(body) {
   // Selects, checkboxes and radios report on change; text and number boxes on every keystroke
   body.addEventListener('change', e => {
-    if (e.target.id === 'entry-episode-input') {
-      const episode = Number(e.target.value);
-      if (episode >= 1 && episode !== entry.episode) {
-        entry.flash = null;
-        loadEpisode(episode);
-      }
-      return;
-    }
     if (e.target.matches('select, input[type=checkbox], input[type=radio]')) handleInput(e.target);
   });
   body.addEventListener('keydown', e => {
     if (e.key === 'Escape') hideHolder();
   });
   body.addEventListener('input', e => {
-    if (e.target.matches('input[type=text], input[type=number]') && e.target.id !== 'entry-episode-input') handleInput(e.target);
+    if (e.target.matches('input[type=text], input[type=number]')) handleInput(e.target);
   });
   body.addEventListener('click', async e => {
     if (!e.target.closest('[data-holder]')) hideHolder();   // a tap anywhere else closes the advantages popover
@@ -429,6 +502,12 @@ function bindEntryForm(body) {
     if (target.id === 'admin-sign-out') {
       await signOut();
       renderAdminPage(null);
+    } else if (target.dataset.episode) {
+      const episode = Number(target.dataset.episode);
+      if (episode !== entry.episode) {
+        entry.flash = null;
+        loadEpisode(episode);
+      }
     } else if (target.id === 'entry-save') {
       save();
     } else if (target.dataset.add) {
@@ -443,6 +522,10 @@ function bindEntryForm(body) {
       renderGame();
     } else if (target.dataset.action) {
       handleItemAction(target);
+    } else if (target.dataset.openEpisode) {
+      entry.flash = null;
+      loadEpisode(Number(target.dataset.openEpisode));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (target.dataset.draft === 'restore') {
       restoreDraft();
     } else if (target.dataset.draft === 'discard') {

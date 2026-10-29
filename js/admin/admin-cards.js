@@ -22,7 +22,8 @@
 //   ftc          { votes: { [jurorId]: finalistId } } (the finalists are everyone still in the game at this card;
 //                anyone out who isn't listed wasn't on the jury)
 //   custom       { eventType, castawayId, otherCastawayId, advantage, tribeId, quantity, details }
-// Every card also carries `type`. Keys starting with "_" are form-only and dropped by cardPayload().
+// Every card also carries `type`. Keys starting with "_" are form-only: dropped by cardPayload(), and filled back in
+// by loadCard() when an entered episode's cards are opened.
 //
 // A form is drawn from `ctx`: getEpisodeState's reply (castaways, tribes, advantages, eventTypes, …) with `game` set
 // to the GameState just before this card, plus `short`: Map of castaway id → short name. Cards are only changed by
@@ -62,6 +63,8 @@ const CARD_TYPES = {
       return { tribeId: tribes.length === 1 ? tribes[0].id : null, votes: {}, outcome: 'voted', bootId: null, _votesFor: null };
     },
     html: tribalHtml,
+    // A saved card's votes are as entered, so nothing is prefilled over them
+    load: card => ({ _votesFor: card.bootId }),
     reset: { tribeId: { votes: {}, bootId: null, _votesFor: null } },
     // Rocks takes no votes, so they're cleared (and filled in again if the outcome changes back)
     tidy: (card, ctx) => {
@@ -73,6 +76,11 @@ const CARD_TYPES = {
     label: 'Advantage',
     blank: () => ({ action: 'found', castawayId: null, advantage: null, recipientId: null, targetId: null, changedOutcome: false, _advantagePick: null }),
     html: advantageHtml,
+    // A saved Found card picked an advantage by id; a name is one first found in this card, not saved yet
+    load: card => ({
+      _advantagePick: card.action !== 'found' || card.advantage == null ? null
+        : typeof card.advantage === 'number' ? card.advantage : '__new__',
+    }),
     reset: {
       action: { castawayId: null, advantage: null, _advantagePick: null, recipientId: null, targetId: null },
       castawayId: { advantage: null, _advantagePick: null, targetId: null },
@@ -96,6 +104,12 @@ const CARD_TYPES = {
 // A new card; `ctx` is the game it starts from
 function newCard(type, ctx) {
   return { type, ...CARD_TYPES[type].blank(ctx) };
+}
+
+// A card as the function sends it (an entered episode's, or a saved draft's), ready for its form: the fields the
+// form keeps for itself (starting with "_") are filled back in
+function loadCard(card) {
+  return { ...card, ...CARD_TYPES[card.type]?.load?.(card) };
 }
 
 // The card as the function takes it
@@ -484,7 +498,8 @@ function rowFieldsHtml(row, ctx) {
 
 // ── Card frame ────────────────────────────────────────────────────────────
 // The events rows a card will save (from the latest preview), one line each: who, what, the other columns, points
-function cardRowsHtml(rows, ctx) {
+// Rows as the function describes them (a card's, or what an edit adds or removes), under `label`
+function cardRowsHtml(rows, ctx, label = 'Saves') {
   if (!rows.length) return '';
   const lines = rows.map(r => {
     const advantage = typeof r.advantage === 'number' ? ctx.advantages.find(a => a.id === r.advantage)?.name : r.advantage;
@@ -499,7 +514,7 @@ function cardRowsHtml(rows, ctx) {
         ${escapeHtml(r.eventType)}${details ? `<span class="entry-row-details">${escapeHtml(details)}</span>` : ''}</span>
       <span class="entry-row-points${r.points < 0 ? ' neg' : r.points === 0 ? ' zero' : ''}">${r.points > 0 ? '+' : ''}${fmt(r.points)}</span></li>`;
   }).join('');
-  return `<div class="entry-card-rows"><span class="entry-label">Saves</span><ul>${lines}</ul></div>`;
+  return `<div class="entry-card-rows"><span class="entry-label">${escapeHtml(label)}</span><ul>${lines}</ul></div>`;
 }
 
 function errorListHtml(errors) {

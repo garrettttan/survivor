@@ -88,8 +88,43 @@
 
 .entry-input { width: 100%; min-width: 0; padding: 0.45rem 0.6rem; }
 .entry-count { width: 5.5rem; }
-.entry-episode-picker { display: flex; align-items: center; gap: 0.6rem; }
-.entry-episode-picker .entry-label { margin: 0; font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--text); }
+/* The episode picker: a button per entered episode, then a dashed one for the next; the open one is filled */
+.entry-episode-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 0.9rem; }
+.entry-episode-row > .entry-label { margin: 0; font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--text); }
+.entry-episodes { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.entry-episode {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.entry-episode.new { border-style: dashed; border-color: rgba(194,65,12,0.5); color: var(--fire); }
+.entry-episode[aria-pressed="true"] { background: var(--fire); border: 1px solid var(--fire); color: #fff; }
+.entry-episode:focus-visible { outline: 2px solid var(--fire); outline-offset: 2px; }
+.entry-episode:not([aria-pressed="true"]):active { background: var(--surface-2); }
+@media (hover: hover) {
+  .entry-episode:not([aria-pressed="true"]):hover { border-color: var(--fire); }
+}
+/* An entered episode, open to edit */
+.entry-editing {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  color: var(--fire);
+  border: 1px solid var(--fire);
+}
 
 /* Fields: stacked, two to a row on wider screens */
 .entry-field { display: block; margin-top: 0.7rem; }
@@ -268,6 +303,12 @@
 .entry-row-points { font-weight: 600; color: var(--active); white-space: nowrap; }
 .entry-row-points.neg { color: var(--ember); }
 .entry-row-points.zero { color: var(--muted); font-weight: 400; }
+/* What an edit changes: one block per episode it reaches, each with the rows it adds and removes */
+.entry-change + .entry-change { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--card-border); }
+.entry-change-title { display: flex; align-items: baseline; gap: 0.6rem; font-size: 0.95rem; font-weight: 600; }
+.entry-change-title .entry-hint { margin: 0; font-weight: 400; }
+.entry-change > .entry-hint { margin-top: 0.3rem; }
+.entry-change .entry-card-rows:first-of-type { border-top: 0; padding-top: 0; margin-top: 0.5rem; }
 .entry-errors, .entry-warnings { list-style: none; margin-top: 0.7rem; font-size: 0.85rem; }
 .entry-errors li { color: var(--ember); }
 .entry-warnings li { color: var(--fire); }
