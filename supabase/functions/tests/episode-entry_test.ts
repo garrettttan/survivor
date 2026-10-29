@@ -6,6 +6,7 @@ import { assert, assertEquals } from "jsr:@std/assert@1";
 import type { EventRow } from "../_shared/replay.ts";
 import { cardRows, episodeProblem, toEventRow, type EventType, type SeasonData } from "../episode-entry/cards.ts";
 import { gameState, type GameState } from "../episode-entry/game.ts";
+import { fixtureSeasons } from "./fixture-season.ts";
 
 const FIXTURES = new URL("./fixtures/", import.meta.url);
 
@@ -34,6 +35,21 @@ for (const entry of Deno.readDirSync(FIXTURES)) {
       assertEquals((state.held[c.id] ?? []).map(a => a.name), c.advantages, `${c.firstName}'s advantages`);
       for (const a of state.held[c.id] ?? []) assertEquals(a.id, advantageIds.get(a.name));
     }
+  });
+}
+
+// ── Starting tribes, against every real season's CSV load ────────────────────
+// The start card for an episode's Starting tribe rows makes those same rows (Lewis Kelly, who started season 51
+// without a tribe, included)
+for (const s of fixtureSeasons()) {
+  Deno.test(`draft ${s.draftId}: a start card remakes the starting tribes`, () => {
+    const loaded = s.events.filter(e => e.event === "Starting tribe");
+    assert(loaded.length > 0);
+    const card = { type: "tribeChange", kind: "start", moves: Object.fromEntries(loaded.map(e => [e.castaway_id, e.tribe_id])) };
+    const { rows, errors } = cardRows(card, s.data, { tribeOf: {}, out: [], held: {} });
+    assertEquals(errors, []);
+    const key = (id: number, tribeId: number | null) => `${id}:${tribeId}`;
+    assertEquals(rows.map(r => key(r.castawayId, r.tribeId)).sort(), loaded.map(e => key(e.castaway_id, e.tribe_id)).sort());
   });
 }
 
@@ -157,7 +173,7 @@ Deno.test("expired", () => {
 // ── The other cards ──────────────────────────────────────────────────────────
 // Three tribes: Red (Ann, Bea), Blue (Cal, Dee), Green (Eve, Fay); Gus and Hal are out (Hal left last)
 const NAMES = ["Ann", "Bea", "Cal", "Dee", "Eve", "Fay", "Gus", "Hal"];
-const TYPES = ["Swapped tribes", "Switched tribes", "Merged", "Won team immunity", "Won team immunity (2nd place)",
+const TYPES = ["Starting tribe", "Swapped tribes", "Switched tribes", "Merged", "Won team immunity", "Won team immunity (2nd place)",
   "Won team reward", "Won team reward (2nd place)", "Won individual immunity", "Won individual reward",
   "Brought on reward", "Sat out of challenge", "Voted correctly", "Voted incorrectly", "Voted out",
   "Went home on rocks", "Medically evacuated", "Quit", "Lost fire-making", "Had an iconic moment",
@@ -168,7 +184,7 @@ const big: SeasonData = {
   tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }], [11, { id: 11, name: "Blue", color: "#0284c7" }],
     [12, { id: 12, name: "Green", color: "#16a34a" }], [13, { id: 13, name: "Merged", color: "#7c3aed" }]]),
   eventTypeByName: new Map(TYPES.map(t => [t, type(t, { endsGame: /Voted out|rocks|evacuated|Quit|fire/.test(t),
-    changesTribe: /Swapped|Switched|Merged/.test(t) })])),
+    changesTribe: /Starting|Swapped|Switched|Merged/.test(t) })])),
   advantageById: new Map(),
 };
 const g: GameState = { tribeOf: { 1: 10, 2: 10, 3: 11, 4: 11, 5: 12, 6: 12, 7: 12, 8: 11 }, out: [7, 8], held: {} };
@@ -194,6 +210,33 @@ Deno.test("tribe change: swap, switch and merge", () => {
   assertEquals(rowsOf({ type: "tribeChange", kind: "merge", tribeId: 13 }).length, 6);
   assertEquals(errorsOf({ type: "tribeChange", kind: "swap", moves: { 1: 10, 2: 10, 3: 11, 4: 11, 5: 12, 6: 12, 7: 10 } }),
     ["Gus is already out of the game."]);
+});
+
+Deno.test("tribe change: starting tribes, including someone who starts without one", () => {
+  const start: GameState = { tribeOf: {}, out: [], held: {} };
+  const card = { type: "tribeChange", kind: "start", moves: { 3: null, 2: 11, 1: 10, 4: 10 } };
+  // Tribe by tribe, then anyone without one
+  assertEquals(rowsOf(card, start), [
+    ["Ann", "Starting tribe", 10], ["Dee", "Starting tribe", 10], ["Bea", "Starting tribe", 11], ["Cal", "Starting tribe", null],
+  ]);
+  // Replayed, everyone placed is on their tribe, and Cal is in the game on none
+  const after = gameState(cardRows(card, big, start).rows.map((x, i) => toEventRow(x, big, 1, i + 1)),
+    new Map([["Red", 10], ["Blue", 11]]), new Map());
+  assertEquals(after.tribeOf, { 1: 10, 2: 11, 4: 10 });
+  assertEquals(after.out, []);
+});
+
+Deno.test("tribe change: starting tribes are only for castaways not on a tribe yet", () => {
+  assertEquals(errorsOf({ type: "tribeChange", kind: "start", moves: {} }), ["Place at least one castaway."]);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "start", moves: { 1: 11 } }), ["Ann is already on Red."]);
+  assertEquals(errorsOf({ type: "tribeChange", kind: "start", moves: { 7: 10 } }), ["Gus is already out of the game."]);
+  assertEquals(cardRows({ type: "tribeChange", kind: "start", moves: { 1: 99 } }, big, { tribeOf: {}, out: [], held: {} }).errors,
+    ["Pick a tribe in this season for Ann, or no tribe."]);
+});
+
+Deno.test("a custom Starting tribe row can have no tribe; other tribe changes can't", () => {
+  assertEquals(cardRows(custom({ eventType: "Starting tribe", castawayId: 1 }), big, g).errors, []);
+  assertEquals(cardRows(custom({ eventType: "Swapped tribes", castawayId: 1 }), big, g).errors, ['"Swapped tribes" needs a tribe.']);
 });
 
 Deno.test("challenge: tribe immunity with 2nd place and a sit-out", () => {

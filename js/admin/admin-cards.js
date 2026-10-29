@@ -7,6 +7,8 @@
 //                including anyone who stays on the tribe they were on)
 //                { kind: 'move', castawayId, tribeId } (one castaway changes tribe on their own)
 //                { kind: 'merge', tribeId } (everyone still in the game joins tribeId)
+//                { kind: 'start', moves: { [castawayId]: tribeId | null } } (starting tribes, which come from a CSV:
+//                shown when editing an episode that has them, never offered for a new card; null = no tribe)
 //   challenge    { prize: 'immunity'|'reward'|'both', format: 'tribe'|'individual'|'teams', first, second,
 //                  teamCount, teams: { [castawayId]: teamNumber }, satOut: [id], broughtOnReward: [id] }
 //                  (tribe: first/second = tribe ids; individual: first = a castaway id; teams, for teams that aren't
@@ -234,6 +236,13 @@ function tribeChoicesHtml(bind, tribes, selected, noneLabel = null) {
 
 // ── Card forms ────────────────────────────────────────────────────────────
 function tribeChangeHtml(card, ctx) {
+  // Starting tribes come from the CSV, so this kind is only ever an existing card and can't be switched to or from.
+  // Castaways not on a tribe yet are sorted onto one, or onto "No tribe" if they started without one.
+  if (card.kind === 'start') {
+    const ids = activeIds(ctx).filter(id => ctx.game.tribeOf[id] === undefined);
+    return '<p class="entry-hint">Starting tribes, from the CSV.</p>' +
+      sortIntoGroupsHtml('moves', [...ctx.tribes, { id: null, name: 'No tribe', color: null }], card, ctx, ids);
+  }
   const kind = fieldHtml('Type', selectHtml({ field: 'kind', rerender: true },
     [['swap', 'Swapped tribes'], ['move', 'Switched Tribes'], ['merge', 'Merged']], card.kind, null));
   if (card.kind === 'move') {
@@ -251,15 +260,16 @@ function tribeChangeHtml(card, ctx) {
 // Sorting castaways into groups (tribes in a swap, teams in a challenge), group by group: each group in its color
 // lists everyone still in the game, and tapping a castaway puts them in that group (tapping again takes them out).
 // Castaways in another group are dimmed so the unsorted ones stand out. `assign` is the card's map of castaway id
-// → group id; groups are [{ id, name, color }]; `ids` are the castaways to sort (default: everyone still in).
+// → group id; groups are [{ id, name, color }] (a null id is a group for "none"); `ids` are the castaways to sort
+// (default: everyone still in).
 function sortIntoGroupsHtml(assign, groups, card, ctx, ids = activeIds(ctx)) {
   const blocks = groups.map(g => {
     const placed = ids.filter(id => card[assign][id] === g.id);
     const chips = ids.map(id => {
       const here = card[assign][id] === g.id;
-      const elsewhere = !here && card[assign][id] != null;
+      const elsewhere = !here && card[assign][id] !== undefined;
       return `<label class="entry-chip entry-swap-chip${elsewhere ? ' elsewhere' : ''}">
-        <input type="checkbox" value="${g.id}" data-assign="${assign}" data-key="${id}" data-num data-rerender${here ? ' checked' : ''}>
+        <input type="checkbox" value="${g.id ?? ''}" data-assign="${assign}" data-key="${id}" data-num data-rerender${here ? ' checked' : ''}>
         <span>${escapeHtml(ctx.short.get(id))}</span></label>`;
     }).join('');
     return `<div class="entry-tribe" style="${tribeStyleVars(g.color)}">

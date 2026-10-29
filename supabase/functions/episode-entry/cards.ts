@@ -44,6 +44,10 @@ export interface CardRow {
 // deno-lint-ignore no-explicit-any
 type Card = Record<string, any>;
 
+// The one tribe change that can have no tribe: someone who started the game without one (the database allows
+// it too, in check_event_fields)
+const STARTING_TRIBE = "Starting tribe";
+
 type Result = { rows: CardRow[]; errors: string[] };
 
 /** The rows a card makes, or why it can't make them. `game` is the game just before the card. */
@@ -95,8 +99,12 @@ function entries(map: unknown): [number, unknown][] {
 // ── Tribe change ─────────────────────────────────────────────────────────────
 // Swap: everyone still in the game is placed on a tribe and gets a Swapped tribes row. Switched
 // Tribes: one castaway's Switched tribes row. Merge: a Merged row for everyone still in the game.
+// Start: a Starting tribe row for each castaway placed, none of whom is on a tribe yet. Starting tribes are loaded
+// from a CSV before the season; this kind lets an episode with them be edited as cards. A null tribe means they
+// started the game without one (someone who arrives later).
 function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
+  if (card.kind === "start") return startRows(card, data, game);
   if (card.kind === "move") {
     const id = activeCastaway(card.castawayId, "who switched", data, game, errors);
     const tribeId = idOrNull(card.tribeId);
@@ -133,6 +141,28 @@ function tribeChangeRows(card: Card, data: SeasonData, game: GameState): Result 
   const tribeOrder = [...data.tribeById.keys()];
   moves.sort(([a, ta], [b, tb]) => tribeOrder.indexOf(ta as number) - tribeOrder.indexOf(tb as number) || a - b);
   return { rows: moves.map(([id, tribeId]) => row(id, swapped, { tribeId: tribeId as number })), errors };
+}
+
+function startRows(card: Card, data: SeasonData, game: GameState): Result {
+  const errors: string[] = [];
+  const moves = entries(card.moves);
+  if (!moves.length) errors.push("Place at least one castaway.");
+  for (const [id, tribeId] of moves) {
+    const active = activeCastaway(id, "a castaway", data, game, errors);
+    if (active !== null && game.tribeOf[active] !== undefined) {
+      errors.push(`${name(data, active)} is already on ${tribeName(data, game.tribeOf[active])}.`);
+    }
+    if (tribeId !== null && (typeof tribeId !== "number" || !data.tribeById.has(tribeId))) {
+      errors.push(`Pick a tribe in this season for ${name(data, id)}, or no tribe.`);
+    }
+  }
+  const starting = eventType(data, STARTING_TRIBE, errors);
+  if (errors.length) return { rows: [], errors };
+  // Tribe by tribe, then anyone without one
+  const tribeOrder = [...data.tribeById.keys()];
+  const place = (t: unknown) => t === null ? tribeOrder.length : tribeOrder.indexOf(t as number);
+  moves.sort(([a, ta], [b, tb]) => place(ta) - place(tb) || a - b);
+  return { rows: moves.map(([id, tribeId]) => row(id, starting, { tribeId: tribeId as number | null })), errors };
 }
 
 // ── Challenge ────────────────────────────────────────────────────────────────
@@ -423,7 +453,9 @@ function customRows(card: Card, data: SeasonData): Result {
 
   const tribeId = idOrNull(card.tribeId);
   if (tribeId !== null && !data.tribeById.has(tribeId)) errors.push("That tribe isn't in this season.");
-  if (eventType?.changesTribe && tribeId === null) errors.push(`"${eventType.name}" needs a tribe.`);
+  if (eventType?.changesTribe && eventType.name !== STARTING_TRIBE && tribeId === null) {
+    errors.push(`"${eventType.name}" needs a tribe.`);
+  }
 
   const quantity = card.quantity ?? 1;
   if (typeof quantity !== "number" || !(quantity > 0)) errors.push("Quantity must be a positive number.");
