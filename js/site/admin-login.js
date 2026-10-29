@@ -17,7 +17,7 @@ function openAdminSheet() {
     showSheet(`
       <div class="sheet-hero-name">Admin</div>
       <p class="admin-note">Signed in as ${escapeHtml(adminUser.email)}</p>
-      <a class="admin-submit admin-link" href="${seasonUrl('admin.html', currentEntry.season)}">Add events</a>
+      <a class="admin-submit admin-link" href="${seasonUrl('admin.html', currentEntry.season)}">Edit events</a>
       <button type="button" class="admin-submit admin-secondary" id="admin-sign-out">Sign out</button>
     `);
     return;

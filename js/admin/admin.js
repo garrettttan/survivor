@@ -1,4 +1,4 @@
-// Admin page: "Add events" for the season in the URL (?season=N). Shows the sign-in form until
+// Admin page: "Edit events" for the season in the URL (?season=N). Shows the sign-in form until
 // an admin is signed in, then the episode entry form: pick the episode, describe it as cards, save. Each change
 // is checked in the background (a preview), which keeps the game panel, pickers and errors current. Every rule
 // lives in the episode-entry function (js/api/admin-data.js); this file keeps the form's state and draws it.
@@ -547,7 +547,7 @@ async function adminMain() {
   backLink.href = seasonUrl('index.html', adminSeason);
   backLink.innerHTML = `${ICONS.chevronLeft}S${adminSeason}`;
   document.getElementById('admin-season').textContent = adminTitle;
-  document.title = `Add events · ${adminTitle}`;
+  document.title = `Edit events · ${adminTitle}`;
 
   const body = document.getElementById('admin-body');
   bindSignInForm(body, renderAdminPage);
