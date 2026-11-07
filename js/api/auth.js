@@ -2,6 +2,7 @@
 // (set in SQL; users can't change their own app_metadata). This only decides what the page shows —
 // admin writes must still be checked server-side (RLS or the edge function).
 
+// The one Supabase client both pages use; admin-data.js calls episode-entry through it as the signed-in user
 const authClient = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
 
 function isAdmin(user) {

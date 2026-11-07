@@ -1,3 +1,5 @@
+// Settings for both pages. Everything here is public: the publishable key can only do what Row Level Security
+// allows, which for anyone not signed in as an admin is reading.
 const CONFIG = {
   // Supabase project URL and anon (publishable) key — Project Settings → API
   SUPABASE_URL: "https://zhwtgahrpnlywjaqmhjt.supabase.co",

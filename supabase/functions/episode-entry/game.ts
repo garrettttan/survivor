@@ -24,7 +24,7 @@ export function gameState(
   tribeIdByName: Map<string, number>,
   advantageIdByName: Map<string, number>,
 ): GameState {
-  const castaways = replay(rows, []);
+  const castaways = replay(rows);
   const state: GameState = { tribeOf: {}, out: [], held: {} };
 
   for (const c of castaways.values()) {

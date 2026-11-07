@@ -15,9 +15,9 @@ for (const entry of Deno.readDirSync(FIXTURES)) {
   const match = entry.name.match(/^draft-(\d+)\.json$/);
   if (!match) continue;
   Deno.test(`draft ${match[1]} replays exactly as recorded`, async () => {
-    const { season, events, rosters } = JSON.parse(await Deno.readTextFile(new URL(entry.name, FIXTURES)));
+    const { season, events } = JSON.parse(await Deno.readTextFile(new URL(entry.name, FIXTURES)));
     const expected = JSON.parse(await Deno.readTextFile(new URL(`draft-${match[1]}.expected.json`, FIXTURES)));
-    assertEquals(replayJson(replay(events, rosters)), expected, `season ${season} changed`);
+    assertEquals(replayJson(replay(events)), expected, `season ${season} changed`);
   });
 }
 
@@ -56,7 +56,7 @@ Deno.test("a switch right after a swap is its own move, not part of the swap", (
     ...startingTribes(),
     tribeRow(2, 1, "Swapped tribes", "Blue"), tribeRow(2, 3, "Swapped tribes", "Red"),
     tribeRow(2, 2, "Switched tribes", "Blue"),
-  ], []);
+  ]);
   // The swap happens first, so Cal arrives on Red while Bea is still there (grouped together, Bea would have
   // left before Cal arrived)
   assert(stint(castaways, 3, "Red", 2).memberIds.has(2), "Cal should overlap with Bea on Red");
@@ -71,7 +71,7 @@ Deno.test("two switches in a row are two separate moves", () => {
   const castaways = replay([
     ...startingTribes(),
     tribeRow(2, 1, "Switched tribes", "Blue"), tribeRow(2, 3, "Switched tribes", "Red"),
-  ], []);
+  ]);
   // Ann reaches Blue while Cal is still there (grouped as one swap, they'd never have overlapped)
   assert(stint(castaways, 1, "Blue", 2).memberIds.has(3), "Ann should overlap with Cal on Blue");
   assertEquals([...stint(castaways, 3, "Red", 2).memberIds].sort(), [2]);
@@ -82,7 +82,7 @@ Deno.test("a swap's rows still move together", () => {
   const castaways = replay([
     ...startingTribes(),
     tribeRow(2, 1, "Swapped tribes", "Blue"), tribeRow(2, 3, "Swapped tribes", "Red"),
-  ], []);
+  ]);
   assertEquals([...stint(castaways, 1, "Blue", 2).memberIds].sort(), [4]);
   assertEquals([...stint(castaways, 3, "Red", 2).memberIds].sort(), [2]);
 });
@@ -98,11 +98,11 @@ Deno.test("the winner and everyone still in at the end get a finish", () => {
     ...startingTribes(),
     eventRow(2, 3, "Voted out", true), eventRow(2, 4, "Voted out", true),
     eventRow(3, 1, "Became Sole Survivor"),
-  ], []);
+  ]);
   assertEquals([1, 2, 3, 4].map(id => castaways.get(id)!.finish), ["winner", "finalist", null, null]);
 });
 
 Deno.test("nobody has a finish until someone wins", () => {
-  const castaways = replay([...startingTribes(), eventRow(2, 3, "Voted out", true)], []);
+  const castaways = replay([...startingTribes(), eventRow(2, 3, "Voted out", true)]);
   assertEquals([1, 2, 3, 4].map(id => castaways.get(id)!.finish), [null, null, null, null]);
 });

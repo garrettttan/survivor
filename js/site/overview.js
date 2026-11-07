@@ -14,6 +14,7 @@ const OVERVIEW_SORTS = {
   status: { dir: 'desc', val: c => c.finish === 'winner' ? 10000 : c.active ? 9999 : (c.exitEpisode ?? 999) },
 };
 
+// The table body, filtered and sorted by the current settings. After the merge every pre-merge tribe is faded.
 function renderOverviewTable({ castaways, merged, finished }) {
   // Built from every castaway, not the filtered subset, so short names don't change when filtering
   const short = shortNames(castaways);
@@ -55,6 +56,7 @@ function renderOverviewTable({ castaways, merged, finished }) {
   updateOverviewSortIndicators();
 }
 
+// An arrow on each sorted column's header, numbered by level when there's more than one
 function updateOverviewSortIndicators() {
   document.querySelectorAll('#overview-table th.sortable').forEach(th => {
     th.querySelector('.sort-ind')?.remove();
@@ -107,6 +109,7 @@ function renderOverviewFilters({ finished }) {
     <span class="sort-hint">Tap a header to sort · Turn on Multi-sort to add levels</span>`;
 }
 
+// Sort by a header, and flip the two switches
 document.querySelector('#overview-table thead').addEventListener('click', e => {
   const th = e.target.closest('th[data-sort]');
   if (th) onOverviewHeaderClick(e, th.dataset.sort);

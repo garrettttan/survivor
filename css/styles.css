@@ -1,3 +1,6 @@
+/* Both pages (index.html and admin.html): colors, header, layout and the public site's sections, top to bottom in
+   page order, then phone overrides. The admin page adds css/admin.css. */
+
 :root {
   --bg:          #faf6ee;
   --card-bg:     #ffffff;

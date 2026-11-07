@@ -12,7 +12,8 @@
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
   <script defer src="config.js"></script>
-  <!-- API: load the draft data from Supabase and link it up, and admin sign-in (no DOM) -->
+  <!-- API: load the draft data from Supabase and link it up, and admin sign-in (no DOM). Each script is a plain
+       file sharing one global scope, so the order matters: code that runs on load can only use what's above it. -->
   <script defer src="js/api/draft-data.js"></script>
   <script defer src="js/api/load.js"></script>
   <script defer src="js/api/auth.js"></script>
@@ -20,7 +21,8 @@
   <script defer src="js/shared/util.js"></script>
   <script defer src="js/shared/colors.js"></script>
   <script defer src="js/shared/sign-in-form.js"></script>
-  <!-- This page: render each section and handle interaction -->
+  <!-- This page: render each section and handle interaction (app.js last: it starts the page) -->
+  <script defer src="js/site/badges.js"></script>
   <script defer src="js/site/standings.js"></script>
   <script defer src="js/site/team-chart.js"></script>
   <script defer src="js/site/overview.js"></script>

@@ -3,6 +3,7 @@
 let teamChartInst = null;
 let teamChartShowRank = false; // the selector: running points (default) or each team's place after every episode
 
+// Chart.js options in the page's fonts and colors (read from the CSS variables in styles.css)
 function baseChartOptions() {
   const css = getComputedStyle(document.documentElement);
   const v = name => css.getPropertyValue(name).trim();
@@ -27,6 +28,7 @@ function baseChartOptions() {
   };
 }
 
+// 1 → "1st", 2 → "2nd", 11 → "11th", 23 → "23rd"
 function ordinal(n) {
   const suffix = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
   return n + suffix;
@@ -43,6 +45,7 @@ function renderTeamChartControls() {
     </div>`;
 }
 
+// Switch between scores and ranks
 document.getElementById('team-chart-controls').addEventListener('click', e => {
   const btn = e.target.closest('[data-rank]');
   if (!btn || (btn.dataset.rank === 'true') === teamChartShowRank) return;
@@ -53,6 +56,7 @@ document.getElementById('team-chart-controls').addEventListener('click', e => {
   renderTeamChart(appData);
 });
 
+// One line per team across every episode, redrawn from scratch each time (Chart.js can't change scales in place)
 function renderTeamChart({ teams, teamNames, episodeCount }) {
   const labels = Array.from({ length: episodeCount }, (_, i) => `Ep ${i + 1}`);
   const datasets = teamNames.map(t => ({

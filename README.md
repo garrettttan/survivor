@@ -64,8 +64,8 @@ and the season to show when the URL doesn't name one.
 | Folder | Contents |
 | --- | --- |
 | `js/api/` | Calls to Supabase and sign-in. No DOM code. |
-| `js/shared/` | Helpers, colors and the sign-in form, used by both pages |
-| `js/site/` | The public page's sections (standings, chart, overview, castaway panel) |
+| `js/shared/` | Helpers, the color palette and the sign-in form, used by both pages |
+| `js/site/` | The public page's sections (standings, chart, overview, castaway panel), its badges and team colors, and `app.js`, which starts the page |
 | `js/admin/` | The admin page: form state (`admin.js`) and the card forms (`admin-cards.js`) |
 | `css/` | `styles.css` for both pages, `admin.css` for the admin page |
 | `logos/` | Each season's logo |

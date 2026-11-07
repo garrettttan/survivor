@@ -38,6 +38,7 @@ function draftKey() {
   return `episode-entry:${adminSeason}:${entry.episode}${entry.editing ? ':edit' : ''}`;
 }
 
+// Saves the cards as the draft, or drops it once there are none
 function saveDraft() {
   try {
     if (!entry.cards.length) localStorage.removeItem(draftKey());
@@ -45,6 +46,7 @@ function saveDraft() {
   } catch { /* nothing to do */ }
 }
 
+// The saved draft ({ cards, savedAt }), or null
 function readDraft() {
   try {
     return JSON.parse(localStorage.getItem(draftKey()));
@@ -58,6 +60,7 @@ function clearDraft() {
 }
 
 // ── Preview ───────────────────────────────────────────────────────────────
+// Previews the cards once typing pauses for PREVIEW_DELAY_MS, and shows "Checking…" until then
 function schedulePreview() {
   clearTimeout(entry.previewTimer);
   entry.previewTimer = setTimeout(runPreview, PREVIEW_DELAY_MS);
@@ -66,6 +69,7 @@ function schedulePreview() {
   renderSaveBar();
 }
 
+// Sends the cards to be checked and redraws what depends on the result, unless a newer preview has started
 async function runPreview() {
   const token = ++entry.previewToken;
   try {
@@ -90,6 +94,7 @@ function gameBefore(index) {
   return states[Math.min(index, states.length - 1)];
 }
 
+// The latest preview's errors about card `index`
 function errorsFor(index) {
   return (entry.preview?.errors || []).filter(e => e.card === index);
 }
@@ -99,6 +104,7 @@ function rowsFor(index) {
   return (entry.preview?.rows || []).filter(r => r.card === index);
 }
 
+// Whether a Changes ({ added, removed }) changes anything
 function hasChanges(changes) {
   return changes.added.length > 0 || changes.removed.length > 0;
 }
@@ -118,6 +124,7 @@ function episodeList(episodes) {
 }
 
 // ── Loading an episode ────────────────────────────────────────────────────
+// Opens `episode` (null = the next new one): fetches its state and cards and redraws the form
 async function loadEpisode(episode) {
   clearTimeout(entry.previewTimer);
   entry.previewToken++;
@@ -145,6 +152,7 @@ async function loadEpisode(episode) {
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────
+// The sign-in form, or the entry form for a signed-in admin (drawn once per user)
 function renderAdminPage(user) {
   const body = document.getElementById('admin-body');
   if (!user) {
@@ -214,6 +222,7 @@ function renderEpisodeHeader() {
   `;
 }
 
+// The "Saved …" message after a save, with a link back to the standings
 function renderFlash() {
   const el = document.getElementById('entry-flash');
   const { flash } = entry;
@@ -227,6 +236,7 @@ function renderFlash() {
     <a href="${seasonUrl('index.html', adminSeason)}">See the standings</a></p>`;
 }
 
+// Offers to restore an unsaved draft of this episode, until it's restored, discarded or overwritten
 function renderRestoreOffer() {
   const el = document.getElementById('entry-restore');
   const draft = entry.draftHandled ? null : readDraft();
@@ -281,6 +291,7 @@ function renderGame() {
   if (pop && pop.getBoundingClientRect().right > document.documentElement.clientWidth - 8) pop.classList.add('flip');
 }
 
+// Closes the game panel's advantages popover
 function hideHolder() {
   if (entry.shownHolder === null) return;
   entry.shownHolder = null;
@@ -297,6 +308,7 @@ function cardCtx(index) {
   return { ...entry.ctx, game: gameBefore(index), immune };
 }
 
+// Every card, then a button to add each kind
 function renderCards() {
   const buttons = Object.entries(CARD_TYPES).map(([type, { label }]) =>
     `<button type="button" class="entry-add" data-add="${type}">+ ${escapeHtml(label)}</button>`).join('');
@@ -308,6 +320,7 @@ function renderCards() {
   `;
 }
 
+// Card `index`'s HTML, remembering the game it was drawn from (see drawnWith)
 function cardBlockHtml(index) {
   const card = entry.cards[index];
   const ctx = cardCtx(index);
@@ -315,6 +328,7 @@ function cardBlockHtml(index) {
   return cardHtml(card, index, entry.cards.length, ctx, errorsFor(index), rowsFor(index));
 }
 
+// Replaces card `index` on the page with a fresh copy
 function redrawCard(index) {
   const wrap = document.createElement('div');
   wrap.innerHTML = cardBlockHtml(index);
@@ -408,6 +422,7 @@ function saveState() {
   return { ready: true, status: `${rows} ${rows === 1 ? 'row' : 'rows'} ready.` };
 }
 
+// The status line and Save button at the bottom of the screen
 function renderSaveBar() {
   const el = document.getElementById('entry-save-bar');
   if (!el) return;
@@ -457,6 +472,7 @@ async function save() {
   }
 }
 
+// Swaps list[index] with its neighbor `delta` places away, if there is one
 function moveItem(list, index, delta) {
   const to = index + delta;
   if (to < 0 || to >= list.length) return;
@@ -473,6 +489,7 @@ function handleItemAction(button) {
   formChanged();
 }
 
+// An input changed: copies it into its card, redraws the card if its shape changed, and re-checks
 function handleInput(el) {
   const cardEl = el.closest('[data-card]');
   if (!cardEl) return;
@@ -482,6 +499,7 @@ function handleInput(el) {
   formChanged();
 }
 
+// Replaces the cards with the saved draft's
 function restoreDraft() {
   const draft = readDraft();
   entry.draftHandled = true;
@@ -490,6 +508,7 @@ function restoreDraft() {
   schedulePreview();
 }
 
+// Every interaction on the entry form, handled once on its container so redraws need no rebinding
 function bindEntryForm(body) {
   // Selects, checkboxes and radios report on change; text and number boxes on every keystroke
   body.addEventListener('change', e => {
@@ -542,6 +561,7 @@ function bindEntryForm(body) {
   });
 }
 
+// Sets up the header for the season, then shows sign-in or the entry form
 async function adminMain() {
   const backLink = document.getElementById('back-link');
   backLink.href = seasonUrl('index.html', adminSeason);

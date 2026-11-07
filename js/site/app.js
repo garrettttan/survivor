@@ -53,7 +53,7 @@ function initSectionTabs() {
 }
 
 // ── Header logo ───────────────────────────────────────────────────────────
-// Swap a missing logo image for the season title as text
+// Swaps a missing logo image for the season title as text
 function handleLogoError(img) {
   const h1 = document.createElement('h1');
   h1.id = 'page-title';
@@ -62,6 +62,7 @@ function handleLogoError(img) {
   img.replaceWith(h1);
 }
 
+// The season's logo (logos/N.png) and the tab title
 function setUpLogo(entry) {
   const logoEl = document.getElementById('page-title');
   logoEl.addEventListener('error', () => handleLogoError(logoEl));
@@ -89,12 +90,15 @@ function setUpSeasonPicker(entry, seasons) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
+// Replaces the loading message with why the season couldn't load
 function showError(message) {
   document.getElementById('loading').style.display = 'none';
   document.getElementById('error-msg').style.display = 'block';
   document.getElementById('error-detail').textContent = message;
 }
 
+// Picks the season from the URL, then loads and draws it. The header (logo, season picker, admin button) is set
+// up without waiting for the data.
 async function main() {
   const seasonsPromise = fetchSeasons();
   const entry = currentEntry = await currentSeason(seasonsPromise);

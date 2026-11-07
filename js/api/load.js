@@ -1,5 +1,5 @@
-// API: fetches the Supabase draft data and links it up with draft-data.js.
-// The page only calls loadSeason() and fetchSeasons().
+// API: fetches the season list and a draft's data from the public edge functions, and links the data up with
+// draft-data.js. The page calls fetchSeasons(), currentSeason() and loadSeason().
 
 // GET a public edge function (path includes any query string); null if the request couldn't be made
 function callFunction(path) {
@@ -43,13 +43,17 @@ async function fetchSeasons() {
   return entries.sort((a, b) => b.season - a.season);
 }
 
+// The season entry for the URL's ?season=N. The default season needs no lookup; any other waits for
+// `seasonsPromise` (from fetchSeasons) and falls back to the default if it isn't there.
+async function currentSeason(seasonsPromise) {
+  const param = new URLSearchParams(location.search).get('season');
+  if (!param || param === String(CONFIG.DEFAULT_SEASON.season)) return defaultSeason();
+  return (await seasonsPromise).find(s => String(s.season) === param) || defaultSeason();
+}
+
 // Everything the page needs for one draft: linked castaways and teams, plus the scoring rules.
 // `entry` is one of fetchSeasons()'s entries.
 async function loadSeason(entry) {
   const draft = await fetchDraftData(entry.season, entry.draftId);
   return { data: processDraftData(draft), scoring: draft.scoring };
-}
-
-if (typeof module !== 'undefined') {
-  module.exports = { fetchDraftData, defaultSeason, fetchSeasons, loadSeason };
 }

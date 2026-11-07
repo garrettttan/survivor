@@ -202,6 +202,7 @@ function closeSheet() {
   }
 }
 
+// Closes the panel, leaving history alone (callers deal with it)
 function hideSheet() {
   const sheet = document.getElementById('bottom-sheet');
   sheet.classList.remove('dragging');
@@ -211,7 +212,7 @@ function hideSheet() {
   document.body.style.overflow = '';
 }
 
-// Drag-to-dismiss
+// Drag-to-dismiss on phones: dragging the handle down more than 100px closes the panel; less springs it back
 {
   const handle = document.getElementById('sheet-handle');
   const sheet = document.getElementById('bottom-sheet');
@@ -249,6 +250,7 @@ function hideSheet() {
   document.addEventListener('touchend', onEnd);
 }
 
+// Tapping outside the panel or pressing Escape closes it
 document.getElementById('sheet-overlay').addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
