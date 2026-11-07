@@ -2,6 +2,8 @@
 // active, how the season finished) comes from get-draft-data. Fields keep the server's names. No DOM, colors or
 // browser state.
 
+// get-draft-data's reply → { castaways: [castaway], teams: { [name]: team }, teamNames (sorted), episodeCount,
+// merged, finished }, with castaways and teams pointing at each other instead of by id
 function processDraftData({ castaways: rawCastaways, teams: rawTeams, episodeCount, merged, finished }) {
   const castaways = Object.values(rawCastaways);
   const byId = new Map(castaways.map(c => [c.id, c]));
@@ -37,8 +39,4 @@ function addTeamFields(name, raw, byId) {
     members: (raw.memberIds || []).map(id => byId.get(id)).filter(Boolean),
     winnerPick: byId.get(raw.winnerPickId) || null,
   };
-}
-
-if (typeof module !== 'undefined') {
-  module.exports = { processDraftData, addCastawayFields, addTeamFields };
 }

@@ -1,8 +1,9 @@
 // Cards → events rows, and the checks on them. A card is what the admin page sends for one thing that happened
 // (its shapes are listed in js/admin/admin-cards.js); a card can make several rows.
 //
-// Rows follow how past seasons were recorded: team wins and sit-outs in a tribe challenge carry the tribe, votes point
-// at who they voted for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even someone who stays).
+// Rows follow how past seasons were recorded: team wins and sit-outs in a tribe challenge carry the tribe, votes
+// point at who they voted for, the Voted out row follows the votes, and a swap gives a row to everyone placed (even
+// someone who stays).
 
 import type { EventRow } from "../_shared/replay.ts";
 import type { GameState } from "./game.ts";
@@ -41,8 +42,9 @@ export interface CardRow {
   details: string | null;
 }
 
+/** A card as the admin page sends it (shapes in js/admin/admin-cards.js) */
 // deno-lint-ignore no-explicit-any
-type Card = Record<string, any>;
+export type Card = Record<string, any>;
 
 // The one tribe change that can have no tribe: someone who started the game without one (the database allows
 // it too, in check_event_fields)
@@ -250,8 +252,8 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // `safe` says who was safe at this Tribal and why: individual immunity, an idol, or Shot in the Dark. A safe castaway
 // can't be the one who went home; votes for them still count, as incorrect. Immunity and idols are saved by their
 // own cards (the challenge, the advantage played), so here they're only checked; Shot in the Dark makes its row.
-const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
-const SAFE_SHOT = "Safe from Shot in the Dark";
+export const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
+export const SAFE_SHOT = "Safe from Shot in the Dark";
 const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
 
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {

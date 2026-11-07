@@ -1,4 +1,4 @@
-// Admin page: the episode entry page's card forms.
+// Admin page: the episode entry page's card forms. Loaded before admin.js, which keeps the list of cards.
 // Forms only: each renders inputs from a card object and copies inputs back into it. No rules; the
 // episode-entry function decides what rows a card makes and whether it's valid.
 //
@@ -167,6 +167,7 @@ function applyInput(card, el, ctx) {
 }
 
 // ── Game state helpers ────────────────────────────────────────────────────
+// Castaway ids sorted by short name
 function byShortName(ids, ctx) {
   return [...ids].sort((a, b) => (ctx.short.get(a) || '').localeCompare(ctx.short.get(b) || ''));
 }
@@ -177,10 +178,12 @@ function activeIds(ctx) {
   return byShortName(ctx.castaways.map(c => c.id).filter(id => !out.has(id)), ctx);
 }
 
+// Every castaway in the season, in or out
 function allIds(ctx) {
   return byShortName(ctx.castaways.map(c => c.id), ctx);
 }
 
+// Castaways still in the game on `tribeId`
 function membersOf(tribeId, ctx) {
   return activeIds(ctx).filter(id => ctx.game.tribeOf[id] === tribeId);
 }
@@ -190,6 +193,7 @@ function tribesInPlay(ctx) {
   return ctx.tribes.filter(t => membersOf(t.id, ctx).length);
 }
 
+// The advantages a castaway holds ([{ id, name }])
 function heldBy(castawayId, ctx) {
   return ctx.game.held[castawayId] || [];
 }
@@ -200,6 +204,7 @@ function heldValue(adv) {
 }
 
 // ── Inputs ────────────────────────────────────────────────────────────────
+// Data attributes from { name: value } (true = a bare attribute), as read by applyInput
 function attrs(bind) {
   return Object.entries(bind).map(([k, v]) => v === true ? ` data-${k}` : ` data-${k}="${escapeHtml(v)}"`).join('');
 }
@@ -212,18 +217,22 @@ function optionsHtml(pairs, selected, blank) {
   ).join('');
 }
 
+// A <select> bound to the card by `bind` (data attributes, see attrs)
 function selectHtml(bind, pairs, selected, blank = 'Choose…') {
   return `<select class="entry-input"${attrs(bind)}>${optionsHtml(pairs, selected, blank)}</select>`;
 }
 
+// [id, short name] pairs for a select
 function castawayPairs(ids, ctx) {
   return ids.map(id => [id, ctx.short.get(id)]);
 }
 
+// A select of castaways, its value a number
 function castawaySelect(field, ids, selected, ctx, extra = {}) {
   return selectHtml({ field, num: true, ...extra }, castawayPairs(ids, ctx), selected);
 }
 
+// [id, name] pairs for a select
 function tribePairs(tribes) {
   return tribes.map(t => [t.id, t.name]);
 }
@@ -236,6 +245,7 @@ function checkChipsHtml(list, ids, selected, ctx, extra = {}) {
       <span>${escapeHtml(ctx.short.get(id))}</span></label>`).join('')}</div>`;
 }
 
+// A labelled single input
 function fieldHtml(label, control) {
   return `<label class="entry-field"><span class="entry-label">${escapeHtml(label)}</span>${control}</label>`;
 }
@@ -260,6 +270,9 @@ function tribeChoicesHtml(bind, tribes, selected, noneLabel = null) {
 }
 
 // ── Card forms ────────────────────────────────────────────────────────────
+// Each takes a card and the ctx it's drawn from, and returns its inputs' HTML.
+
+// Tribe change: a swap, one castaway switching, the merge, or starting tribes
 function tribeChangeHtml(card, ctx) {
   // Starting tribes come from the CSV, so this kind is only ever an existing card and can't be switched to or from.
   // Castaways not on a tribe yet are sorted onto one, or onto "No tribe" if they started without one.
@@ -340,6 +353,7 @@ function teamPlacesHtml(card, ctx) {
     groupHtml('Sat out (anyone not on a team)', satOut);
 }
 
+// Challenge: the prize and format, who won, who sat out, and who an individual reward winner brought along
 function challengeHtml(card, ctx) {
   const individual = card.format === 'individual';
   const teams = card.format === 'teams';
@@ -393,6 +407,7 @@ function prefillImmunity(card, ctx) {
   card._immunityFilled = true;
 }
 
+// Tribal Council: the tribe, how it ended, who went home, who was safe, and each castaway's final-round vote
 function tribalHtml(card, ctx) {
   let html = groupHtml('Tribe', tribeChoicesHtml({ field: 'tribeId', num: true, rerender: true }, tribesInPlay(ctx), card.tribeId)) +
     fieldHtml('Outcome', selectHtml({ field: 'outcome', rerender: true },
@@ -439,6 +454,7 @@ function voteCountHtml(card, attendees, ctx) {
   return `<div class="entry-chips entry-vote-counts">${tally}</div>`;
 }
 
+// Advantage: found, given away, played or expired, by whom, and which advantage
 function advantageHtml(card, ctx) {
   const holders = activeIds(ctx).filter(id => heldBy(id, ctx).length);
   let html = `<div class="entry-row">
@@ -477,6 +493,7 @@ function advantageHtml(card, ctx) {
   return html;
 }
 
+// Exit: a medevac, a quit, or losing at fire-making
 function exitHtml(card, ctx) {
   return `<div class="entry-row">
     ${fieldHtml('Reason', selectHtml({ field: 'reason' },
@@ -485,6 +502,7 @@ function exitHtml(card, ctx) {
   </div>`;
 }
 
+// Moment: an iconic moment (with a note saying what happened) or crying on camera
 function momentHtml(card, ctx) {
   let html = `<div class="entry-row">
     ${fieldHtml('Moment', selectHtml({ field: 'kind', rerender: true },
@@ -535,8 +553,8 @@ function rowFieldsHtml(row, ctx) {
 }
 
 // ── Card frame ────────────────────────────────────────────────────────────
-// The events rows a card will save (from the latest preview), one line each: who, what, the other columns, points
-// Rows as the function describes them (a card's, or what an edit adds or removes), under `label`
+// Events rows as the function describes them (the rows a card will save, or what an edit adds or removes) under
+// `label`, one line each: who, what, the other columns, points
 function cardRowsHtml(rows, ctx, label = 'Saves') {
   if (!rows.length) return '';
   const lines = rows.map(r => {
@@ -555,6 +573,7 @@ function cardRowsHtml(rows, ctx, label = 'Saves') {
   return `<div class="entry-card-rows"><span class="entry-label">${escapeHtml(label)}</span><ul>${lines}</ul></div>`;
 }
 
+// A card's (or the episode's) errors as a list
 function errorListHtml(errors) {
   if (!errors.length) return '';
   return `<ul class="entry-errors">${errors.map(e => `<li>${escapeHtml(e.message)}</li>`).join('')}</ul>`;

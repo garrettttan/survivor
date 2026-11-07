@@ -4,8 +4,8 @@
 
 import { assertEquals } from "jsr:@std/assert@1";
 import type { EventRow } from "../_shared/replay.ts";
-import type { EventType, SeasonData } from "../episode-entry/cards.ts";
-import { episodeCards, playEdit, playEpisode, type Card, type Lookups } from "../episode-entry/edit.ts";
+import type { Card, EventType, SeasonData } from "../episode-entry/cards.ts";
+import { episodeCards, playEdit, playEpisode, type Lookups } from "../episode-entry/edit.ts";
 import { fixtureSeasons } from "./fixture-season.ts";
 
 // ── Season 51: opening an episode and saving it unchanged changes nothing ────

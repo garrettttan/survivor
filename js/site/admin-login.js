@@ -2,7 +2,7 @@
 // form in the detail panel; signed in as an admin it shows the email and opens a panel with the admin pages
 // and Sign out.
 
-let adminUser = null;
+let adminUser = null;   // the signed-in admin, or null
 
 function renderAdminButton() {
   const btn = document.getElementById('admin-button');
@@ -12,6 +12,7 @@ function renderAdminButton() {
   btn.hidden = false;
 }
 
+// Signed in: a link to the admin page and Sign out. Signed out: the sign-in form.
 function openAdminSheet() {
   if (adminUser) {
     showSheet(`
@@ -27,6 +28,7 @@ function openAdminSheet() {
   if (isDesktop()) document.querySelector('#admin-form input').focus();
 }
 
+// Called once by app.js; keeps the button in step with sign-ins and sign-outs, including in other tabs
 async function setUpAdminButton() {
   adminUser = await getAdminUser();
   renderAdminButton();
@@ -37,6 +39,7 @@ async function setUpAdminButton() {
   document.getElementById('admin-button').addEventListener('click', openAdminSheet);
 }
 
+// The sign-in form and Sign out button live in the detail panel
 bindSignInForm(document.getElementById('sheet-body'), user => {
   adminUser = user;
   renderAdminButton();

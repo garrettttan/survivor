@@ -5,12 +5,9 @@
 // the edited game, and reports what that changes in each.
 
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, toEventRow, type CardRow, type SeasonData } from "./cards.ts";
+import { cardRows, toEventRow, type Card, type CardRow, type SeasonData } from "./cards.ts";
 import { gameState, type GameState } from "./game.ts";
 import { rebuildEpisode, type Fallback } from "./rebuild.ts";
-
-// deno-lint-ignore no-explicit-any
-export type Card = Record<string, any>;
 
 export interface PageError { card?: number; message: string }
 

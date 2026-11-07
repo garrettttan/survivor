@@ -14,10 +14,10 @@
 // call it; reads and the save run as the caller, so RLS applies too.
 
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { episodeProblem, type CardRow } from "./cards.ts";
+import { episodeProblem, type Card, type CardRow } from "./cards.ts";
 import { loadSeason, loadSeasonRows, loadStoredCards } from "./data.ts";
 import {
-  episodeCards, pageRow, playEdit, playEpisode, type Card, type Changes, type LaterEpisode, type Lookups, type PageError,
+  episodeCards, pageRow, playEdit, playEpisode, type Changes, type LaterEpisode, type Lookups, type PageError,
   type Played,
 } from "./edit.ts";
 import { gameState } from "./game.ts";

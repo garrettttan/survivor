@@ -8,11 +8,8 @@
 // cards always remake the episode; the fallbacks say where they couldn't be real cards.
 
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, type CardRow, type SeasonData } from "./cards.ts";
+import { cardRows, NOT_SAFE_SHOT, SAFE_SHOT, type Card, type CardRow, type SeasonData } from "./cards.ts";
 import { gameState, type GameState } from "./game.ts";
-
-// deno-lint-ignore no-explicit-any
-type Card = Record<string, any>;
 
 /** A saved row that became a custom card, because no card remade it */
 export interface Fallback {
@@ -64,7 +61,10 @@ export function rebuildEpisode(
   return result;
 }
 
-/** Every episode's cards, keyed by episode. `events` are the season's saved rows, sorted by episode then seq. */
+/**
+ * Every episode's cards, keyed by episode. `events` are the season's saved rows, sorted by episode then seq.
+ * The function rebuilds one episode at a time (rebuildEpisode); this whole-season version is for the tests.
+ */
 export function rebuildSeason(
   events: EventRow[],
   data: SeasonData,
@@ -116,8 +116,6 @@ function customCard(r: EventRow): Card {
 type Guess = { card: Card; rows: EventRow[] } | null;
 
 const EXITS: Record<string, string> = { "Medically evacuated": "medevac", "Quit": "quit", "Lost fire-making": "fire" };
-const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
-const SAFE_SHOT = "Safe from Shot in the Dark";
 const VOTES = new Set(["Voted correctly", "Voted incorrectly", NOT_SAFE_SHOT, SAFE_SHOT]);
 const WIN = /^Won (team|individual) (immunity|reward)( \(2nd place\))?$/;
 
