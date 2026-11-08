@@ -2,6 +2,7 @@
 
 let teamChartInst = null;
 let teamChartShowRank = false; // the selector: running points (default) or each team's place after every episode
+let teamChartFocus = null;      // the team picked in the legend, drawn on top with the others faded; null = none
 
 // Chart.js options in the page's fonts and colors (read from the CSS variables in styles.css)
 function baseChartOptions() {
@@ -11,7 +12,7 @@ function baseChartOptions() {
     responsive: true,
     interaction: { mode: 'index', intersect: false },
     plugins: {
-      legend: { labels: { color: v('--muted'), font: { family: 'Oswald', size: 11 }, boxWidth: 12 } },
+      legend: { display: false },   // the team chips above the chart instead (renderTeamChartLegend)
       tooltip: {
         backgroundColor: v('--card-bg'),
         borderColor: v('--card-border'),
@@ -56,21 +57,55 @@ document.getElementById('team-chart-controls').addEventListener('click', e => {
   renderTeamChart(appData);
 });
 
+// The legend: a chip per team in standings order, outside the chart's sideways scroll so it's always in view.
+// Tapping one highlights that team's line; tapping it again shows every team evenly.
+function renderTeamChartLegend({ teams, teamNames }) {
+  const sorted = [...teamNames].sort((a, b) => teams[b].points - teams[a].points);
+  const el = document.getElementById('team-chart-legend');
+  el.innerHTML = sorted.map(t => `<button type="button" class="team-chip" data-team="${escapeHtml(t)}"
+      style="--team:${teams[t].color};--team-tint:${hexToRgba(teams[t].color, 0.12)}" aria-pressed="${teamChartFocus === t}">
+      <span class="team-chip-dot"></span>${escapeHtml(t)}</button>`).join('');
+  el.classList.toggle('has-focus', teamChartFocus !== null);
+}
+
+document.getElementById('team-chart-legend').addEventListener('click', e => {
+  const chip = e.target.closest('[data-team]');
+  if (!chip) return;
+  teamChartFocus = teamChartFocus === chip.dataset.team ? null : chip.dataset.team;
+  renderTeamChartLegend(appData);
+  if (teamChartInst) {
+    teamChartInst.data.datasets.forEach(d => Object.assign(d, focusStyle(d.label, appData.teams[d.label].color)));
+    teamChartInst.update();
+  }
+});
+
+// A team's line style given the legend's focus: the focused team thicker and on top (Chart.js draws the lowest
+// `order` last), the rest faded
+function focusStyle(team, color) {
+  const faded = teamChartFocus !== null && teamChartFocus !== team;
+  const focused = teamChartFocus === team;
+  const line = faded ? hexToRgba(color, 0.18) : color;
+  return {
+    borderColor: line,
+    pointBackgroundColor: line,
+    pointBorderColor: line,
+    borderWidth: focused ? 3.5 : 2.5,
+    pointRadius: faded ? 1.5 : focused ? 3.5 : 2.5,
+    order: focused ? -1 : 0,
+  };
+}
+
 // One line per team across every episode, redrawn from scratch each time (Chart.js can't change scales in place)
 function renderTeamChart({ teams, teamNames, episodeCount }) {
   const labels = Array.from({ length: episodeCount }, (_, i) => `Ep ${i + 1}`);
   const datasets = teamNames.map(t => ({
     label: t,
     data: teamChartShowRank ? teams[t].rankByEpisode : teams[t].cumulativePoints,
-    borderColor: teams[t].color,
     backgroundColor: teams[t].color + '18',
-    borderWidth: 2.5,
     cubicInterpolationMode: 'monotone', // smooth, but never bends past a point (no fake dips, nothing above 1st)
-    pointRadius: 2.5,
     pointHoverRadius: 5,
-    pointBackgroundColor: teams[t].color,
-    pointBorderColor: teams[t].color,
     clip: false, // in rank view, don't cut the 1st and last place lines in half at the chart's edges
+    ...focusStyle(t, teams[t].color),
   }));
   // Set min-width so the chart is scrollable on mobile for many episodes
   const inner = document.querySelector('.team-chart-inner');

@@ -521,6 +521,31 @@ html { scroll-behavior: smooth; }
   .collapse-wrap, .collapse-inner { transition: none; }
 }
 
+/* The chart's legend: a chip per team; the picked one is outlined in its color and the rest fade (team-chart.js) */
+.team-legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.team-chip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  min-height: 30px;
+  padding: 0.15rem 0.7rem 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text);
+  font: 400 0.8rem 'Oswald', sans-serif;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.team-chip-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--team); }
+.team-chip[aria-pressed="true"] { border-color: var(--team); background: var(--team-tint); color: var(--team); font-weight: 600; }
+.team-legend.has-focus .team-chip[aria-pressed="false"] { opacity: 0.5; }
+@media (hover: hover) {
+  .team-chip:hover { border-color: var(--team); }
+}
 .team-chart-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

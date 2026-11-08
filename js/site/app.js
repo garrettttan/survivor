@@ -140,6 +140,7 @@ async function main() {
 
     renderStandings(appData);
     renderTeamChartControls();
+    renderTeamChartLegend(appData);
     renderTeamChart(appData);
     renderOverviewFilters(appData);
     renderOverviewTable(appData);
