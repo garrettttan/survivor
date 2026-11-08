@@ -19,6 +19,20 @@ function renderOverviewTable({ castaways, merged, finished }) {
   // Built from every castaway, not the filtered subset, so short names don't change when filtering
   const short = shortNames(castaways);
   const rows = overviewActiveOnly ? castaways.filter(c => c.active) : [...castaways];
+
+  // With Active only on, Status is 🟢 on every row, and after the merge Tribe is the same on every row: hide
+  // them, and stop sorting by them (back to points if nothing's left)
+  const hidden = new Set();
+  if (overviewActiveOnly) {
+    hidden.add('status');
+    if (rows.every(c => OVERVIEW_SORTS.tribe.val(c) === OVERVIEW_SORTS.tribe.val(rows[0]))) hidden.add('tribe');
+  }
+  const table = document.getElementById('overview-table');
+  table.classList.toggle('hide-status', hidden.has('status'));
+  table.classList.toggle('hide-tribe', hidden.has('tribe'));
+  overviewSort = overviewSort.filter(s => !hidden.has(s.key));
+  if (!overviewSort.length) overviewSort = [{ key: 'points', dir: OVERVIEW_SORTS.points.dir }];
+
   rows.sort((a, b) => {
     for (const { key, dir } of overviewSort) {
       const va = OVERVIEW_SORTS[key].val(a), vb = OVERVIEW_SORTS[key].val(b);
@@ -45,11 +59,11 @@ function renderOverviewTable({ castaways, merged, finished }) {
     // A finished season doesn't fade or cross out who went home: everyone's finish is in the Status column
     return `<tr class="clickable-row ${c.active || finished ? '' : 'out'}" data-castaway="${escapeHtml(c.name)}">
       <td><span class="castaway-name-cell clickable"><span class="name-full">${escapeHtml(c.name)}</span><span class="name-short">${escapeHtml(short.get(c.name))}</span></span></td>
-      <td><div class="overview-badges">${tribeHtml}</div></td>
+      <td class="col-tribe"><div class="overview-badges">${tribeHtml}</div></td>
       <td><span class="points-cell">${fmt(c.points)}</span></td>
       <td><div class="overview-badges">${advHtml}</div></td>
       <td>${c.teams.map(teamNameHtml).join(', ')}</td>
-      <td>${statusHtml}</td>
+      <td class="col-status">${statusHtml}</td>
     </tr>`;
   }).join('');
 

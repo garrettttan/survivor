@@ -31,7 +31,7 @@ function teamNameHtml(team) {
   return `<strong style="color:${teamColor(team)}">${escapeHtml(team)}</strong>`;
 }
 
-// An idol or advantage's name as a badge; a used one is dimmed
-function advantageBadge(name, used = false) {
-  return `<span class="badge badge-adv${used ? ' adv-used' : ''}">${escapeHtml(name)}</span>`;
+// An idol or advantage's name as a badge
+function advantageBadge(name) {
+  return `<span class="badge badge-adv">${escapeHtml(name)}</span>`;
 }

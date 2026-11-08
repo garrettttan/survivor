@@ -15,15 +15,14 @@ function renderAdminButton() {
 // Signed in: a link to the admin page and Sign out. Signed out: the sign-in form.
 function openAdminSheet() {
   if (adminUser) {
-    showSheet(`
-      <div class="sheet-hero-name">Admin</div>
+    showSheet('Admin', `
       <p class="admin-note">Signed in as ${escapeHtml(adminUser.email)}</p>
       <a class="admin-submit admin-link" href="${seasonUrl('admin.html', currentEntry.season)}">Edit events</a>
       <button type="button" class="admin-submit admin-secondary" id="admin-sign-out">Sign out</button>
     `);
     return;
   }
-  showSheet(signInFormHtml());
+  showSheet('Admin sign in', signInFormHtml(false));
   // Phones skip this so the keyboard doesn't jump up mid-animation
   if (isDesktop()) document.querySelector('#admin-form input').focus();
 }

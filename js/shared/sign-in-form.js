@@ -1,9 +1,10 @@
 // Shared: the admin sign-in form, shared by the header lock's panel and the admin page.
 
-function signInFormHtml() {
+// `withTitle`: false where the page shows the title itself (the detail panel's pinned bar)
+function signInFormHtml(withTitle = true) {
   return `
     <form class="admin-form" id="admin-form">
-      <div class="sheet-hero-name">Admin sign in</div>
+      ${withTitle ? '<div class="sheet-hero-name">Admin sign in</div>' : ''}
       <input type="email" name="email" placeholder="Email" autocomplete="username" required>
       <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
       <p class="admin-error" id="admin-error" hidden></p>

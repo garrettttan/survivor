@@ -37,24 +37,17 @@ function showCastaway(animate = false) {
     : c.active ? '<span class="active-badge">Active</span>'
     : '<span class="eliminated-label">☠️ Eliminated</span>';
 
-  const advHtml = [
-    ...c.advantages.map(a => advantageBadge(a)),
-    ...c.expiredAdvantages.map(a => advantageBadge(a, true)),
-  ].join(' ');
-
-  showSheet(`
-    ${backHtml}
-    <div class="sheet-top">
-      <div class="sheet-hero-name">${escapeHtml(c.name)}</div>
+  showSheet(escapeHtml(c.name), `
+    <div class="sheet-meta">
+      ${statusBadge}
+      ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
       <span class="sheet-pts" style="color:${ownerColor}">${fmt(c.points)} pts</span>
     </div>
-    <div class="sheet-meta">
-      ${statusBadge} ${advHtml}
-      ${c.teams.length ? `<span class="sheet-owner">Drafted by ${c.teams.map(teamNameHtml).join(', ')}</span>` : ''}
-    </div>
     ${timelineHtml(c)}
-  `);
+    ${advantagesHtml(c)}
+  `, backHtml);
   document.getElementById('sheet-body').scrollTop = scrollTop;
+  updateSheetBarEdge();
   if (animate) animateSheetChange(oldHeight);
 }
 
@@ -67,15 +60,32 @@ function animateSheetChange(oldHeight) {
   if (newHeight !== oldHeight) {
     sheet.animate({ height: [`${oldHeight}px`, `${newHeight}px`] }, { duration: 250, easing });
   }
-  document.getElementById('sheet-body').animate({ opacity: [0, 1] }, { duration: 220, easing });
+  for (const id of ['sheet-bar-content', 'sheet-body']) {
+    document.getElementById(id).animate({ opacity: [0, 1] }, { duration: 220, easing });
+  }
 }
 
-// Fill the panel and open it (also used by the admin sign-in)
-function showSheet(html) {
+// Fill the panel and open it (also used by the admin sign-in). `titleHtml` goes in the pinned bar at the top,
+// under `backHtml` (the back pill, if any); `html` scrolls below it.
+function showSheet(titleHtml, html, backHtml = '') {
+  document.getElementById('sheet-bar-content').innerHTML = `${backHtml}<div class="sheet-hero-name">${titleHtml}</div>`;
   document.getElementById('sheet-body').innerHTML = html;
+  updateSheetBarEdge();
   document.getElementById('sheet-overlay').classList.add('open');
   document.getElementById('bottom-sheet').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+// What they hold, then what they've used (played, given away or lost), as badges; the timeline has the details
+function advantagesHtml(c) {
+  if (!c.advantages.length && !c.expiredAdvantages.length) return '';
+  const group = (label, list) => list.length
+    ? `<div class="adv-group"><div class="episode-label">${label}</div>
+        <div class="adv-badges">${list.map(a => advantageBadge(a)).join('')}</div></div>` : '';
+  return `<div class="sheet-group">
+      <div class="sheet-section-header">Advantages</div>
+      ${group('HOLDING', c.advantages)}${group('USED', c.expiredAdvantages)}
+    </div>`;
 }
 
 // Everyone else who was on the tribe during this stint (listed by the server)
@@ -111,13 +121,17 @@ function eventDetailHtml(e, short) {
 
 // The log split into one band per tribe stint, in order: each row goes to the latest stint that started on or
 // before its episode, so a swap episode's rows all sit with the new tribe. Rows before the first stint go in a
-// leading band with no stint.
+// leading band with no stint. Tribe changes aren't log rows (the server makes them stints), so each stint's
+// band starts with a row for how it began ("Swapped tribes", "Merged", ...), even when the tribe stays the same.
 function timelineBands(c) {
   const bands = [{ stint: null, rows: [] }, ...c.tribes.map(stint => ({ stint, rows: [] }))];
   [...c.log].sort((a, b) => a.episode - b.episode).forEach(e => {
     let i = 0;
     c.tribes.forEach((t, j) => { if (t.startEpisode <= e.episode) i = j + 1; });
     bands[i].rows.push(e);
+  });
+  bands.forEach(({ stint, rows }) => {
+    if (stint?.startReason) rows.unshift({ episode: stint.startEpisode, name: stint.startReason, points: 0 });
   });
   return bands.filter(b => b.stint || b.rows.length);
 }
@@ -165,9 +179,19 @@ function timelineHtml(c) {
     </div>`;
 }
 
-// Toggle a timeline band to show its tribemates; the back pill goes through history, like the browser's Back
+// A line under the pinned bar once the content has scrolled under it
+function updateSheetBarEdge() {
+  document.getElementById('sheet-bar').classList.toggle('scrolled', document.getElementById('sheet-body').scrollTop > 0);
+}
+document.getElementById('sheet-body').addEventListener('scroll', updateSheetBarEdge, { passive: true });
+
+// The back pill (in the pinned bar) goes through history, like the browser's Back
+document.getElementById('sheet-bar').addEventListener('click', e => {
+  if (e.target.closest('#sheet-back')) history.back();
+});
+
+// Toggle a timeline band to show its tribemates
 document.getElementById('sheet-body').addEventListener('click', e => {
-  if (e.target.closest('#sheet-back')) return history.back();
   const btn = e.target.closest('.band-header');
   if (!btn) return;
   const open = btn.parentElement.classList.toggle('open');
@@ -250,8 +274,11 @@ function hideSheet() {
   document.addEventListener('touchend', onEnd);
 }
 
-// Tapping outside the panel or pressing Escape closes it
+// Tapping outside the panel, its ✕, or pressing Escape closes it
 document.getElementById('sheet-overlay').addEventListener('click', closeSheet);
+const sheetCloseButton = document.getElementById('sheet-close');
+sheetCloseButton.innerHTML = ICONS.close;
+sheetCloseButton.addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
 // Open the detail sheet for any element (or row) tagged with data-castaway
