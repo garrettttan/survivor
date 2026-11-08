@@ -139,6 +139,7 @@ async function main() {
     document.getElementById('app').style.display = 'block';
 
     renderStandings(appData);
+    renderRecap(appData);
     renderTeamChartControls();
     renderTeamChart(appData);
     renderOverviewFilters(appData);

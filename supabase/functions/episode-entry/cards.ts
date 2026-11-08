@@ -253,6 +253,7 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // can't be the one who went home; votes for them still count, as incorrect. Immunity and idols are saved by their
 // own cards (the challenge, the advantage played), so here they're only checked; Shot in the Dark makes its row.
 export const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
+export const SOLE_SURVIVOR = "Became Sole Survivor";
 export const SAFE_SHOT = "Safe from Shot in the Dark";
 const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
 
@@ -332,7 +333,7 @@ function ftcRows(card: Card, data: SeasonData, game: GameState): Result {
   const votes = entries(card.votes).filter(([, finalist]) => finalist !== null && finalist !== undefined);
   if (!votes.length) errors.push("Enter the jury's votes.");
   const received = eventType(data, "Received a jury vote", errors);
-  const won = eventType(data, "Became Sole Survivor", errors);
+  const won = eventType(data, SOLE_SURVIVOR, errors);
   const rows: CardRow[] = [];
   const tally = new Map<number, number>();
   for (const [juror, finalist] of votes) {

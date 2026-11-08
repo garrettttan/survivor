@@ -1,4 +1,5 @@
--- Checks supabase/migrations/20261029120000_episode_cards.sql. Run it in the SQL editor after the migration.
+-- Checks supabase/migrations/20261029120000_episode_cards.sql and 20261108120000_public_episode_cards.sql (anyone
+-- can read cards; only admins can write them). Run it in the SQL editor after the migrations.
 --
 -- Test rows go in season 51, episodes 97–99. Like lock_down_writes_test.sql, it always ends with an error whose
 -- message lists PASS or FAIL for each check: ending with an error is what rolls back everything it wrote.
@@ -53,15 +54,21 @@ begin
     v_results := array_append(v_results, 'FAIL: a call without cards didn''t save as before');
   end if;
 
-  -- ── 2. Others can't see cards or replace episodes ──────────────────────────
+  -- ── 2. Others can read cards, but can't write them or replace episodes ─────
   perform set_config('request.jwt.claims',
     '{"role": "authenticated", "sub": "00000000-0000-0000-0000-000000000001", "app_metadata": {}}', true);
   select count(*) into v_count from public.episode_cards where season = 51 and episode between 97 and 99;
-  if v_count = 0 then
-    v_results := array_append(v_results, 'PASS: a non-admin sees no cards');
+  if v_count = 2 then
+    v_results := array_append(v_results, 'PASS: a non-admin can read cards');
   else
-    v_results := array_append(v_results, format('FAIL: a non-admin sees %s card rows', v_count));
+    v_results := array_append(v_results, format('FAIL: a non-admin sees %s card rows, not 2', v_count));
   end if;
+  begin
+    insert into public.episode_cards (season, episode, cards) values (51, 96, '[]');
+    v_results := array_append(v_results, 'FAIL: a non-admin wrote cards');
+  exception when insufficient_privilege then
+    v_results := array_append(v_results, format('PASS: a non-admin can''t write cards (%s)', sqlerrm));
+  end;
   begin
     perform public.replace_episodes(51::smallint, '[{"episode": 99, "rows": []}]');
     v_results := array_append(v_results, 'FAIL: a non-admin replaced an episode');
@@ -71,11 +78,17 @@ begin
 
   set local role anon;
   perform set_config('request.jwt.claims', '{"role": "anon"}', true);
+  select count(*) into v_count from public.episode_cards where season = 51 and episode between 97 and 99;
+  if v_count = 2 then
+    v_results := array_append(v_results, 'PASS: anon can read cards');
+  else
+    v_results := array_append(v_results, format('FAIL: anon sees %s card rows, not 2', v_count));
+  end if;
   begin
-    perform 1 from public.episode_cards limit 1;
-    v_results := array_append(v_results, 'FAIL: anon read episode_cards');
+    insert into public.episode_cards (season, episode, cards) values (51, 96, '[]');
+    v_results := array_append(v_results, 'FAIL: anon wrote cards');
   exception when insufficient_privilege then
-    v_results := array_append(v_results, format('PASS: anon can''t read cards (%s)', sqlerrm));
+    v_results := array_append(v_results, format('PASS: anon can''t write cards (%s)', sqlerrm));
   end;
   begin
     perform public.replace_episodes(51::smallint, '[{"episode": 99, "rows": []}]');
