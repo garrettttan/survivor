@@ -11,6 +11,10 @@ project_id = "survivor"
 [functions.get-draft-data]
 verify_jwt = true
 
+# What happened in one episode, for the site's recap (the site calls it with the publishable key)
+[functions.get-episode-recap]
+verify_jwt = true
+
 # The list of drafts and their seasons, for the site's season picker
 [functions.get-drafts]
 verify_jwt = true

@@ -898,6 +898,77 @@ html { scroll-behavior: smooth; }
   top: -0.1em; /* middle still sits a little low next to the row text */
 }
 
+/* ── Episode recap (recap.js) ───────────────────────────── */
+#recap .recap-picker, #recap .recap-card { max-width: 560px; margin-left: auto; margin-right: auto; }
+.recap-picker {
+  display: flex; gap: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+.recap-picker::-webkit-scrollbar { display: none; }
+.recap-ep {
+  flex-shrink: 0;
+  min-width: 36px; height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--muted);
+  font: 600 0.9rem 'Oswald', sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.recap-ep[aria-pressed="true"] { background: var(--fire); border-color: var(--fire); color: #fff; }
+@media (hover: hover) {
+  .recap-ep[aria-pressed="false"]:hover { border-color: var(--fire); color: var(--fire); }
+}
+.recap-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem 1.1rem;
+}
+.recap-title { font: 700 1.3rem 'Oswald', sans-serif; color: var(--text); }
+.recap-headline { margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.95rem; }
+.recap-badges { display: inline-flex; gap: 0.25rem; vertical-align: middle; }
+.recap-group {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(61,42,15,0.2);
+}
+.recap-team {
+  display: grid; grid-template-columns: 5.5rem 1fr 2.5rem; align-items: center; gap: 0.6rem;
+  padding: 0.2rem 0;
+}
+.recap-team-name { font: 600 0.9rem 'Oswald', sans-serif; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.recap-bar { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.recap-bar > span { display: block; height: 100%; border-radius: 4px; }
+.recap-team-pts { font: 600 0.9rem 'Oswald', sans-serif; color: var(--muted); text-align: right; }
+.recap-row { padding: 0.35rem 0; }
+.recap-row + .recap-row { border-top: 1px solid rgba(61,42,15,0.1); }
+.recap-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+.recap-whos { display: flex; flex-wrap: wrap; gap: 0.2rem 0.75rem; font-size: 0.9rem; }
+.recap-who .badge { font-size: 0.65rem; }
+.recap-whos-stacked { flex-direction: column; gap: 0.25rem; }
+.recap-vote { font-size: 0.9rem; padding: 0.1rem 0; }
+.recap-line { font-size: 0.9rem; padding: 0.1rem 0; }
+.recap-key { color: var(--muted); font-size: 0.8rem; margin-right: 0.2rem; }
+.recap-note { margin-top: 0.5rem; font-size: 0.9rem; }
+.recap-count {
+  display: inline-block; min-width: 1.3rem; text-align: center;
+  font: 600 0.75rem 'Oswald', sans-serif;
+  background: var(--surface-2); border-radius: 999px; padding: 0 0.35rem;
+}
+.recap-name {
+  font: inherit; font-weight: 500; color: var(--text);
+  background: none; border: none; padding: 0; cursor: pointer;
+  text-decoration: underline; text-decoration-color: rgba(61,42,15,0.25); text-underline-offset: 2px;
+}
+@media (hover: hover) {
+  .recap-name:hover { color: var(--fire); }
+}
+
 /* ── Mobile ──────────────────────────────────────────────── */
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border-radius: 8px; }
 

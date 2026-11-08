@@ -17,6 +17,8 @@ URL to open a different season.
 - **Chart**: each team's running points after every episode. A toggle switches it to each team's place.
 - **Overview**: every castaway in a table you can sort by name, tribe, points, team or status. It can show only the
   castaways still in the game.
+- **Recap**: one episode at a time: who went home, any swap or merge, each team's points, then the challenges,
+  votes, advantages and moments in the order they happened.
 - **Scoring**: the point value for each kind of event that season, grouped by category.
 - **Castaway panel**: tap a castaway to see their tribe history, a log of events by episode (including tribe
   changes and 0-point events), the advantages they hold or have used, and their points. Tap a
@@ -48,8 +50,9 @@ episode after it. Saving replaces all of them in a single transaction.
  Browser (static HTML/JS on GitHub Pages)
    │
    ├─ index.html ──► get-drafts       ──► drafts (for the season picker)
-   │             └─► get-draft-data   ──► teams, rosters, events, scoring, castaways
-   │                                       └─ replays events → standings JSON
+   │             ├─► get-draft-data   ──► teams, rosters, events, scoring, castaways
+   │             │                         └─ replays events → standings JSON
+   │             └─► get-episode-recap ─► one episode's cards (stored, or rebuilt from its rows) → recap items
    │
    └─ admin.html ──► episode-entry    ──► cards → events rows, checks, saves
                                            (insert_episode_events / replace_episodes)
@@ -106,9 +109,16 @@ The browser only collects cards. All the rules run in the edge function:
 
 Actions: `state`, `preview`, `save` (a new episode) and `replace` (an edit).
 
+### Episode recap (`get-episode-recap`)
+
+Returns one episode as the cards it was entered from, turned into recap items in order (`recap.ts`): a challenge with
+its winners, a Tribal with its votes and who was safe, an advantage given from one castaway to another, and so on. An
+episode with no stored cards gets them rebuilt from its rows, using `episode-entry`'s code. A row no card describes
+comes back as a plain event under its event type's category. The site only draws the items.
+
 ### Security
 
-Anyone can read. Writes go through Row Level Security policies that allow them only for users whose
+Anyone can read, including `episode_cards` (for the recap). Writes go through Row Level Security policies that allow them only for users whose
 `app_metadata.role` is `"admin"`. `episode-entry` checks the caller's role. It reads and saves as that user, so the
 same policies apply. Season setup and scoring are edited in the Supabase Table Editor and can't be changed through
 the API.

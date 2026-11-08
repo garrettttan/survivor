@@ -1,5 +1,5 @@
 // API: fetches the season list and a draft's data from the public edge functions, and links the data up with
-// draft-data.js. The page calls fetchSeasons(), currentSeason() and loadSeason().
+// draft-data.js. The page calls fetchSeasons(), currentSeason(), loadSeason() and fetchEpisodeRecap().
 
 // GET a public edge function (path includes any query string); null if the request couldn't be made
 function callFunction(path) {
@@ -55,6 +55,17 @@ async function currentSeason(seasonsPromise) {
   const param = requestedSeason();
   if (!param || param === String(CONFIG.DEFAULT_SEASON.season)) return defaultSeason();
   return (await seasonsPromise).seasons.find(s => String(s.season) === param) || null;
+}
+
+// What happened in one episode, from the get-episode-recap edge function: { items, rebuilt, tribes } (item shapes
+// in supabase/functions/get-episode-recap/recap.ts)
+async function fetchEpisodeRecap(season, episode) {
+  const res = await callFunction(`get-episode-recap?season=${season}&episode=${episode}`);
+  const body = res ? await res.json().catch(() => ({})) : {};
+  if (!res || !res.ok || body.error) {
+    throw new Error(`HTTP ${res ? res.status : '—'} loading episode ${episode}${body.error ? `: ${body.error}` : ''}`);
+  }
+  return body;
 }
 
 // Everything the page needs for one draft: linked castaways and teams, plus the scoring rules.

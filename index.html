@@ -26,6 +26,7 @@
   <script defer src="js/site/standings.js"></script>
   <script defer src="js/site/team-chart.js"></script>
   <script defer src="js/site/overview.js"></script>
+  <script defer src="js/site/recap.js"></script>
   <script defer src="js/site/castaway-sheet.js"></script>
   <script defer src="js/site/admin-login.js"></script>
   <script defer src="js/site/app.js"></script>
@@ -51,6 +52,7 @@
   <a href="#standings">⚔️ Standings</a>
   <a href="#chart">📈 Chart</a>
   <a href="#overview">🧭 Overview</a>
+  <a href="#recap">📺 Recap</a>
   <a href="#scoring">📋 Scoring</a>
 </nav>
 <main>
@@ -108,6 +110,13 @@
       <tbody id="overview-body"></tbody>
     </table>
     </div>
+  </section>
+
+  <!-- EPISODE RECAP -->
+  <section id="recap">
+    <h2 class="section-title">📺 EPISODE RECAP</h2>
+    <div class="recap-picker" id="recap-picker" role="group" aria-label="Episode"></div>
+    <div class="recap-card" id="recap-body"></div>
   </section>
 
   <!-- SCORING -->
