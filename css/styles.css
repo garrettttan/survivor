@@ -222,6 +222,15 @@ html { scroll-behavior: smooth; }
   font-size: 1.4rem;
   font-weight: 700;
 }
+/* Places a team moved in the latest episode, beside its rank (standings.js) */
+.rank-change {
+  margin-left: 0.3rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.rank-up { color: var(--active); }
+.rank-down { color: var(--ember); }
 .active-count {
   font-family: 'Oswald', sans-serif;
   font-size: 1.1rem;

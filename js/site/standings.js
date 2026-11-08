@@ -1,8 +1,19 @@
 // Site: the standings table — one row per team, expanding to show its castaways.
 
+// Places a team moved in the latest episode, shown beside its rank: ▲ up, ▼ down, nothing if it held. Nothing
+// after episode 1 (no earlier place to compare) or once the season is finished (the final standings are what count).
+function rankChangeHtml(tm, { episodeCount, finished }) {
+  const last = episodeCount - 1;
+  if (finished || last < 1) return '';
+  const moved = tm.rankByEpisode[last - 1] - tm.rankByEpisode[last];
+  return moved > 0 ? `<span class="rank-change rank-up">▲${moved}</span>`
+    : moved < 0 ? `<span class="rank-change rank-down">▼${-moved}</span>` : '';
+}
+
 // A finished season counts each team's members instead of who's still active (only finalists are), and winner
 // picks show whether they won
-function renderStandings({ teams, teamNames, finished }) {
+function renderStandings(data) {
+  const { teams, teamNames, finished } = data;
   document.querySelector('#standings .count-col').textContent = finished ? 'Members' : 'Active';
   const sorted = [...teamNames].sort((a, b) => teams[b].points - teams[a].points);
   document.getElementById('standings-body').innerHTML = sorted.map((t, i) => {
@@ -31,7 +42,7 @@ function renderStandings({ teams, teamNames, finished }) {
       }).join('');
 
     return `<tr class="team-row" style="--team:${tm.color}" aria-expanded="false">
-      <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span></td>
+      <td class="fit-col"><span class="rank-num" style="color:${rank === 1 ? 'var(--fire)' : 'var(--muted)'}">${rank === 1 ? '🔥' : rank}</span>${rankChangeHtml(tm, data)}</td>
       <td><span class="player-name" style="color:${tm.color}">${escapeHtml(t)}</span></td>
       <td class="fit-col"><span class="active-count">${finished ? tm.members.length : tm.activeCount}</span></td>
       <td class="fit-col points-col"><span class="points-cell" style="color:${tm.color}">${fmt(tm.points)}</span></td>
