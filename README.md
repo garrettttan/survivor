@@ -18,7 +18,8 @@ URL to open a different season.
 - **Overview**: every castaway in a table you can sort by name, tribe, points, team or status. It can show only the
   castaways still in the game.
 - **Scoring**: the point value for each kind of event that season, grouped by category.
-- **Castaway panel**: tap a castaway to see their tribe history, a log of events by episode, and their points. Tap a
+- **Castaway panel**: tap a castaway to see their tribe history, a log of events by episode (including tribe
+  changes and 0-point events), the advantages they hold or have used, and their points. Tap a
   name inside the panel to open that castaway, and Back takes you to the one before.
 
 **Admin page (`admin.html`)**

@@ -32,7 +32,8 @@ function defaultSeason() {
 }
 
 // Every draft from the get-drafts edge function as a season entry, newest season first (the first draft wins
-// if a season has several). The default season is always included, and is all there is if the request fails.
+// if a season has several): { seasons, listed }. The default season is always included, and is all there is if
+// the request fails (listed: false).
 async function fetchSeasons() {
   const res = await callFunction('get-drafts');
   const body = res && res.ok ? await res.json().catch(() => ({})) : {};
@@ -40,15 +41,20 @@ async function fetchSeasons() {
   for (const { id, season } of body.data || []) {
     if (!entries.some(e => e.season === season)) entries.push(makeSeasonEntry(season, id));
   }
-  return entries.sort((a, b) => b.season - a.season);
+  return { seasons: entries.sort((a, b) => b.season - a.season), listed: !!res?.ok };
 }
 
-// The season entry for the URL's ?season=N. The default season needs no lookup; any other waits for
-// `seasonsPromise` (from fetchSeasons) and falls back to the default if it isn't there.
+// The ?season=N in the URL, or null for none
+function requestedSeason() {
+  return new URLSearchParams(location.search).get('season');
+}
+
+// The season entry for the URL's ?season=N, or null if that season isn't in the list. The default season needs
+// no lookup; any other waits for `seasonsPromise` (from fetchSeasons).
 async function currentSeason(seasonsPromise) {
-  const param = new URLSearchParams(location.search).get('season');
+  const param = requestedSeason();
   if (!param || param === String(CONFIG.DEFAULT_SEASON.season)) return defaultSeason();
-  return (await seasonsPromise).find(s => String(s.season) === param) || defaultSeason();
+  return (await seasonsPromise).seasons.find(s => String(s.season) === param) || null;
 }
 
 // Everything the page needs for one draft: linked castaways and teams, plus the scoring rules.

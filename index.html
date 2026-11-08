@@ -40,9 +40,10 @@
 
 <div id="loading">🔥 Loading draft data…</div>
 <div id="error-msg">
-  <h2>⚠️ Failed to load draft data</h2>
+  <h2 id="error-title">⚠️ Failed to load draft data</h2>
   <p id="error-detail"></p>
-  <p>Check that <code>SUPABASE_URL</code> and <code>DEFAULT_SEASON</code> in <code>config.js</code> are correct.</p>
+  <p id="error-hint">Check that <code>SUPABASE_URL</code> and <code>DEFAULT_SEASON</code> in <code>config.js</code> are correct.</p>
+  <div class="error-actions" id="error-actions"></div>
 </div>
 
 <div id="app" style="display:none">
@@ -97,11 +98,11 @@
       <thead>
         <tr>
           <th class="sortable" data-sort="name">Castaway</th>
-          <th class="sortable" data-sort="tribe">Tribe</th>
+          <th class="sortable col-tribe" data-sort="tribe">Tribe</th>
           <th class="sortable" data-sort="points">Points</th>
           <th>Advantages</th>
           <th class="sortable" data-sort="teams">Team(s)</th>
-          <th class="sortable" data-sort="status">Status</th>
+          <th class="sortable col-status" data-sort="status">Status</th>
         </tr>
       </thead>
       <tbody id="overview-body"></tbody>
@@ -120,7 +121,11 @@
 
 <div class="sheet-overlay" id="sheet-overlay"></div>
 <div class="bottom-sheet" id="bottom-sheet">
-  <div class="sheet-handle" id="sheet-handle"></div>
+  <div class="sheet-bar" id="sheet-bar">
+    <div class="sheet-handle" id="sheet-handle"></div>
+    <div class="sheet-bar-content" id="sheet-bar-content"></div>
+    <button type="button" class="sheet-close" id="sheet-close" aria-label="Close"></button>
+  </div>
   <div class="sheet-scroll" id="sheet-body"></div>
 </div>
 

@@ -97,13 +97,37 @@ function showError(message) {
   document.getElementById('error-detail').textContent = message;
 }
 
+// A ?season=N that isn't in the season list: say so and link to the seasons there are. If the list itself
+// didn't load, the season may exist, so offer to try again instead.
+function showSeasonUnavailable({ seasons, listed }) {
+  const season = requestedSeason();
+  document.title = 'Survivor';
+  document.getElementById('page-title').remove();
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'block';
+  document.getElementById('error-hint').hidden = true;
+  const link = s => `<a class="error-season" href="${seasonUrl('index.html', s.season)}">${escapeHtml(s.title)}</a>`;
+  if (listed) {
+    document.getElementById('error-title').textContent = `Season ${season} isn't available`;
+    document.getElementById('error-detail').textContent = 'Pick one of these seasons instead:';
+    document.getElementById('error-actions').innerHTML = seasons.map(link).join('');
+  } else {
+    document.getElementById('error-title').textContent = `Couldn't load season ${season}`;
+    document.getElementById('error-detail').textContent = "The list of seasons didn't load. Try again in a moment.";
+    document.getElementById('error-actions').innerHTML =
+      `<button type="button" class="error-season" id="error-retry">Try again</button>${link(seasons[0])}`;
+    document.getElementById('error-retry').addEventListener('click', () => location.reload());
+  }
+}
+
 // Picks the season from the URL, then loads and draws it. The header (logo, season picker, admin button) is set
 // up without waiting for the data.
 async function main() {
   const seasonsPromise = fetchSeasons();
   const entry = currentEntry = await currentSeason(seasonsPromise);
+  if (!entry) return showSeasonUnavailable(await seasonsPromise);
   setUpLogo(entry);
-  seasonsPromise.then(seasons => setUpSeasonPicker(entry, seasons));
+  seasonsPromise.then(({ seasons }) => setUpSeasonPicker(entry, seasons));
   setUpAdminButton();
   try {
     const season = await loadSeason(entry);
