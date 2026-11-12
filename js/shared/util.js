@@ -14,6 +14,8 @@ function escapeHtml(s) {
 // Short display names, keyed by full name: the castaway's nickname (e.g. "Jelly") if set, else their first name
 // (e.g. "Thien An"), else the first word.
 // Adds a last initial when short names clash ("John A.", "John C."), and the full name if that still clashes.
+// The edge functions have a port (supabase/functions/_shared/short-names.ts) for text they save, such as a pair
+// vote's "Kilby & Kristin": change both together.
 function shortNames(castaways) {
   const parts = new Map();
   castaways.forEach(({ name, firstName, lastName, nickname }) => {

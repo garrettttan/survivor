@@ -97,7 +97,10 @@ function challengeHtml(item, ctx) {
 function tribalHtml(item, ctx) {
   const votes = item.votes.filter(v => !v.shot && v.targetId != null).map(v => [v.targetId, v.voterId]);
   const shots = item.votes.filter(v => v.shot).map(v => v.voterId);
-  const safe = item.safe.map(s => `${ctx.name(s.castawayId)} <span class="muted">(${RECAP_SAFE[s.reason]})</span>`).join(', ');
+  // Voting in pairs, one partner's safety covers both: "Ann & Bea (an idol)", once per pair and reason
+  const groupOf = tribalGroupOf(item);
+  const safe = [...new Set(item.safe.map(s =>
+    `${pairNames(groupOf(s.castawayId), ctx)} <span class="muted">(${RECAP_SAFE[s.reason]})</span>`))].join(', ');
   const note = { rocks: 'Went to rocks', consensus: 'Decided by consensus' }[item.outcome];
   return `<div class="recap-row"><div class="recap-label">${item.tribeId != null ? ctx.tribe(item.tribeId) : 'Votes'}</div>
     ${recapTally(votes, ctx, tribalGroupOf(item))}

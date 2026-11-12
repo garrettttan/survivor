@@ -102,9 +102,10 @@ per-member average for that episode, so smaller teams aren't penalized.
 
 The browser only collects cards. All the rules run in the edge function:
 
-- `cards.ts` turns cards into event rows and checks them. Each vote at Tribal also gives whoever it was for a
-  Received a vote row (Received a nullified vote if they were safe), pointing back at the voter. For example, every remaining castaway must be placed in a
-  swap, and voters must be at that tribal.
+- `cards.ts` turns cards into event rows and checks them. For example, every remaining castaway must be placed in a
+  swap, and voters must be at that tribal. Each vote at Tribal also gives whoever it was for a Received a vote row
+  (Received a nullified vote if they were safe), pointing back at the voter; these come after all of that Tribal's
+  votes, in order of the voter's name.
 - `game.ts` tracks the game as it stands before each card.
 - `edit.ts` replays an edited episode and every episode after it, and reports what changed.
 - `rebuild.ts` rebuilds cards from saved rows for episodes that have none stored, such as older seasons first entered

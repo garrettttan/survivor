@@ -7,6 +7,7 @@
 
 import { EVENT_TYPE, WIN_TYPES } from "../_shared/event-types.ts";
 import type { EventRow } from "../_shared/replay.ts";
+import { shortNames } from "../_shared/short-names.ts";
 import type { GameState } from "./game.ts";
 
 export interface Castaway { id: number; firstName: string; lastName: string; name: string; nickname: string | null }
@@ -254,10 +255,10 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 }
 
 // ── Tribal Council ───────────────────────────────────────────────────────────
-// A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote),
-// each followed by a row for whoever the vote was for, pointing back at the voter: Received a vote, or Received a
-// nullified vote when they were safe (an idol, Shot in the Dark or immunity), so the season's scoring can treat
-// the two differently. Then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
+// A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote).
+// After all of them, a row for whoever each vote was for, pointing back at the voter, in order of the voter's name:
+// Received a vote, or Received a nullified vote when they were safe (an idol, Shot in the Dark or immunity), so the
+// season's scoring can treat the two differently. Then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
 // recorded like a vote. Shot in the Dark (a vote of "shot") gives up the vote for one row: shotSafe if it saved them,
 // else shotNotSafe.
 //
@@ -267,8 +268,10 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 //
 // `pairs` is set when the castaways were paired up: each still votes on their own, but for a pair, and a pair goes home.
 // It maps each castaway at Tribal to a pair number. A vote names any member of the pair it's for; its row carries the
-// pair's names in details (no other castaway, since it's for both). bootId is any member of the pair that went home:
-// each of them gets an exit row, and a vote for that pair is correct.
+// pair's short names in details, as the site shows them ("Kilby & Kristin"; no other castaway, since it's for both). bootId is any member of the pair that went home:
+// each of them gets an exit row, and a vote for that pair is correct. Safety covers the whole pair: when one partner is
+// safe (their idol, their Shot in the Dark, immunity), neither can go home, and votes for the pair are nullified for
+// both. `safe` still lists only who was safe themselves (who played the idol or rolled).
 const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
 
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
@@ -290,17 +293,24 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   }
   if (paired) for (const id of attendees) if (!pairs.has(id)) errors.push(`Put ${name(data, id)} in a pair.`);
   const pairOf = (id: number) => paired && pairs.has(id) ? attendees.filter(a => pairs.get(a) === pairs.get(id)) : [id];
-  const pairName = (id: number) => pairOf(id).map(member => name(data, member)).join(" & ");
+  const pairName = (id: number) => pairOf(id).map(member => shortName(data, member)).join(" & ");
   const wentHome = bootId === null ? [] : pairOf(bootId);
 
   const safe = new Map(entries(card.safe));
   for (const [id, reason] of safe) {
     if (!attendees.includes(id)) errors.push(`${name(data, id)} wasn't at this Tribal, so can't be safe at it.`);
     else if (typeof reason !== "string" || !SAFE_REASONS[reason]) errors.push(`Pick why ${name(data, id)} was safe.`);
-    else if (wentHome.includes(id)) errors.push(`${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so didn't go home.`);
+    else if (wentHome.includes(id)) {
+      errors.push(wentHome.length > 1
+        ? `${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so their pair didn't go home.`
+        : `${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so didn't go home.`);
+    }
   }
+  // Whether a castaway was safe: themselves, or (voting in pairs) through their partner
+  const isSafe = (id: number) => pairOf(id).some(member => safe.has(member));
 
   const rows: CardRow[] = [];
+  const received: { voter: number; row: CardRow }[] = [];
   if (card.outcome !== "rocks") {
     const correct = eventType(data, EVENT_TYPE.votedCorrectly, errors);
     const incorrect = eventType(data, EVENT_TYPE.votedIncorrectly, errors);
@@ -323,12 +333,15 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
         rows.push(row(voter, wentHome.includes(target) ? correct : incorrect, vote));
         // Everyone the vote was for (the whole pair, when voting in pairs) received it
         for (const member of pairOf(target)) {
-          const type = eventType(data, safe.has(member) ? EVENT_TYPE.receivedNullifiedVote : EVENT_TYPE.receivedVote, errors);
-          rows.push(row(member, type, { otherCastawayId: voter }));
+          const type = eventType(data, isSafe(member) ? EVENT_TYPE.receivedNullifiedVote : EVENT_TYPE.receivedVote, errors);
+          received.push({ voter, row: row(member, type, { otherCastawayId: voter }) });
         }
       }
     }
   }
+  // Received votes after every vote, by voter name (a stable sort: a pair's rows stay in pair order)
+  received.sort((a, b) => byName(name(data, a.voter), name(data, b.voter)));
+  rows.push(...received.map(r => r.row));
   const out = eventType(data, card.outcome === "rocks" ? EVENT_TYPE.wentHomeOnRocks : EVENT_TYPE.votedOut, errors);
   if (errors.length) return { rows: [], errors };
   for (const id of wentHome) rows.push(row(id, out));
@@ -399,6 +412,22 @@ function eventType(data: SeasonData, id: number, errors: string[]): EventType {
   const type = data.eventTypeById.get(id);
   if (!type) errors.push(`Event type ${id} is missing from the database.`);
   return type!;
+}
+
+// Names in alphabetical order, ignoring case. Compared by code point, not locale, so the order doesn't depend on the
+// runtime (the migration that reordered received votes sorts the same way: lower(name) COLLATE "C").
+function byName(a: string, b: string): number {
+  const [x, y] = [a.toLowerCase(), b.toLowerCase()];
+  return x < y ? -1 : x > y ? 1 : 0;
+}
+
+// A castaway's short name as the site shows it (_shared/short-names.ts), worked out once per season's data
+const shortNamesBySeason = new WeakMap<SeasonData, Map<string, string>>();
+function shortName(data: SeasonData, id: number): string {
+  let short = shortNamesBySeason.get(data);
+  if (!short) shortNamesBySeason.set(data, short = shortNames(data.castawayById.values()));
+  const full = name(data, id);
+  return short.get(full) ?? full;
 }
 
 function name(data: SeasonData, id: number): string {
