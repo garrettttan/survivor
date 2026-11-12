@@ -47,17 +47,29 @@ function recapLines(lines) {
     `<div class="recap-line"><span class="recap-key">${key}</span> ${value}</div>`).join('');
 }
 
-// Votes counted by who they were for, most first: "Brady 9 — Cristian, Kilby, ..." (`pairs`: [target, voter])
-function recapTally(pairs, ctx) {
+// Votes counted by who they were for, most first: "Brady 9 — Cristian, Kilby, ..." (`votes`: [target, voter]).
+// `groupOf` gives everyone a vote for a target counts against (a Tribal voted in pairs: the target's whole pair).
+function recapTally(votes, ctx, groupOf = id => [id]) {
   const byTarget = new Map();
-  pairs.forEach(([target, voter]) => {
-    if (!byTarget.has(target)) byTarget.set(target, []);
-    byTarget.get(target).push(voter);
+  votes.forEach(([target, voter]) => {
+    const key = groupOf(target).join(',');
+    if (!byTarget.has(key)) byTarget.set(key, { group: groupOf(target), voters: [] });
+    byTarget.get(key).voters.push(voter);
   });
-  return [...byTarget].sort((a, b) => b[1].length - a[1].length).map(([target, voters]) => `<div class="recap-vote">
-      ${ctx.name(target)} <span class="recap-count">${voters.length}</span>
+  return [...byTarget.values()].sort((a, b) => b.voters.length - a.voters.length).map(({ group, voters }) => `<div class="recap-vote">
+      ${pairNames(group, ctx)} <span class="recap-count">${voters.length}</span>
       <span class="muted">— ${ctx.names(voters)}</span>
     </div>`).join('');
+}
+
+// "Ann & Bea" (or one name)
+function pairNames(ids, ctx) {
+  return ids.map(ctx.name).join(' &amp; ');
+}
+
+// A Tribal's castaway → their pair (themselves alone when it wasn't voted in pairs)
+function tribalGroupOf(item) {
+  return id => (item.pairs || []).find(pair => pair.includes(id)) || [id];
 }
 
 // ── Items ────────────────────────────────────────────────────────────────────
@@ -88,7 +100,7 @@ function tribalHtml(item, ctx) {
   const safe = item.safe.map(s => `${ctx.name(s.castawayId)} <span class="muted">(${RECAP_SAFE[s.reason]})</span>`).join(', ');
   const note = { rocks: 'Went to rocks', consensus: 'Decided by consensus' }[item.outcome];
   return `<div class="recap-row"><div class="recap-label">${item.tribeId != null ? ctx.tribe(item.tribeId) : 'Votes'}</div>
-    ${recapTally(votes, ctx)}
+    ${recapTally(votes, ctx, tribalGroupOf(item))}
     ${recapLines([['Shot in the Dark', ctx.names(shots)], ['Safe', safe]])}
     ${note ? `<div class="recap-line muted">${note}</div>` : ''}</div>`;
 }
@@ -153,7 +165,7 @@ function headlineLines(item, ctx) {
     case 'exit': return [`☠️ ${ctx.name(item.castawayId)} <span class="muted">${RECAP_EXITS[item.reason] || 'left the game'}</span>`];
     case 'tribal':
       // A pair that went home together shares one line
-      return item.bootId != null ? [`☠️ ${[item.bootId, item.partnerId].filter(id => id != null).map(ctx.name).join(' &amp; ')} <span class="muted">${RECAP_BOOTS[item.outcome] || 'voted out'}</span>`] : [];
+      return item.bootId != null ? [`☠️ ${pairNames(tribalGroupOf(item)(item.bootId), ctx)} <span class="muted">${RECAP_BOOTS[item.outcome] || 'voted out'}</span>`] : [];
     case 'ftc': return item.winnerId != null ? [`🏆 ${ctx.name(item.winnerId)} won`] : [];
     case 'event':
       return item.category === 'Eliminations'

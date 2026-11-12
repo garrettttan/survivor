@@ -367,31 +367,26 @@ Deno.test("tribal: a Shot in the Dark Tribal rebuilds as the same card", () => {
   assertEquals(rebuilt.cards, [card]);
 });
 
-Deno.test("tribal: a pair goes home together, and a vote for either partner is correct", () => {
-  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
-  const tribal = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, partnerId: 2, ...fields });
-  // Ann voted for Bea, Bea and Cal for Ann: Bea and Cal (the pair) go home, and only Ann voted correctly
-  assertEquals(rowsOf(tribal({ votes: { 1: 2, 2: 1, 3: 1 } }), red3), [
-    ["Ann", "Voted correctly", "Bea"], ["Bea", "Voted incorrectly", "Ann"], ["Cal", "Voted incorrectly", "Ann"],
-    ["Cal", "Voted out", null], ["Bea", "Voted out", null],
+Deno.test("tribal: voting in pairs: a vote is for a pair, and the pair goes home together", () => {
+  // Everyone on Red and Blue at one Tribal: Ann & Bea, Cal & Dee
+  const four: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10, 4: 10 } };
+  const tribal = (fields: Record<string, unknown>) =>
+    ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, pairs: { 1: 1, 2: 1, 3: 2, 4: 2 }, ...fields });
+  // Ann and Bea vote for Cal & Dee (naming either one), Cal and Dee for Ann & Bea: Cal & Dee go home
+  assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), four), [
+    ["Ann", "Voted correctly", null], ["Bea", "Voted correctly", null],
+    ["Cal", "Voted incorrectly", null], ["Dee", "Voted incorrectly", null],
+    ["Cal", "Voted out", null], ["Dee", "Voted out", null],
   ]);
-  assertEquals(cardRows(tribal({ partnerId: 4, votes: { 1: 3, 2: 3, 3: 1 } }), big, red3).errors,
-    ["Dee wasn't at this Tribal."]);
-  assertEquals(cardRows(tribal({ partnerId: 3, votes: { 1: 3, 2: 3, 3: 1 } }), big, red3).errors,
-    ["Cal can't be their own partner."]);
-  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 1, 3: 1 }, safe: { 2: "idol" } }), big, red3).errors,
-    ["Bea was safe with an idol, so didn't go home."]);
-});
-
-Deno.test("tribal: a pair's Tribal rebuilds as the same card", () => {
-  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
-  const card = { type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, partnerId: 2, votes: { 1: 2, 2: 1, 3: 1 }, safe: {} };
-  const before = [1, 2, 3, 4, 5, 6].map((id, i) => toEventRow({ castawayId: id, eventType: big.eventTypeByName.get("Swapped tribes")!,
-    otherCastawayId: null, advantageId: null, newAdvantage: null, tribeId: red3.tribeOf[id], quantity: 1, details: null }, big, 1, i + 1));
-  const rows = cardRows(card, big, { ...red3, out: [] }).rows.map((r, i) => toEventRow(r, big, 2, i + 1));
-  const rebuilt = rebuildEpisode(rows, before, big, new Map([["Red", 10], ["Blue", 11], ["Green", 12]]), new Map());
-  assertEquals(rebuilt.fallbacks, []);
-  assertEquals(rebuilt.cards, [card]);
+  // Each vote row names the whole pair it was for
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), big, four).rows.map(r => r.details),
+    ["Cal & Dee", "Cal & Dee", "Ann & Bea", "Ann & Bea", null, null]);
+  assertEquals(cardRows(tribal({ votes: { 1: 2, 2: 3, 3: 1, 4: 1 } }), big, four).errors,
+    ["Ann can't vote for their own pair."]);
+  assertEquals(cardRows(tribal({ pairs: { 1: 1, 2: 1, 3: 2 }, votes: { 1: 3, 2: 3, 3: 1, 4: 1 } }), big, four).errors,
+    ["Put Dee in a pair."]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1, 4: 1 }, safe: { 4: "idol" } }), big, four).errors,
+    ["Dee was safe with an idol, so didn't go home."]);
 });
 
 Deno.test("tribal: rocks takes no votes", () => {

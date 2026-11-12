@@ -53,7 +53,7 @@ Deno.test("a Tribal leaves out who didn't vote, marks Shot in the Dark, and list
     safe: { "1": "immunity", "6": "idol" },
   }], s51.data);
   assertEquals(item, {
-    type: "tribal", tribeId: 2, outcome: "voted", bootId: 5, partnerId: null,
+    type: "tribal", tribeId: 2, outcome: "voted", bootId: 5, pairs: [],
     votes: [
       { voterId: 1, targetId: 5, shot: false }, { voterId: 2, targetId: 5, shot: false },
       { voterId: 4, targetId: null, shot: true }, { voterId: 5, targetId: 1, shot: false },
@@ -62,9 +62,10 @@ Deno.test("a Tribal leaves out who didn't vote, marks Shot in the Dark, and list
   });
 });
 
-Deno.test("a pair's Tribal names the partner who went home with the boot", () => {
-  const [item] = recapItems([{ type: "tribal", tribeId: 2, outcome: "voted", bootId: 5, partnerId: 6, votes: { "1": 6 }, safe: {} }], s51.data);
-  assertEquals(item.type === "tribal" && [item.bootId, item.partnerId], [5, 6]);
+Deno.test("a Tribal voted in pairs lists each pair's members", () => {
+  const [item] = recapItems([{ type: "tribal", tribeId: 2, outcome: "voted", bootId: 5,
+    pairs: { "5": 2, "6": 2, "1": 1, "2": 1 }, votes: { "1": 5 }, safe: {} }], s51.data);
+  assertEquals(item.type === "tribal" && [item.bootId, item.pairs], [5, [[1, 2], [5, 6]]]);
 });
 
 Deno.test("advantages are named, by id or by the name of one first found that episode", () => {
