@@ -64,6 +64,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -73,6 +74,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -82,6 +84,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -91,6 +94,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -100,6 +104,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -109,6 +114,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -118,6 +124,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -127,6 +134,7 @@
    },
    {
     "episode": 8,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -136,6 +144,7 @@
    },
    {
     "episode": 10,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -145,6 +154,7 @@
    },
    {
     "episode": 11,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 5,
     "otherCastawayId": null,
@@ -154,6 +164,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -163,6 +174,7 @@
    },
    {
     "episode": 14,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 8,
     "otherCastawayId": null,
@@ -172,6 +184,7 @@
    },
    {
     "episode": 14,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 11,
     "otherCastawayId": null,
@@ -181,6 +194,7 @@
    },
    {
     "episode": 14,
+    "eventTypeId": 32,
     "name": "Became Sole Survivor",
     "points": 0,
     "otherCastawayId": null,
@@ -255,6 +269,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -264,6 +279,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -273,6 +289,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -282,6 +299,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -291,6 +309,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -300,6 +319,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -309,6 +329,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -318,6 +339,7 @@
    },
    {
     "episode": 10,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -327,6 +349,7 @@
    },
    {
     "episode": 12,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -336,6 +359,7 @@
    },
    {
     "episode": 14,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -410,6 +434,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -419,6 +444,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -428,6 +454,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -437,6 +464,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -446,6 +474,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -455,6 +484,7 @@
    },
    {
     "episode": 8,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 4,
     "otherCastawayId": null,
@@ -464,6 +494,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -538,6 +569,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -547,6 +579,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -556,6 +589,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -565,6 +599,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -574,6 +609,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -583,6 +619,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -592,6 +629,7 @@
    },
    {
     "episode": 9,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -601,6 +639,7 @@
    },
    {
     "episode": 14,
+    "eventTypeId": 30,
     "name": "Lost fire-making",
     "points": 0,
     "otherCastawayId": null,
@@ -675,6 +714,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -684,6 +724,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -693,6 +734,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -702,6 +744,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -711,6 +754,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -720,6 +764,7 @@
    },
    {
     "episode": 12,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -729,6 +774,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 4,
     "otherCastawayId": null,
@@ -738,6 +784,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -812,6 +859,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -821,6 +869,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -830,6 +879,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -839,6 +889,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -848,6 +899,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -857,6 +909,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -866,6 +919,7 @@
    },
    {
     "episode": 12,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -875,6 +929,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -884,6 +939,7 @@
    },
    {
     "episode": 13,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -958,6 +1014,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -967,6 +1024,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -976,6 +1034,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -985,6 +1044,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -994,6 +1054,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1003,6 +1064,7 @@
    },
    {
     "episode": 12,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1077,6 +1139,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1086,6 +1149,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1095,6 +1159,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1104,6 +1169,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -1113,6 +1179,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 4,
     "otherCastawayId": null,
@@ -1122,6 +1189,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1131,6 +1199,7 @@
    },
    {
     "episode": 8,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 4,
     "otherCastawayId": null,
@@ -1140,6 +1209,7 @@
    },
    {
     "episode": 9,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1149,6 +1219,7 @@
    },
    {
     "episode": 10,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 5,
     "otherCastawayId": null,
@@ -1158,6 +1229,7 @@
    },
    {
     "episode": 11,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1232,6 +1304,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -1241,6 +1314,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1250,6 +1324,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1259,6 +1334,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1268,6 +1344,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1277,6 +1354,7 @@
    },
    {
     "episode": 9,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 4,
     "otherCastawayId": null,
@@ -1286,6 +1364,7 @@
    },
    {
     "episode": 10,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1360,6 +1439,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1369,6 +1449,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1378,6 +1459,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1387,6 +1469,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -1396,6 +1479,7 @@
    },
    {
     "episode": 9,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1405,6 +1489,7 @@
    },
    {
     "episode": 9,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1479,6 +1564,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1488,6 +1574,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1497,6 +1584,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1506,6 +1594,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1515,6 +1604,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1524,6 +1614,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1533,6 +1624,7 @@
    },
    {
     "episode": 8,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1607,6 +1699,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1616,6 +1709,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1625,6 +1719,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1634,6 +1729,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -1643,6 +1739,7 @@
    },
    {
     "episode": 7,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1697,6 +1794,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 3,
     "otherCastawayId": null,
@@ -1706,6 +1804,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1715,6 +1814,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1724,6 +1824,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1733,6 +1834,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1787,6 +1889,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1796,6 +1899,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1805,6 +1909,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1814,6 +1919,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1823,6 +1929,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1877,6 +1984,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1886,6 +1994,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1895,6 +2004,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1949,6 +2059,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -1958,6 +2069,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -1967,6 +2079,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2021,6 +2134,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 2,
     "otherCastawayId": null,
@@ -2030,6 +2144,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2084,6 +2199,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 29,
     "name": "Episode points",
     "points": 1,
     "otherCastawayId": null,
@@ -2093,6 +2209,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,

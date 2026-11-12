@@ -136,10 +136,40 @@ function timelineBands(c) {
   return bands.filter(b => b.stint || b.rows.length);
 }
 
+// Received votes by event type id (supabase/functions/_shared/event-types.ts), and how a Tribal's several read
+const RECEIVED_VOTES = {
+  37: n => `Received ${n} votes`,                // Received a vote
+  38: n => `Received ${n} nullified votes`,      // Received a nullified vote
+};
+
+// A Tribal's received votes as one row: the log has a row per vote, in a run (a Tribal's received votes are together,
+// with none of this castaway's other rows between them). The row lists everyone who voted, and adds up the points.
+function collapseReceivedVotes(rows) {
+  const collapsed = [];
+  rows.forEach(e => {
+    const last = collapsed[collapsed.length - 1];
+    if (RECEIVED_VOTES[e.eventTypeId] && last?.voters && last.episode === e.episode && last.eventTypeId === e.eventTypeId) {
+      last.voters.push(e.otherCastaway);
+      last.points += e.points;
+      last.name = RECEIVED_VOTES[e.eventTypeId](last.voters.length);
+    } else {
+      collapsed.push(RECEIVED_VOTES[e.eventTypeId] ? { ...e, voters: [e.otherCastaway], otherCastaway: null } : e);
+    }
+  });
+  return collapsed;
+}
+
+// Who voted for them, by short name (each taps to open their sheet)
+function votersHtml(voters, short) {
+  const names = voters.filter(Boolean).map(v =>
+    `<span class="clickable" data-castaway="${escapeHtml(v.name)}">${escapeHtml(short.get(v.name) || v.name)}</span>`);
+  return names.length ? ` <span class="muted">— ${names.join(', ')}</span>` : '';
+}
+
 // Log rows grouped under an episode label, a line between episodes
 function episodesHtml(rows, short) {
   const byEpisode = new Map();
-  rows.forEach(e => {
+  collapseReceivedVotes(rows).forEach(e => {
     if (!byEpisode.has(e.episode)) byEpisode.set(e.episode, []);
     byEpisode.get(e.episode).push(e);
   });
@@ -147,7 +177,7 @@ function episodesHtml(rows, short) {
     <div class="sheet-episode">
       <div class="episode-label">EPISODE ${episode}</div>
       ${events.map(e => `<div class="sheet-row">
-        <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e, short)}</span>
+        <span class="sheet-row-name">${escapeHtml(e.name)}${eventDetailHtml(e, short)}${e.voters ? votersHtml(e.voters, short) : ''}</span>
         ${e.points ? `<span class="event-pts">${e.points > 0 ? '+' : ''}${fmt(e.points)}</span>` : ''}
       </div>`).join('')}
     </div>`).join('');

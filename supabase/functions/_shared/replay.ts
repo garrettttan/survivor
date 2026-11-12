@@ -64,6 +64,7 @@ export interface TribeStint {
 /** One line of a castaway's event log. */
 export interface LogRow {
   episode: number;
+  eventTypeId: number;                           // the event type (_shared/event-types.ts), e.g. to group received votes
   name: string;
   points: number;
   otherCastawayId: number | null;
@@ -103,6 +104,7 @@ function inSameBlock(a: EventRow, b: EventRow): boolean {
 function eventRowToLogRow(event: EventRow): LogRow {
   return {
     episode: event.episode,
+    eventTypeId: event.event_type_id,
     name: event.event,
     points: event.points,
     otherCastawayId: event.other_castaway_id,

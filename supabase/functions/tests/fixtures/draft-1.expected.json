@@ -40,6 +40,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 6,
@@ -49,6 +50,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 9,
@@ -58,6 +60,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 17,
@@ -67,6 +70,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 18,
@@ -76,6 +80,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 20,
@@ -85,6 +90,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 23,
@@ -94,6 +100,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -157,6 +164,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -166,6 +174,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -175,6 +184,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -184,6 +194,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 13,
@@ -193,6 +204,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 13,
@@ -202,6 +214,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 10,
@@ -211,6 +224,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 12,
@@ -220,6 +234,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 10,
@@ -229,6 +244,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 19,
@@ -238,6 +254,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -288,6 +305,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -297,6 +315,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 11,
@@ -306,6 +325,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 4,
@@ -315,6 +335,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 8,
@@ -324,6 +345,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 11,
@@ -333,6 +355,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 14,
@@ -342,6 +365,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 16,
@@ -351,6 +375,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 22,
@@ -360,6 +385,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -426,6 +452,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -435,6 +462,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 24,
     "name": "Had an iconic moment",
     "points": 1,
     "otherCastawayId": null,
@@ -444,6 +472,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -453,6 +482,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -462,6 +492,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
@@ -471,6 +502,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -480,6 +512,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -489,6 +522,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -574,6 +608,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -583,6 +618,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 11,
@@ -592,6 +628,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 5,
     "name": "Received advantage",
     "points": 1,
     "otherCastawayId": 21,
@@ -601,6 +638,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 24,
     "name": "Had an iconic moment",
     "points": 1,
     "otherCastawayId": null,
@@ -610,6 +648,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -619,6 +658,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -628,6 +668,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -637,6 +678,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -701,6 +743,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -710,6 +753,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -719,6 +763,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -728,6 +773,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -737,6 +783,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -746,6 +793,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 16,
@@ -755,6 +803,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -823,6 +872,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -832,6 +882,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -841,6 +892,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -850,6 +902,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -859,6 +912,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -868,6 +922,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 12,
@@ -877,6 +932,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 6,
@@ -886,6 +942,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 10,
@@ -895,6 +952,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 18,
@@ -904,6 +962,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 20,
@@ -913,6 +972,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -922,6 +982,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -931,6 +992,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 5,
     "name": "Received advantage",
     "points": 1,
     "otherCastawayId": 17,
@@ -940,6 +1002,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 7,
     "name": "Played advantage successfully",
     "points": 2,
     "otherCastawayId": null,
@@ -949,6 +1012,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 16,
@@ -958,6 +1022,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -1025,6 +1090,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 13,
@@ -1034,6 +1100,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -1043,6 +1110,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1052,6 +1120,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -1061,6 +1130,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
@@ -1070,6 +1140,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 13,
@@ -1079,6 +1150,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -1088,6 +1160,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 4,
@@ -1097,6 +1170,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 4,
@@ -1106,6 +1180,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -1115,6 +1190,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 19,
@@ -1179,6 +1255,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -1188,6 +1265,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1197,6 +1275,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -1206,6 +1285,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 5,
@@ -1215,6 +1295,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 7,
@@ -1224,6 +1305,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 19,
@@ -1233,6 +1315,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 21,
@@ -1242,6 +1325,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1251,6 +1335,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -1260,6 +1345,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 16,
@@ -1269,6 +1355,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -1336,6 +1423,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 13,
@@ -1345,6 +1433,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -1354,6 +1443,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -1363,6 +1453,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1372,6 +1463,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -1381,6 +1473,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
@@ -1390,6 +1483,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -1399,6 +1493,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 13,
@@ -1408,6 +1503,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 4,
@@ -1417,6 +1513,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -1426,6 +1523,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 19,
@@ -1491,6 +1589,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 12,
@@ -1500,6 +1599,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 10,
@@ -1509,6 +1609,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -1518,6 +1619,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1527,6 +1629,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -1536,6 +1639,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 4,
@@ -1545,6 +1649,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 4,
@@ -1554,6 +1659,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 12,
@@ -1563,6 +1669,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 10,
@@ -1572,6 +1679,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 19,
@@ -1581,6 +1689,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -1647,6 +1756,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1656,6 +1766,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -1665,6 +1776,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1674,6 +1786,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -1683,6 +1796,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -1692,6 +1806,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -1701,6 +1816,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1768,6 +1884,7 @@
   "log": [
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -1777,6 +1894,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1786,6 +1904,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -1795,6 +1914,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1804,6 +1924,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 24,
     "name": "Had an iconic moment",
     "points": 1,
     "otherCastawayId": null,
@@ -1813,6 +1934,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 5,
     "name": "Received advantage",
     "points": 1,
     "otherCastawayId": 17,
@@ -1822,6 +1944,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 7,
     "name": "Played advantage successfully",
     "points": 2,
     "otherCastawayId": null,
@@ -1831,6 +1954,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -1895,6 +2019,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1904,6 +2029,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -1913,6 +2039,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1922,6 +2049,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -1931,6 +2059,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 8,
@@ -1940,6 +2069,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 9,
@@ -1949,6 +2079,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 11,
@@ -1958,6 +2089,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 22,
@@ -1967,6 +2099,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2036,6 +2169,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -2045,6 +2179,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -2054,6 +2189,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2063,6 +2199,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -2072,6 +2209,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 24,
     "name": "Had an iconic moment",
     "points": 1,
     "otherCastawayId": null,
@@ -2081,6 +2219,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -2090,6 +2229,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -2099,6 +2239,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -2108,6 +2249,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -2117,6 +2259,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -2126,6 +2269,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 6,
     "name": "Gave away advantage",
     "points": 0,
     "otherCastawayId": 15,
@@ -2135,6 +2279,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 6,
     "name": "Gave away advantage",
     "points": 0,
     "otherCastawayId": 9,
@@ -2144,6 +2289,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2210,6 +2356,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -2219,6 +2366,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -2228,6 +2376,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2237,6 +2386,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -2246,6 +2396,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
@@ -2255,6 +2406,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 14,
     "name": "Won team immunity (2nd place)",
     "points": 1,
     "otherCastawayId": null,
@@ -2264,6 +2416,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2273,6 +2426,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2336,6 +2490,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2345,6 +2500,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 11,
@@ -2354,6 +2510,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2363,6 +2520,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 13,
@@ -2372,6 +2530,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 4,
@@ -2381,6 +2540,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 25,
     "name": "Cried on camera",
     "points": -1,
     "otherCastawayId": null,
@@ -2390,6 +2550,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 12,
@@ -2399,6 +2560,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 10,
@@ -2408,6 +2570,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2460,6 +2623,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -2469,6 +2633,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -2478,6 +2643,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2487,6 +2653,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
@@ -2496,6 +2663,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 7,
@@ -2505,6 +2673,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 9,
@@ -2514,6 +2683,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 13,
@@ -2523,6 +2693,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 15,
@@ -2532,6 +2703,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 17,
@@ -2541,6 +2713,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 37,
     "name": "Received a vote",
     "points": 0,
     "otherCastawayId": 23,
@@ -2550,6 +2723,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 21,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2602,6 +2776,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 4,
     "name": "Found advantage",
     "points": 2,
     "otherCastawayId": null,
@@ -2611,6 +2786,7 @@
    },
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2620,6 +2796,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 24,
     "name": "Had an iconic moment",
     "points": 1,
     "otherCastawayId": null,
@@ -2629,6 +2806,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 19,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 11,
@@ -2638,6 +2816,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 6,
     "name": "Gave away advantage",
     "points": 0,
     "otherCastawayId": 7,
@@ -2647,6 +2826,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 23,
     "name": "Quit",
     "points": -2,
     "otherCastawayId": null,
@@ -2711,6 +2891,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2720,6 +2901,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 5,
@@ -2729,6 +2911,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2738,6 +2921,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2747,6 +2931,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 16,
@@ -2756,6 +2941,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -2822,6 +3008,7 @@
   "log": [
    {
     "episode": 1,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 3,
@@ -2831,6 +3018,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 15,
     "name": "Won team reward",
     "points": 1,
     "otherCastawayId": null,
@@ -2840,6 +3028,7 @@
    },
    {
     "episode": 2,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2849,6 +3038,7 @@
    },
    {
     "episode": 3,
+    "eventTypeId": 18,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
@@ -2858,6 +3048,7 @@
    },
    {
     "episode": 4,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
@@ -2867,6 +3058,7 @@
    },
    {
     "episode": 5,
+    "eventTypeId": 13,
     "name": "Won team immunity",
     "points": 2,
     "otherCastawayId": null,
@@ -2876,6 +3068,7 @@
    },
    {
     "episode": 6,
+    "eventTypeId": 27,
     "name": "Sat out of challenge",
     "points": 0,
     "otherCastawayId": null,
