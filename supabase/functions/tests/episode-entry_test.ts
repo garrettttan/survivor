@@ -413,7 +413,25 @@ Deno.test("tribal: voting in pairs: a vote is for a pair, and the pair goes home
   assertEquals(cardRows(tribal({ pairs: { 1: 1, 2: 1, 3: 2 }, votes: { 1: 3, 2: 3, 3: 1, 4: 1 } }), big, four).errors,
     ["Put Dee in a pair."]);
   assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1, 4: 1 }, safe: { 4: "idol" } }), big, four).errors,
-    ["Dee was safe with an idol, so didn't go home."]);
+    ["Dee was safe with an idol, so their pair didn't go home."]);
+});
+
+Deno.test("tribal: voting in pairs, one partner's safety covers the pair", () => {
+  const four: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10, 4: 10 } };
+  const tribal = (fields: Record<string, unknown>) =>
+    ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, pairs: { 1: 1, 2: 1, 3: 2, 4: 2 }, ...fields });
+  // Bea rolls Shot in the Dark and is saved: Cal's and Dee's votes for Ann & Bea are nullified for both of them
+  const made = cardRows(tribal({ votes: { 1: 3, 2: "shot", 3: 1, 4: 2 }, safe: { 2: "shot" } }), big, four);
+  assertEquals(made.errors, []);
+  assertEquals(made.rows.filter(r => r.eventType.id === E.receivedVote || r.eventType.id === E.receivedNullifiedVote)
+    .map(r => [r.castawayId, r.eventType.id, r.otherCastawayId]), [
+    [3, E.receivedVote, 1], [4, E.receivedVote, 1],
+    [1, E.receivedNullifiedVote, 3], [2, E.receivedNullifiedVote, 3],
+    [1, E.receivedNullifiedVote, 4], [2, E.receivedNullifiedVote, 4],
+  ]);
+  // Bea's idol keeps Ann from going home too
+  assertEquals(cardRows(tribal({ bootId: 1, votes: { 1: 3, 2: 3, 3: 1, 4: 1 }, safe: { 2: "idol" } }), big, four).errors,
+    ["Bea was safe with an idol, so their pair didn't go home."]);
 });
 
 Deno.test("tribal: rocks takes no votes", () => {

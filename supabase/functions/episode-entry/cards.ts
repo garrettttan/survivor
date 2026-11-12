@@ -268,7 +268,9 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // `pairs` is set when the castaways were paired up: each still votes on their own, but for a pair, and a pair goes home.
 // It maps each castaway at Tribal to a pair number. A vote names any member of the pair it's for; its row carries the
 // pair's names in details (no other castaway, since it's for both). bootId is any member of the pair that went home:
-// each of them gets an exit row, and a vote for that pair is correct.
+// each of them gets an exit row, and a vote for that pair is correct. Safety covers the whole pair: when one partner is
+// safe (their idol, their Shot in the Dark, immunity), neither can go home, and votes for the pair are nullified for
+// both. `safe` still lists only who was safe themselves (who played the idol or rolled).
 const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
 
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
@@ -297,8 +299,14 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   for (const [id, reason] of safe) {
     if (!attendees.includes(id)) errors.push(`${name(data, id)} wasn't at this Tribal, so can't be safe at it.`);
     else if (typeof reason !== "string" || !SAFE_REASONS[reason]) errors.push(`Pick why ${name(data, id)} was safe.`);
-    else if (wentHome.includes(id)) errors.push(`${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so didn't go home.`);
+    else if (wentHome.includes(id)) {
+      errors.push(wentHome.length > 1
+        ? `${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so their pair didn't go home.`
+        : `${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so didn't go home.`);
+    }
   }
+  // Whether a castaway was safe: themselves, or (voting in pairs) through their partner
+  const isSafe = (id: number) => pairOf(id).some(member => safe.has(member));
 
   const rows: CardRow[] = [];
   const received: { voter: number; row: CardRow }[] = [];
@@ -324,7 +332,7 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
         rows.push(row(voter, wentHome.includes(target) ? correct : incorrect, vote));
         // Everyone the vote was for (the whole pair, when voting in pairs) received it
         for (const member of pairOf(target)) {
-          const type = eventType(data, safe.has(member) ? EVENT_TYPE.receivedNullifiedVote : EVENT_TYPE.receivedVote, errors);
+          const type = eventType(data, isSafe(member) ? EVENT_TYPE.receivedNullifiedVote : EVENT_TYPE.receivedVote, errors);
           received.push({ voter, row: row(member, type, { otherCastawayId: voter }) });
         }
       }

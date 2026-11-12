@@ -492,8 +492,9 @@ function tribalHtml(card, ctx) {
   const targets = paired ? pairChoices(card, attendees, ctx) : castawayPairs(attendees, ctx);
   html += fieldHtml(paired ? 'Pair that went home' : 'Went home',
     selectHtml({ field: 'bootId', num: true, rerender: true }, targets, card.bootId));
-  // Who couldn't go home: immunity or an idol here, Shot in the Dark next to their vote
-  html += groupHtml('Safe', sortIntoGroupsHtml('safe',
+  // Who couldn't go home: immunity or an idol here, Shot in the Dark next to their vote. Voting in pairs, mark only
+  // who was safe themselves (who played the idol or rolled): it covers their partner too.
+  html += groupHtml(paired ? 'Safe (covers their partner too)' : 'Safe', sortIntoGroupsHtml('safe',
     [{ id: 'immunity', name: 'Immunity', color: null }, { id: 'idol', name: 'Idol', color: null }],
     { ...card, safe: card.safe || {} }, ctx, attendees));
   if (card.outcome === 'rocks') return html;
