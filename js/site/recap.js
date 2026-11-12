@@ -152,7 +152,8 @@ function headlineLines(item, ctx) {
       return [];
     case 'exit': return [`☠️ ${ctx.name(item.castawayId)} <span class="muted">${RECAP_EXITS[item.reason] || 'left the game'}</span>`];
     case 'tribal':
-      return item.bootId != null ? [`☠️ ${ctx.name(item.bootId)} <span class="muted">${RECAP_BOOTS[item.outcome] || 'voted out'}</span>`] : [];
+      // A pair that went home together shares one line
+      return item.bootId != null ? [`☠️ ${[item.bootId, item.partnerId].filter(id => id != null).map(ctx.name).join(' &amp; ')} <span class="muted">${RECAP_BOOTS[item.outcome] || 'voted out'}</span>`] : [];
     case 'ftc': return item.winnerId != null ? [`🏆 ${ctx.name(item.winnerId)} won`] : [];
     case 'event':
       return item.category === 'Eliminations'
