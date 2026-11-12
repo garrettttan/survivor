@@ -49,13 +49,16 @@ const CARD_TYPES = {
       first: { second: null },
     },
     // Teams: fewer teams drops anyone on a team that's gone and the places it held, and whoever isn't on a team
-    // sat out
+    // sat out. Anyone who now won the reward is no longer someone brought on it.
     tidy: (card, ctx) => {
-      if (card.format !== 'teams') return;
-      card.teams = Object.fromEntries(Object.entries(card.teams).filter(([, n]) => n <= card.teamCount));
-      if (card.first > card.teamCount) card.first = null;
-      if (card.second > card.teamCount || card.teamCount < 3) card.second = null;
-      card.satOut = unsortedIds(card, ctx);
+      if (card.format === 'teams') {
+        card.teams = Object.fromEntries(Object.entries(card.teams).filter(([, n]) => n <= card.teamCount));
+        if (card.first > card.teamCount) card.first = null;
+        if (card.second > card.teamCount || card.teamCount < 3) card.second = null;
+        card.satOut = unsortedIds(card, ctx);
+      }
+      const winners = rewardWinners(card, ctx);
+      card.broughtOnReward = (card.broughtOnReward || []).filter(id => !winners.includes(id));
     },
   },
   tribal: {
@@ -377,12 +380,23 @@ function challengeHtml(card, ctx) {
   }
   // A team challenge lists its sit-outs itself (whoever isn't on a team)
   if (!teams) html += groupHtml('Sat out', checkChipsHtml('satOut', activeIds(ctx), card.satOut, ctx));
-  // Only an individual reward winner brings people along; a tribe or team reward goes to the whole group
-  if (card.prize !== 'immunity' && individual) {
-    const others = activeIds(ctx).filter(id => id !== card.first);
+  // Any reward: the winners can bring others along (anyone still in who didn't win it, e.g. from a losing tribe)
+  if (card.prize !== 'immunity') {
+    const winners = rewardWinners(card, ctx);
+    const others = activeIds(ctx).filter(id => !winners.includes(id));
     html += groupHtml('Brought on reward', checkChipsHtml('broughtOnReward', others, card.broughtOnReward, ctx));
   }
   return html;
+}
+
+// Who won 1st place in a challenge: the individual winner, or the winning tribe or team (less anyone who sat out)
+function rewardWinners(card, ctx) {
+  if (card.first === null || card.first === undefined || card.first === '') return [];
+  if (card.format === 'individual') return [card.first];
+  if (card.format === 'teams') {
+    return Object.entries(card.teams).filter(([, n]) => n === card.first).map(([id]) => Number(id));
+  }
+  return membersOf(card.first, ctx).filter(id => !card.satOut.includes(id));
 }
 
 // Most votes go to whoever went home, so picking them fills in everyone else's vote. Picking someone else later
