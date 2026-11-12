@@ -258,7 +258,9 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 
 // ── Tribal Council ───────────────────────────────────────────────────────────
 // A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote),
-// then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
+// each followed by a row for whoever the vote was for, pointing back at the voter: Received a vote, or Received a
+// nullified vote when they were safe (an idol, Shot in the Dark or immunity), so the season's scoring can treat
+// the two differently. Then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
 // recorded like a vote. Shot in the Dark (a vote of "shot") gives up the vote for one row: Safe from Shot in the Dark
 // if it saved them, else Played Shot in the Dark (not safe).
 //
@@ -273,6 +275,8 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 export const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
 export const SOLE_SURVIVOR = "Became Sole Survivor";
 export const SAFE_SHOT = "Safe from Shot in the Dark";
+export const RECEIVED_VOTE = "Received a vote";
+export const RECEIVED_NULLIFIED_VOTE = "Received a nullified vote";
 const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
 
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
@@ -325,6 +329,11 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
       } else if (bootId !== null) {
         const vote = paired ? { details: pairName(target) } : { otherCastawayId: target };
         rows.push(row(voter, wentHome.includes(target) ? correct : incorrect, vote));
+        // Everyone the vote was for (the whole pair, when voting in pairs) received it
+        for (const member of pairOf(target)) {
+          const type = eventType(data, safe.has(member) ? RECEIVED_NULLIFIED_VOTE : RECEIVED_VOTE, errors);
+          rows.push(row(member, type, { otherCastawayId: voter }));
+        }
       }
     }
   }

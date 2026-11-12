@@ -178,7 +178,8 @@ const TYPES = ["Starting tribe", "Swapped tribes", "Switched tribes", "Merged", 
   "Won team reward", "Won team reward (2nd place)", "Won individual immunity", "Won individual reward",
   "Brought on reward", "Sat out of challenge", "Voted correctly", "Voted incorrectly", "Voted out",
   "Went home on rocks", "Medically evacuated", "Quit", "Lost fire-making", "Had an iconic moment",
-  "Cried on camera", "Received a jury vote", "Became Sole Survivor", "Played Shot in the Dark (not safe)", "Safe from Shot in the Dark"];
+  "Cried on camera", "Received a jury vote", "Became Sole Survivor", "Played Shot in the Dark (not safe)", "Safe from Shot in the Dark",
+  "Received a vote", "Received a nullified vote"];
 const big: SeasonData = {
   season: 98,
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),
@@ -311,11 +312,13 @@ Deno.test("challenge: teams that aren't tribes", () => {
     ["No one is on Team 2."]);
 });
 
-Deno.test("tribal: votes, then whoever went home", () => {
+Deno.test("tribal: votes, each followed by whoever it was for receiving it, then whoever went home", () => {
   // Red and Blue merged into one group for this test: Ann, Bea, Cal at Tribal on Red
   const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
   assertEquals(rowsOf({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 3, 2: 1, 3: "none" } }, red3), [
-    ["Ann", "Voted correctly", "Cal"], ["Bea", "Voted incorrectly", "Ann"], ["Cal", "Voted out", null],
+    ["Ann", "Voted correctly", "Cal"], ["Cal", "Received a vote", "Ann"],
+    ["Bea", "Voted incorrectly", "Ann"], ["Ann", "Received a vote", "Bea"],
+    ["Cal", "Voted out", null],
   ]);
   assertEquals(cardRows({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, votes: { 1: 3 } }, big, red3).errors,
     ["Pick who Bea voted for, or No vote.", "Pick who Cal voted for, or No vote."]);
@@ -328,9 +331,12 @@ Deno.test("tribal: Shot in the Dark takes the place of a vote, with one row for 
   const tribal = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, ...fields });
   // Bea rolls and is saved; Ann and Cal vote for each other
   assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: "shot", 3: 1 }, safe: { 2: "shot" } }), red3), [
-    ["Ann", "Voted correctly", "Cal"], ["Bea", "Safe from Shot in the Dark", null],
-    ["Cal", "Voted incorrectly", "Ann"], ["Cal", "Voted out", null],
+    ["Ann", "Voted correctly", "Cal"], ["Cal", "Received a vote", "Ann"], ["Bea", "Safe from Shot in the Dark", null],
+    ["Cal", "Voted incorrectly", "Ann"], ["Ann", "Received a vote", "Cal"], ["Cal", "Voted out", null],
   ]);
+  // Cal's vote for Bea, saved by Shot in the Dark, didn't count
+  assertEquals(rowsOf(tribal({ bootId: 1, votes: { 1: 3, 2: "shot", 3: 2 }, safe: { 2: "shot" } }), red3)
+    .filter(r => r[1].startsWith("Received")), [["Cal", "Received a vote", "Ann"], ["Bea", "Received a nullified vote", "Cal"]]);
   // Bea rolls and isn't saved
   assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: "shot", 3: 1 } }), red3).filter(r => r[0] === "Bea"),
     [["Bea", "Played Shot in the Dark (not safe)", null]]);
@@ -341,9 +347,11 @@ Deno.test("tribal: Shot in the Dark takes the place of a vote, with one row for 
 Deno.test("tribal: whoever is safe can't go home, and votes for them still count", () => {
   const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
   const tribal = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, ...fields });
-  // Ann has an idol played on her: Bea's vote for her is incorrect, and saves no extra row
+  // Ann has an idol played on her: Bea's vote for her is incorrect, and Ann's receiving it is nullified
   assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: 1, 3: 2 }, safe: { 1: "idol" } }), red3), [
-    ["Ann", "Voted correctly", "Cal"], ["Bea", "Voted incorrectly", "Ann"], ["Cal", "Voted incorrectly", "Bea"],
+    ["Ann", "Voted correctly", "Cal"], ["Cal", "Received a vote", "Ann"],
+    ["Bea", "Voted incorrectly", "Ann"], ["Ann", "Received a nullified vote", "Bea"],
+    ["Cal", "Voted incorrectly", "Bea"], ["Bea", "Received a vote", "Cal"],
     ["Cal", "Voted out", null],
   ]);
   assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 3, 3: 1 }, safe: { 3: "immunity" } }), big, red3).errors,
@@ -372,15 +380,19 @@ Deno.test("tribal: voting in pairs: a vote is for a pair, and the pair goes home
   const four: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10, 4: 10 } };
   const tribal = (fields: Record<string, unknown>) =>
     ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3, pairs: { 1: 1, 2: 1, 3: 2, 4: 2 }, ...fields });
-  // Ann and Bea vote for Cal & Dee (naming either one), Cal and Dee for Ann & Bea: Cal & Dee go home
+  // Ann and Bea vote for Cal & Dee (naming either one), Cal and Dee for Ann & Bea: Cal & Dee go home. Both partners
+  // receive each vote for their pair.
   assertEquals(rowsOf(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), four), [
-    ["Ann", "Voted correctly", null], ["Bea", "Voted correctly", null],
-    ["Cal", "Voted incorrectly", null], ["Dee", "Voted incorrectly", null],
+    ["Ann", "Voted correctly", null], ["Cal", "Received a vote", "Ann"], ["Dee", "Received a vote", "Ann"],
+    ["Bea", "Voted correctly", null], ["Cal", "Received a vote", "Bea"], ["Dee", "Received a vote", "Bea"],
+    ["Cal", "Voted incorrectly", null], ["Ann", "Received a vote", "Cal"], ["Bea", "Received a vote", "Cal"],
+    ["Dee", "Voted incorrectly", null], ["Ann", "Received a vote", "Dee"], ["Bea", "Received a vote", "Dee"],
     ["Cal", "Voted out", null], ["Dee", "Voted out", null],
   ]);
   // Each vote row names the whole pair it was for
-  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), big, four).rows.map(r => r.details),
-    ["Cal & Dee", "Cal & Dee", "Ann & Bea", "Ann & Bea", null, null]);
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), big, four).rows
+    .filter(r => r.eventType.name.startsWith("Voted c") || r.eventType.name.startsWith("Voted i")).map(r => r.details),
+    ["Cal & Dee", "Cal & Dee", "Ann & Bea", "Ann & Bea"]);
   assertEquals(cardRows(tribal({ votes: { 1: 2, 2: 3, 3: 1, 4: 1 } }), big, four).errors,
     ["Ann can't vote for their own pair."]);
   assertEquals(cardRows(tribal({ pairs: { 1: 1, 2: 1, 3: 2 }, votes: { 1: 3, 2: 3, 3: 1, 4: 1 } }), big, four).errors,

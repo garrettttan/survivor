@@ -40,6 +40,60 @@
   "log": [
    {
     "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 23,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 6,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 17,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 18,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -138,10 +192,46 @@
     "advantage": null
    },
    {
+    "episode": 4,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
     "episode": 5,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 12,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 19,
     "details": null,
     "tribe": null,
     "advantage": null
@@ -210,6 +300,60 @@
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 8,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 14,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 16,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 22,
     "details": null,
     "tribe": null,
     "advantage": null
@@ -715,8 +859,53 @@
    },
    {
     "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 6,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
     "name": "Voted correctly",
     "points": 1,
+    "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 12,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 18,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
     "otherCastawayId": 20,
     "details": null,
     "tribe": null,
@@ -899,6 +1088,15 @@
    },
    {
     "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 4,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 4,
@@ -995,6 +1193,42 @@
     "otherCastawayId": null,
     "details": null,
     "tribe": "Savu",
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 5,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 7,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 21,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 2,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 19,
+    "details": null,
+    "tribe": null,
     "advantage": null
    },
    {
@@ -1256,6 +1490,24 @@
   ],
   "log": [
    {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 1,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 12,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
     "episode": 2,
     "name": "Won team reward",
     "points": 1,
@@ -1278,6 +1530,42 @@
     "name": "Voted correctly",
     "points": 1,
     "otherCastawayId": 20,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 19,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 12,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 4,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 4,
     "details": null,
     "tribe": null,
     "advantage": null
@@ -1639,6 +1927,42 @@
     "otherCastawayId": null,
     "details": null,
     "tribe": "Dina",
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 8,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 11,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 5,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 22,
+    "details": null,
+    "tribe": null,
     "advantage": null
    },
    {
@@ -2066,6 +2390,24 @@
    },
    {
     "episode": 6,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 10,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 12,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 6,
     "name": "Voted out",
     "points": 0,
     "otherCastawayId": null,
@@ -2145,9 +2487,63 @@
    },
    {
     "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 7,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 13,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 15,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 17,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
     "name": "Voted incorrectly",
     "points": -1,
     "otherCastawayId": 9,
+    "details": null,
+    "tribe": null,
+    "advantage": null
+   },
+   {
+    "episode": 3,
+    "name": "Received a vote",
+    "points": 0,
+    "otherCastawayId": 23,
     "details": null,
     "tribe": null,
     "advantage": null

@@ -29,7 +29,7 @@ for (const episode of [...new Set(s51.events.map(e => e.episode))]) {
 // ── A made-up season: Red (Ann, Bea) and Blue (Cal, Dee) ─────────────────────
 const NAMES = ["Ann", "Bea", "Cal", "Dee"];
 const types = ["Starting tribe", "Won team immunity", "Sat out of challenge", "Voted correctly", "Voted incorrectly",
-  "Voted out", "Found advantage"];
+  "Voted out", "Found advantage", "Received a vote", "Received a nullified vote"];
 const data: SeasonData = {
   season: 97,
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),

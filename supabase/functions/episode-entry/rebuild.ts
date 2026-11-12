@@ -8,7 +8,7 @@
 // cards always remake the episode; the fallbacks say where they couldn't be real cards.
 
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, NOT_SAFE_SHOT, SAFE_SHOT, type Card, type CardRow, type SeasonData } from "./cards.ts";
+import { cardRows, NOT_SAFE_SHOT, RECEIVED_NULLIFIED_VOTE, RECEIVED_VOTE, SAFE_SHOT, type Card, type CardRow, type SeasonData } from "./cards.ts";
 import { gameState, type GameState } from "./game.ts";
 
 /** A saved row that became a custom card, because no card remade it */
@@ -117,6 +117,8 @@ type Guess = { card: Card; rows: EventRow[] } | null;
 
 const EXITS: Record<string, string> = { "Medically evacuated": "medevac", "Quit": "quit", "Lost fire-making": "fire" };
 const VOTES = new Set(["Voted correctly", "Voted incorrectly", NOT_SAFE_SHOT, SAFE_SHOT]);
+// The row each vote gives whoever it was for (right after the vote)
+const RECEIVED = new Set([RECEIVED_VOTE, RECEIVED_NULLIFIED_VOTE]);
 const WIN = /^Won (team|individual) (immunity|reward)( \(2nd place\))?$/;
 
 function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Guess {
@@ -187,7 +189,7 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
     }
   }
 
-  if (VOTES.has(r.event)) return tribalGuess(runOf(e => VOTES.has(e.event)), remaining, data, game);
+  if (VOTES.has(r.event)) return tribalGuess(runOf(e => VOTES.has(e.event) || RECEIVED.has(e.event)), remaining, data, game);
   if (WIN.test(r.event) || r.event === "Sat out of challenge" || r.event === "Brought on reward") {
     return challengeGuess(remaining);
   }
@@ -198,21 +200,23 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
 // No vote if they have none: a consensus after a deadlock leaves the deadlocked pair without votes. Either Shot in the
 // Dark row is a vote of "shot"; the safe one also marks them safe. Safety from immunity or an idol makes no row here,
 // so a rebuilt Tribal doesn't have it. A Voted out row with no votes before it isn't guessed as a Tribal, since its
-// votes were never recorded. A Tribal voted in pairs isn't guessed (its votes name a pair, not a castaway): its
-// episode always has its cards stored.
-function tribalGuess(votes: EventRow[], remaining: EventRow[], data: SeasonData, game: GameState): Guess {
-  const boot = remaining[votes.length];
+// votes were never recorded. `run` is the votes with each one's Received a vote row. A vote for someone who was safe
+// (Received a nullified vote) isn't guessed, since why they were safe isn't in the rows, and neither is a Tribal
+// voted in pairs (its votes name a pair, not a castaway): such an episode always has its cards stored.
+function tribalGuess(run: EventRow[], remaining: EventRow[], data: SeasonData, game: GameState): Guess {
+  const boot = remaining[run.length];
   if (!boot || boot.event !== "Voted out") return null;
   const tribeId = game.tribeOf[boot.castaway_id];
   if (tribeId === undefined) return null;
   const attendees = [...data.castawayById.keys()].filter(id => !game.out.includes(id) && game.tribeOf[id] === tribeId);
+  const votes = run.filter(e => VOTES.has(e.event));
   const cast = new Map(votes.map(e => [e.castaway_id, e.event === NOT_SAFE_SHOT || e.event === SAFE_SHOT ? "shot" : e.other_castaway_id]));
   const card = {
     type: "tribal", tribeId, outcome: "voted", bootId: boot.castaway_id,
     votes: Object.fromEntries(attendees.map(id => [id, cast.get(id) ?? "none"])),
     safe: Object.fromEntries(votes.filter(e => e.event === SAFE_SHOT).map(e => [e.castaway_id, "shot"])),
   };
-  return { card, rows: [...votes, boot] };
+  return { card, rows: [...run, boot] };
 }
 
 // One challenge: its winners (a tribe, with an optional 2nd place tribe, or one castaway), who sat out, and who was
