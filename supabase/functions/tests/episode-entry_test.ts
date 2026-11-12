@@ -271,6 +271,32 @@ Deno.test("challenge: individual reward with people brought along", () => {
     ["The winner can't bring themselves."]);
 });
 
+Deno.test("challenge: a tribe or team reward can bring people along too", () => {
+  // Blue (Cal, Dee) won reward and took Ann from Red
+  assertEquals(rowsOf({ type: "challenge", prize: "reward", format: "tribe", first: 11, broughtOnReward: [1] }),
+    [["Cal", "Won team reward", 11], ["Dee", "Won team reward", 11], ["Ann", "Brought on reward", null]]);
+  assertEquals(errorsOf({ type: "challenge", prize: "reward", format: "tribe", first: 11, broughtOnReward: [4] }),
+    ["Dee won the reward, so wasn't brought on it."]);
+  // Immunity + reward: the winners' rows are immunity, and the guest is brought on the reward
+  assertEquals(rowsOf({ type: "challenge", prize: "both", format: "teams", teamCount: 2,
+    teams: { 1: 1, 2: 1, 3: 2, 4: 2, 5: 2, 6: 2 }, first: 1, broughtOnReward: [3] }),
+    [["Ann", "Won team immunity", null], ["Bea", "Won team immunity", null], ["Cal", "Brought on reward", null]]);
+  // Immunity alone has no reward to bring anyone on
+  assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "tribe", first: 11, broughtOnReward: [1] }),
+    [["Cal", "Won team immunity", 11], ["Dee", "Won team immunity", 11]]);
+});
+
+Deno.test("challenge: a tribe reward with people brought along rebuilds as the same card", () => {
+  const card = { type: "challenge", prize: "reward", format: "tribe", first: 11, second: null, teamCount: 2, teams: {},
+    satOut: [], broughtOnReward: [1, 5] };
+  const before = Object.keys(g.tribeOf).map(Number).map((id, i) => toEventRow({ castawayId: id, eventType: big.eventTypeByName.get("Swapped tribes")!,
+    otherCastawayId: null, advantageId: null, newAdvantage: null, tribeId: g.tribeOf[id], quantity: 1, details: null }, big, 1, i + 1));
+  const rows = cardRows(card, big, { ...g, out: [] }).rows.map((r, i) => toEventRow(r, big, 2, i + 1));
+  const rebuilt = rebuildEpisode(rows, before, big, new Map([["Red", 10], ["Blue", 11], ["Green", 12]]), new Map());
+  assertEquals(rebuilt.fallbacks, []);
+  assertEquals(rebuilt.cards, [card]);
+});
+
 Deno.test("challenge: teams that aren't tribes", () => {
   // Everyone is on a team (Eve and Fay on Team 2), so no one sat out
   assertEquals(rowsOf({ type: "challenge", prize: "immunity", format: "teams", teamCount: 3,

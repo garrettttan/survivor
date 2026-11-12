@@ -170,8 +170,9 @@ function startRows(card: Card, data: SeasonData, game: GameState): Result {
 // ── Challenge ────────────────────────────────────────────────────────────────
 // Won immunity or reward for everyone on the winning tribe or team (or the individual winner), the 2nd place
 // rows when three or more competed, Sat out rows (with the castaway's tribe only in a tribe challenge, since
-// individual and team challenges aren't competed by tribe), and Brought on reward rows for an individual reward. A
-// challenge for immunity and reward makes immunity rows only.
+// individual and team challenges aren't competed by tribe), and Brought on reward rows for anyone the winners took
+// along on a reward (any format; anyone still in who didn't win it, e.g. from a losing tribe). A challenge for
+// immunity and reward makes immunity rows only, plus anyone brought on the reward.
 function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
   if (!["immunity", "reward", "both"].includes(card.prize)) errors.push("Pick the prize.");
@@ -185,23 +186,21 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
     const active = activeCastaway(id, "who sat out", data, game, errors);
     if (active !== null) satOut.push(active);
   }
+  // Who won 1st place (they can't also be brought on the reward)
+  const winners: number[] = [];
   const won = (ids: number[], second: boolean, tribeId: number | null) => {
     const type = eventType(data, `Won ${card.format === "individual" ? "individual" : "team"} ${prize}${second ? " (2nd place)" : ""}`, errors);
-    for (const id of ids) if (!satOut.includes(id)) rows.push(row(id, type, { tribeId }));
+    for (const id of ids) {
+      if (satOut.includes(id)) continue;
+      rows.push(row(id, type, { tribeId }));
+      if (!second) winners.push(id);
+    }
   };
 
   if (card.format === "individual") {
     const winner = activeCastaway(card.first, "the winner", data, game, errors);
     if (winner !== null && satOut.includes(winner)) errors.push(`${name(data, winner)} can't win and sit out.`);
     if (winner !== null) won([winner], false, null);
-    if (card.prize !== "immunity") {
-      const brought = eventType(data, "Brought on reward", errors);
-      for (const id of Array.isArray(card.broughtOnReward) ? card.broughtOnReward : []) {
-        const guest = activeCastaway(id, "who they brought", data, game, errors);
-        if (guest !== null && guest === winner) errors.push("The winner can't bring themselves.");
-        else if (guest !== null) rows.push(row(guest, brought));
-      }
-    }
   } else if (card.format === "tribe") {
     const tribesInPlay = new Set(activeIds(data, game).map(id => game.tribeOf[id]));
     const first = tribeInPlay(card.first, "the winning tribe", data, game, errors);
@@ -232,6 +231,20 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
       else if (second === first) errors.push("1st and 2nd place can't be the same team.");
       else if (!team(second).length) errors.push(`No one is on Team ${second}.`);
       else won(team(second), true, null);
+    }
+  }
+
+  if (card.prize !== "immunity") {
+    const brought = eventType(data, "Brought on reward", errors);
+    for (const id of Array.isArray(card.broughtOnReward) ? card.broughtOnReward : []) {
+      const guest = activeCastaway(id, "who they brought", data, game, errors);
+      if (guest === null) continue;
+      if (winners.includes(guest)) {
+        errors.push(card.format === "individual" ? "The winner can't bring themselves."
+          : `${name(data, guest)} won the reward, so wasn't brought on it.`);
+      } else {
+        rows.push(row(guest, brought));
+      }
     }
   }
 
