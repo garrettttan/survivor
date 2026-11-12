@@ -15,9 +15,10 @@
 //                  tribes: teamCount teams numbered from 1, teams = who was on each, first/second = team numbers;
 //                  anyone still in the game who isn't on a team sat out)
 //   tribal       { tribeId, votes: { [voterId]: targetId | 'none' | 'shot' }, outcome: 'voted'|'rocks'|'consensus', bootId,
-//                  partnerId, safe: { [castawayId]: 'immunity' | 'idol' | 'shot' } } ('shot' as a vote = played Shot in
-//                  the Dark instead of voting; safe = who couldn't go home, and why; partnerId = who went home with the
-//                  boot when a pair was voted out, else null)
+//                  safe: { [castawayId]: 'immunity' | 'idol' | 'shot' }, pairs: { [castawayId]: pairNumber } }
+//                  ('shot' as a vote = played Shot in the Dark instead of voting; safe = who couldn't go home, and why;
+//                  pairs = who was paired with whom when castaways voted in pairs, else empty: a vote, and bootId, then
+//                  name the pair's first member and stand for the whole pair)
 //   advantage    { action: 'found'|'gave'|'played'|'expired', castawayId, advantage, recipientId, targetId,
 //                  changedOutcome } (played: targetId = who it was played on, null when they played it for themselves)
 //   exit         { reason: 'medevac'|'quit'|'fire', castawayId }
@@ -67,22 +68,25 @@ const CARD_TYPES = {
     blank: ctx => {
       const tribes = tribesInPlay(ctx);
       const card = { tribeId: tribes.length === 1 ? tribes[0].id : null, votes: {}, outcome: 'voted', bootId: null,
-        partnerId: null, safe: {}, _votesFor: null, _partnerFor: null, _immunityFilled: false };
+        safe: {}, pairs: {}, _paired: false, _votesFor: null, _wentHomeFor: null, _immunityFilled: false };
       prefillImmunity(card, ctx);
       return card;
     },
     html: tribalHtml,
     // A saved card's votes and who was safe are as entered, so nothing is prefilled over them (cards saved before
     // safety was recorded have none)
-    load: card => ({ partnerId: card.partnerId ?? null, _votesFor: card.bootId, _partnerFor: card.partnerId ?? null,
-      safe: card.safe ?? {}, _immunityFilled: true }),
-    reset: { tribeId: { votes: {}, bootId: null, partnerId: null, safe: {}, _votesFor: null, _partnerFor: null,
+    load: card => {
+      const pairs = card.pairs ?? {};
+      const loaded = { ...card, pairs };
+      return { pairs, _paired: Object.keys(pairs).length > 0, _votesFor: card.bootId,
+        _wentHomeFor: card.bootId === null ? null : wentHomeKey(loaded, card.bootId), safe: card.safe ?? {}, _immunityFilled: true };
+    },
+    reset: { tribeId: { votes: {}, bootId: null, pairs: {}, safe: {}, _votesFor: null, _wentHomeFor: null,
       _immunityFilled: false } },
     // Rocks takes no votes, so they're cleared (and filled in again if the outcome changes back). Only someone at
     // this Tribal can be safe at it, and only someone who played Shot in the Dark can have been saved by it.
     tidy: (card, ctx) => {
-      // No partner (the select's blank) is null, and the boot can't be their own partner
-      if (card.partnerId === '' || card.partnerId === card.bootId) card.partnerId = null;
+      tidyPairs(card, ctx);
       if (card.outcome === 'rocks') Object.assign(card, { votes: {}, _votesFor: null });
       else if (card.tribeId !== null) prefillVotes(card, membersOf(card.tribeId, ctx));
       prefillImmunity(card, ctx);
@@ -404,8 +408,10 @@ function rewardWinners(card, ctx) {
 // remembers who the votes were filled for. When a pair went home, the boot's partner doesn't vote for their own pair,
 // so their filled-in vote is cleared too (`_partnerFor` remembers the partner they were filled for).
 function prefillVotes(card, attendees) {
-  if (card.bootId === null || (card._votesFor === card.bootId && card._partnerFor === card.partnerId)) return;
-  const wentHome = [card.bootId, card.partnerId];
+  if (card.bootId === null) return;
+  const wentHome = pairOf(card, card.bootId);
+  const key = wentHome.join(',');
+  if (card._votesFor === card.bootId && card._wentHomeFor === key) return;
   const votes = { ...card.votes };
   for (const id of attendees) {
     if (wentHome.includes(id)) {
@@ -416,7 +422,49 @@ function prefillVotes(card, attendees) {
   }
   card.votes = votes;
   card._votesFor = card.bootId;
-  card._partnerFor = card.partnerId;
+  card._wentHomeFor = key;
+}
+
+// ── Pairs at Tribal ──────────────────────────────────────────────────────────
+// When castaways are paired up, each votes on their own but for a pair, and a pair goes home. `pairs` maps each
+// castaway at Tribal to a pair number; a pair is named by its first member (lowest id), in votes and in bootId.
+
+// Everyone in a castaway's pair, lowest id first (just them when not voting in pairs, or not in a pair yet)
+function pairOf(card, id) {
+  const pair = card.pairs?.[id];
+  if (pair == null) return [id];
+  return Object.keys(card.pairs).map(Number).filter(other => card.pairs[other] === pair).sort((a, b) => a - b);
+}
+
+function wentHomeKey(card, bootId) {
+  return pairOf(card, bootId).join(',');
+}
+
+// Each pair once, as [first member, "Ann & Bea"] for a select, in pair number order
+function pairChoices(card, ids, ctx) {
+  const seen = new Set();
+  return ids.map(id => pairOf(card, id)).sort((a, b) => (card.pairs[a[0]] ?? 0) - (card.pairs[b[0]] ?? 0))
+    .filter(pair => !seen.has(pair[0]) && seen.add(pair[0]))
+    .map(pair => [pair[0], pair.map(id => ctx.short.get(id)).join(' & ')]);
+}
+
+// Not voting in pairs: no pairs. Otherwise only people at Tribal are in pairs, and each vote and who went home name
+// their pair's first member (so a vote stays with its pair when the pairs are rearranged).
+function tidyPairs(card, ctx) {
+  const attendees = card.tribeId === null ? [] : membersOf(card.tribeId, ctx);
+  card.pairs = card._paired
+    ? Object.fromEntries(Object.entries(card.pairs || {}).filter(([id]) => attendees.includes(Number(id))))
+    : {};
+  const first = id => pairOf(card, id)[0];
+  if (typeof card.bootId === 'number') card.bootId = first(card.bootId);
+  card.votes = Object.fromEntries(Object.entries(card.votes || {}).map(([voter, target]) =>
+    [voter, typeof target === 'number' ? first(target) : target]));
+}
+
+// One numbered pair group per two castaways at Tribal, each in its own palette color
+function pairGroups(attendees) {
+  return Array.from({ length: Math.max(1, Math.ceil(attendees.length / 2)) },
+    (_, i) => ({ id: i + 1, name: `Pair ${i + 1}`, color: PALETTE[i % PALETTE.length] }));
 }
 
 // Once the tribe at Tribal is known, whoever won individual immunity earlier in the episode (ctx.immune, since the
@@ -436,10 +484,14 @@ function tribalHtml(card, ctx) {
       [['voted', 'Voted out'], ['rocks', 'Went home on rocks'], ['consensus', 'Deadlock consensus']], card.outcome, null));
   if (card.tribeId === null) return html + '<p class="entry-hint">Pick the tribe to choose who went home and enter the votes.</p>';
   const attendees = membersOf(card.tribeId, ctx);
-  html += fieldHtml('Went home', castawaySelect('bootId', attendees, card.bootId, ctx, { rerender: true }));
-  // When castaways are paired up, the boot's partner goes home with them
-  html += fieldHtml('Partner (if a pair went home)', selectHtml({ field: 'partnerId', num: true, rerender: true },
-    castawayPairs(attendees.filter(id => id !== card.bootId), ctx), card.partnerId, 'No partner'));
+  // Paired up: who's with whom, then the pair that went home, and votes for pairs
+  const paired = card._paired;
+  html += `<label class="entry-chip"><input type="checkbox"${attrs({ field: '_paired', rerender: true })}${paired ? ' checked' : ''}>
+    <span>Voted in pairs</span></label>`;
+  if (paired) html += groupHtml('Pairs', sortIntoGroupsHtml('pairs', pairGroups(attendees), card, ctx, attendees));
+  const targets = paired ? pairChoices(card, attendees, ctx) : castawayPairs(attendees, ctx);
+  html += fieldHtml(paired ? 'Pair that went home' : 'Went home',
+    selectHtml({ field: 'bootId', num: true, rerender: true }, targets, card.bootId));
   // Who couldn't go home: immunity or an idol here, Shot in the Dark next to their vote
   html += groupHtml('Safe', sortIntoGroupsHtml('safe',
     [{ id: 'immunity', name: 'Immunity', color: null }, { id: 'idol', name: 'Idol', color: null }],
@@ -449,7 +501,7 @@ function tribalHtml(card, ctx) {
   const votes = attendees.map(id => `<div class="entry-pair">
       <span class="entry-pair-name">${escapeHtml(ctx.short.get(id))}</span>
       ${selectHtml({ map: 'votes', key: id, num: true, rerender: true },
-        [...castawayPairs(attendees.filter(t => t !== id), ctx), ['none', 'No vote'], ['shot', 'Shot in the Dark']], card.votes[id])}
+        [...targets.filter(([t]) => !pairOf(card, id).includes(t)), ['none', 'No vote'], ['shot', 'Shot in the Dark']], card.votes[id])}
       ${card.votes[id] === 'shot' ? shotOutcomeHtml(id, card.safe?.[id] === 'shot') : ''}
     </div>`).join('');
   return html + groupHtml('Final-round votes', voteCountHtml(card, attendees, ctx) + votes);
@@ -474,8 +526,10 @@ function voteCountHtml(card, attendees, ctx) {
     if (typeof target === 'number') counts.set(target, (counts.get(target) || 0) + 1);
   });
   if (!counts.size) return '';
-  const tally = [...counts].sort((a, b) => b[1] - a[1] || ctx.short.get(a[0]).localeCompare(ctx.short.get(b[0])))
-    .map(([id, n]) => `<span class="entry-vote-count">${escapeHtml(ctx.short.get(id))} <strong>${n}</strong></span>`).join('');
+  // A vote for a pair counts against both: "Ann & Bea 3"
+  const label = id => pairOf(card, id).map(member => ctx.short.get(member)).join(' & ');
+  const tally = [...counts].sort((a, b) => b[1] - a[1] || label(a[0]).localeCompare(label(b[0])))
+    .map(([id, n]) => `<span class="entry-vote-count">${escapeHtml(label(id))} <strong>${n}</strong></span>`).join('');
   return `<div class="entry-chips entry-vote-counts">${tally}</div>`;
 }
 

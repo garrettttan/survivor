@@ -14,9 +14,10 @@ export type RecapItem =
   | { type: "challenge"; prize: "immunity" | "reward" | "both"; format: "tribe" | "individual" | "teams";
       first: Side | null; second: Side | null; satOut: number[]; broughtOnReward: number[] }
   // Votes in the order the card lists them; a castaway who didn't vote isn't in it. Safe: who couldn't go home, and why.
-  // partnerId: who went home with the boot when a pair was voted out, else null.
+  // pairs: each pair's members when castaways voted in pairs (a vote for any member is for the whole pair, and the
+  // boot's whole pair went home), else empty.
   | { type: "tribal"; tribeId: number | null; outcome: "voted" | "rocks" | "consensus"; bootId: number | null;
-      partnerId: number | null;
+      pairs: number[][];
       votes: { voterId: number; targetId: number | null; shot: boolean }[];
       safe: { castawayId: number; reason: "immunity" | "idol" | "shot" }[] }
   // played: targetId is who it was played on, null when they played it for themselves
@@ -69,6 +70,18 @@ function challengeSide(card: Card, which: unknown): Side | null {
   return card.format === "individual" ? { castawayIds: [value] } : { tribeId: value };
 }
 
+// A Tribal's pairs, each as its members' ids, in pair number order
+function pairsOf(card: Card): number[][] {
+  const byPair = new Map<number, number[]>();
+  for (const [castawayId, pair] of entries(card.pairs)) {
+    const n = id(pair);
+    if (n === null) continue;
+    if (!byPair.has(n)) byPair.set(n, []);
+    byPair.get(n)!.push(castawayId);
+  }
+  return [...byPair].sort((a, b) => a[0] - b[0]).map(([, members]) => members);
+}
+
 function tribal(card: Card): RecapItem {
   const votes = entries(card.votes)
     .filter(([, target]) => target !== "none" && target !== null && target !== undefined)
@@ -77,7 +90,7 @@ function tribal(card: Card): RecapItem {
     .filter(([, reason]) => reason === "immunity" || reason === "idol" || reason === "shot")
     .map(([castawayId, reason]) => ({ castawayId, reason: reason as "immunity" | "idol" | "shot" }));
   return {
-    type: "tribal", tribeId: id(card.tribeId), outcome: card.outcome ?? "voted", bootId: id(card.bootId), partnerId: id(card.partnerId),
+    type: "tribal", tribeId: id(card.tribeId), outcome: card.outcome ?? "voted", bootId: id(card.bootId), pairs: pairsOf(card),
     votes, safe,
   };
 }

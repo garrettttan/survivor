@@ -266,8 +266,10 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // can't be the one who went home; votes for them still count, as incorrect. Immunity and idols are saved by their
 // own cards (the challenge, the advantage played), so here they're only checked; Shot in the Dark makes its row.
 //
-// `partnerId` is set when a pair went home together (castaways paired up, voting each on their own but for a pair):
-// the partner goes home with the boot, gets their own exit row after the boot's, and a vote for either one is correct.
+// `pairs` is set when the castaways were paired up: each still votes on their own, but for a pair, and a pair goes home.
+// It maps each castaway at Tribal to a pair number. A vote names any member of the pair it's for; its row carries the
+// pair's names in details (no other castaway, since it's for both). bootId is any member of the pair that went home:
+// each of them gets an exit row, and a vote for that pair is correct.
 export const NOT_SAFE_SHOT = "Played Shot in the Dark (not safe)";
 export const SOLE_SURVIVOR = "Became Sole Survivor";
 export const SAFE_SHOT = "Safe from Shot in the Dark";
@@ -282,12 +284,18 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   const bootId = idOrNull(card.bootId);
   if (bootId === null) errors.push("Pick who went home.");
   else if (!attendees.includes(bootId)) errors.push(`${name(data, bootId)} wasn't at this Tribal.`);
-  const partnerId = idOrNull(card.partnerId);
-  if (partnerId !== null) {
-    if (!attendees.includes(partnerId)) errors.push(`${name(data, partnerId)} wasn't at this Tribal.`);
-    else if (partnerId === bootId) errors.push(`${name(data, partnerId)} can't be their own partner.`);
+
+  // Each castaway's pair (themselves alone when there are no pairs)
+  const pairs = new Map(entries(card.pairs));
+  const paired = pairs.size > 0;
+  for (const [id, pair] of pairs) {
+    if (!attendees.includes(id)) errors.push(`${name(data, id)} wasn't at this Tribal, so can't be in a pair.`);
+    else if (!Number.isInteger(pair) || (pair as number) < 1) errors.push(`Pick ${name(data, id)}'s pair.`);
   }
-  const wentHome = [bootId, partnerId].filter((id): id is number => id !== null);
+  if (paired) for (const id of attendees) if (!pairs.has(id)) errors.push(`Put ${name(data, id)} in a pair.`);
+  const pairOf = (id: number) => paired && pairs.has(id) ? attendees.filter(a => pairs.get(a) === pairs.get(id)) : [id];
+  const pairName = (id: number) => pairOf(id).map(member => name(data, member)).join(" & ");
+  const wentHome = bootId === null ? [] : pairOf(bootId);
 
   const safe = new Map(entries(card.safe));
   for (const [id, reason] of safe) {
@@ -312,8 +320,11 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
         rows.push(row(voter, eventType(data, safe.get(voter) === "shot" ? SAFE_SHOT : NOT_SAFE_SHOT, errors)));
       } else if (typeof target !== "number" || !attendees.includes(target) || target === voter) {
         errors.push(`${name(data, voter)}'s vote has to be for someone else at this Tribal.`);
+      } else if (pairOf(voter).includes(target)) {
+        errors.push(`${name(data, voter)} can't vote for their own pair.`);
       } else if (bootId !== null) {
-        rows.push(row(voter, wentHome.includes(target) ? correct : incorrect, { otherCastawayId: target }));
+        const vote = paired ? { details: pairName(target) } : { otherCastawayId: target };
+        rows.push(row(voter, wentHome.includes(target) ? correct : incorrect, vote));
       }
     }
   }

@@ -33,7 +33,7 @@ card is one thing that happened:
 | --- | --- |
 | Tribe change | a swap, one castaway moving tribes, the merge, starting tribes |
 | Challenge | immunity and/or reward, won by a tribe, an individual or ad-hoc teams, plus who sat out and who went on the reward |
-| Tribal council | votes, who was safe (immunity, idol, Shot in the Dark), and who went home (voted out, rock draw, consensus, or a pair voted out together) |
+| Tribal council | votes, who was safe (immunity, idol, Shot in the Dark), and who went home (voted out, rock draw, consensus), and pairs when castaways vote in pairs (each votes for a pair, and a pair goes home) |
 | Advantage | found, given away, played (and whether it changed the result), expired |
 | Exit | medevac, quit, lost at fire-making |
 | Moment | iconic moments and crying, with a note |
