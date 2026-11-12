@@ -5,6 +5,7 @@
 //   deno test --allow-read=supabase/functions supabase/functions/tests/
 
 import { assert, assertEquals } from "jsr:@std/assert@1";
+import { EVENT_TYPE as E } from "../_shared/event-types.ts";
 import { rebuildSeason } from "../episode-entry/rebuild.ts";
 import { recapItems } from "../get-episode-recap/recap.ts";
 import { fixtureSeasons } from "./fixture-season.ts";
@@ -88,9 +89,9 @@ Deno.test("final Tribal: the winner has the most jury votes, and a tie has none"
 });
 
 Deno.test("a custom card is its event, under its event type's category", () => {
-  const [eventType] = [...s51.data.eventTypeByName.values()];
+  const [eventType] = [...s51.data.eventTypeById.values()];
   const [item] = recapItems([{
-    type: "custom", eventType: eventType.name, castawayId: 4, otherCastawayId: null, advantage: null,
+    type: "custom", eventTypeId: eventType.id, castawayId: 4, otherCastawayId: null, advantage: null,
     tribeId: null, quantity: 2, details: "",
   }], s51.data);
   assertEquals(item, {
@@ -101,7 +102,7 @@ Deno.test("a custom card is its event, under its event type's category", () => {
 
 Deno.test("a winner whose jury votes weren't recorded is still the winner", () => {
   const [item] = recapItems([{
-    type: "custom", eventType: "Became Sole Survivor", castawayId: 4, otherCastawayId: null, advantage: null,
+    type: "custom", eventTypeId: E.soleSurvivor, castawayId: 4, otherCastawayId: null, advantage: null,
     tribeId: null, quantity: 1, details: "",
   }], s51.data);
   assertEquals(item, { type: "ftc", votes: [], winnerId: 4 });

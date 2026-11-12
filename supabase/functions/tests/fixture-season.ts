@@ -1,6 +1,6 @@
 // A fixture's season as the card rules see it, built from saved rows: its castaways, tribes and advantages from its
 // own rows, and the name → id lookups gameState takes. Event types aren't per season (episode-entry loads them all),
-// so they come from every fixture's rows: a season that never had a sit-out still knows "Sat out of challenge".
+// so they come from every fixture's rows, with their live ids: a season that never had a sit-out still knows that type.
 // Points aren't in the rows, so every event type scores 0; nothing that compares rows depends on points.
 
 import type { EventRow } from "../_shared/replay.ts";
@@ -30,12 +30,12 @@ export function fixtureSeasons(): FixtureSeason[] {
     .sort((a, b) => a.draftId - b.draftId);
 }
 
-function eventTypesIn(events: EventRow[]): Map<string, EventType> {
-  const eventTypes = new Map<string, EventType>();
+function eventTypesIn(events: EventRow[]): Map<number, EventType> {
+  const eventTypes = new Map<number, EventType>();
   for (const e of events) {
-    if (eventTypes.has(e.event)) continue;
-    eventTypes.set(e.event, {
-      id: eventTypes.size + 1, category: e.category, name: e.event, changesTribe: e.changes_tribe,
+    if (eventTypes.has(e.event_type_id)) continue;
+    eventTypes.set(e.event_type_id, {
+      id: e.event_type_id, category: e.category, name: e.event, changesTribe: e.changes_tribe,
       endsGame: e.ends_game, advantageEffect: e.advantage_effect, points: 0,
     });
   }
@@ -54,7 +54,7 @@ export function seasonFromRows(
     }])),
     tribeById: new Map(events.filter(e => e.tribe_id !== null)
       .map(e => [e.tribe_id!, { id: e.tribe_id!, name: e.tribe!, color: e.tribe_color ?? "" }])),
-    eventTypeByName: eventTypes,
+    eventTypeById: eventTypes,
     advantageById: new Map(events.filter(e => e.advantage_id !== null)
       .map(e => [e.advantage_id!, { id: e.advantage_id!, name: e.advantage! }])),
   };

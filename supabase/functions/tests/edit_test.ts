@@ -4,8 +4,10 @@
 
 import { assertEquals } from "jsr:@std/assert@1";
 import type { EventRow } from "../_shared/replay.ts";
-import type { Card, EventType, SeasonData } from "../episode-entry/cards.ts";
+import type { Card, SeasonData } from "../episode-entry/cards.ts";
 import { episodeCards, playEdit, playEpisode, type Lookups } from "../episode-entry/edit.ts";
+import { EVENT_TYPE as E } from "../_shared/event-types.ts";
+import { testType, testTypes } from "./event-types.ts";
 import { fixtureSeasons } from "./fixture-season.ts";
 
 // ── Season 51: opening an episode and saving it unchanged changes nothing ────
@@ -28,16 +30,13 @@ for (const episode of [...new Set(s51.events.map(e => e.episode))]) {
 
 // ── A made-up season: Red (Ann, Bea) and Blue (Cal, Dee) ─────────────────────
 const NAMES = ["Ann", "Bea", "Cal", "Dee"];
-const types = ["Starting tribe", "Won team immunity", "Sat out of challenge", "Voted correctly", "Voted incorrectly",
-  "Voted out", "Found advantage", "Received a vote", "Received a nullified vote"];
 const data: SeasonData = {
   season: 97,
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),
   tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }], [11, { id: 11, name: "Blue", color: "#0284c7" }]]),
-  eventTypeByName: new Map(types.map((name, i): [string, EventType] => [name, {
-    id: i + 1, category: "Test", name, changesTribe: name === "Starting tribe", endsGame: name === "Voted out",
-    advantageEffect: name === "Found advantage" ? "gain" : null, points: 1,
-  }])),
+  eventTypeById: testTypes([E.startingTribe, E.wonTeamImmunity, E.satOutOfChallenge, E.votedCorrectly, E.votedIncorrectly,
+    E.votedOut, E.foundAdvantage, E.receivedVote, E.receivedNullifiedVote]
+    .map(id => testType(id, { advantageEffect: id === E.foundAdvantage ? "gain" : null, points: 1 }))),
   advantageById: new Map([[100, { id: 100, name: "Idol" }]]),
 };
 const lookups: Lookups = { tribeIdByName: new Map([["Red", 10], ["Blue", 11]]), advantageIdByName: new Map([["Idol", 100]]) };

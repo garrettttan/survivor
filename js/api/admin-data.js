@@ -5,11 +5,11 @@
 //   GameState  { tribeOf: { [castawayId]: tribeId }, out: [castawayId], held: { [castawayId]: [{ id, name }] } }
 //              (out is in the order they left the game)
 //              (a held advantage's id is null while it's a new one from an earlier card, not saved yet)
-//   Row        { card, seq, castawayId, eventType, otherCastawayId, advantage, tribeId, quantity, details, points }
-//              (card = index of the card that makes it; eventType = its name; advantage = an id, or a new one's name)
+//   Row        { card, seq, castawayId, eventTypeId, eventType, otherCastawayId, advantage, tribeId, quantity, details, points }
+//              (card = index of the card that makes it; eventType = its name, to show; advantage = an id, or a new one's name)
 //   Error      { card?, message } (no card = about the whole episode)
 //
-//   PageRow    { castawayId, eventType, otherCastawayId, advantage, tribeId, quantity, details, points }
+//   PageRow    { castawayId, eventTypeId, eventType, otherCastawayId, advantage, tribeId, quantity, details, points }
 //   Changes    { added: [PageRow], removed: [PageRow] } (an episode's new rows against its saved ones, seq aside)
 //
 // Card shapes are listed in js/admin/admin-cards.js. Wherever a card names an advantage, it's a number

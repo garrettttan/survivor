@@ -25,7 +25,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -50,7 +51,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -75,7 +77,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -100,7 +103,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -125,7 +129,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -150,7 +155,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -175,7 +181,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -200,7 +207,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -225,7 +233,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -250,7 +259,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -275,7 +285,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -300,7 +311,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -325,7 +337,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -350,7 +363,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -375,7 +389,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -400,7 +415,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -425,7 +441,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -450,7 +467,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -475,7 +493,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -500,7 +519,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -525,7 +545,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -550,7 +571,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -575,7 +597,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -600,7 +623,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 1
   },
   {
    "draft_id": 2,
@@ -625,7 +649,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -650,7 +675,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -675,7 +701,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -700,7 +727,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -725,7 +753,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -750,7 +779,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -775,7 +805,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -800,7 +831,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -825,7 +857,8 @@
    "other_castaway": null,
    "details": "Supplies for tribe",
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -850,7 +883,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -875,7 +909,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -900,7 +935,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -925,7 +961,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -950,7 +987,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -975,7 +1013,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1000,7 +1039,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1025,7 +1065,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1050,7 +1091,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1075,7 +1117,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1100,7 +1143,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1125,7 +1169,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1150,7 +1195,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1175,7 +1221,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1200,7 +1247,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1225,7 +1273,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1250,7 +1299,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -1275,7 +1325,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -1300,7 +1351,8 @@
    "other_castaway": "Oscar Lusth",
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 6
   },
   {
    "draft_id": 2,
@@ -1325,7 +1377,8 @@
    "other_castaway": "Genevieve Mushaluk",
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 5
   },
   {
    "draft_id": 2,
@@ -1350,7 +1403,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -1375,7 +1429,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -1400,7 +1455,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 22
   },
   {
    "draft_id": 2,
@@ -1425,7 +1481,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1450,7 +1507,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1475,7 +1533,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1500,7 +1559,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1525,7 +1585,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1550,7 +1611,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1575,7 +1637,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -1600,7 +1663,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1625,7 +1689,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1650,7 +1715,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1675,7 +1741,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1700,7 +1767,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1725,7 +1793,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1750,7 +1819,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1775,7 +1845,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0.5
+   "points": 0.5,
+   "event_type_id": 16
   },
   {
    "draft_id": 2,
@@ -1800,7 +1871,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -1825,7 +1897,8 @@
    "other_castaway": "Aubry Bracco",
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 6
   },
   {
    "draft_id": 2,
@@ -1850,7 +1923,8 @@
    "other_castaway": "Christian Hubicki",
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 5
   },
   {
    "draft_id": 2,
@@ -1875,7 +1949,8 @@
    "other_castaway": "Cirie Fields",
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 6
   },
   {
    "draft_id": 2,
@@ -1900,7 +1975,8 @@
    "other_castaway": "Oscar Lusth",
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 5
   },
   {
    "draft_id": 2,
@@ -1925,7 +2001,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1950,7 +2027,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -1975,7 +2053,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2000,7 +2079,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2025,7 +2105,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2050,7 +2131,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2075,7 +2157,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2100,7 +2183,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2125,7 +2209,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2150,7 +2235,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2175,7 +2261,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2200,7 +2287,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2225,7 +2313,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2250,7 +2339,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2275,7 +2365,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -2300,7 +2391,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -2325,7 +2417,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2350,7 +2443,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2375,7 +2469,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2400,7 +2495,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2425,7 +2521,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2450,7 +2547,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2475,7 +2573,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2500,7 +2599,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2525,7 +2625,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2550,7 +2651,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2575,7 +2677,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2600,7 +2703,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2625,7 +2729,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2650,7 +2755,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2675,7 +2781,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2700,7 +2807,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2725,7 +2833,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2750,7 +2859,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2775,7 +2885,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2800,7 +2911,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2825,7 +2937,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 2
   },
   {
    "draft_id": 2,
@@ -2850,7 +2963,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2875,7 +2989,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2900,7 +3015,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2925,7 +3041,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2950,7 +3067,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -2975,7 +3093,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3000,7 +3119,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3025,7 +3145,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3050,7 +3171,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3075,7 +3197,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3100,7 +3223,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3125,7 +3249,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3150,7 +3275,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3175,7 +3301,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3200,7 +3327,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -3225,7 +3353,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -3250,7 +3379,8 @@
    "other_castaway": "Rizo Velovic",
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 6
   },
   {
    "draft_id": 2,
@@ -3275,7 +3405,8 @@
    "other_castaway": "Genevieve Mushaluk",
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 5
   },
   {
    "draft_id": 2,
@@ -3300,7 +3431,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3325,7 +3457,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3350,7 +3483,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3375,7 +3509,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3400,7 +3535,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3425,7 +3561,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3450,7 +3587,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3475,7 +3613,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3500,7 +3639,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3525,7 +3665,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3550,7 +3691,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3575,7 +3717,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3600,7 +3743,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3625,7 +3769,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 14
   },
   {
    "draft_id": 2,
@@ -3650,7 +3795,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -3675,7 +3821,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3700,7 +3847,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3725,7 +3873,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3750,7 +3899,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3775,7 +3925,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3800,7 +3951,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3825,7 +3977,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -3850,7 +4003,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -3875,7 +4029,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -3900,7 +4055,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -3925,7 +4081,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -3950,7 +4107,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -3975,7 +4133,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4000,7 +4159,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4025,7 +4185,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4050,7 +4211,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4075,7 +4237,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4100,7 +4263,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4125,7 +4289,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4150,7 +4315,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4175,7 +4341,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4200,7 +4367,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4225,7 +4393,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4250,7 +4419,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4275,7 +4445,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4300,7 +4471,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 3
   },
   {
    "draft_id": 2,
@@ -4325,7 +4497,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -4350,7 +4523,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -4375,7 +4549,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -4400,7 +4575,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 12
   },
   {
    "draft_id": 2,
@@ -4425,7 +4601,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 17
   },
   {
    "draft_id": 2,
@@ -4450,7 +4627,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 17
   },
   {
    "draft_id": 2,
@@ -4475,7 +4653,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 17
   },
   {
    "draft_id": 2,
@@ -4500,7 +4679,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 17
   },
   {
    "draft_id": 2,
@@ -4525,7 +4705,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4550,7 +4731,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4575,7 +4757,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4600,7 +4783,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -4625,7 +4809,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4650,7 +4835,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4675,7 +4861,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4700,7 +4887,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4725,7 +4913,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4750,7 +4939,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4775,7 +4965,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 15
   },
   {
    "draft_id": 2,
@@ -4800,7 +4991,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -4825,7 +5017,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 7
   },
   {
    "draft_id": 2,
@@ -4850,7 +5043,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4875,7 +5069,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -4900,7 +5095,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 13
   },
   {
    "draft_id": 2,
@@ -4925,7 +5121,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4950,7 +5147,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -4975,7 +5173,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5000,7 +5199,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5025,7 +5225,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5050,7 +5251,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 1
+   "points": 1,
+   "event_type_id": 4
   },
   {
    "draft_id": 2,
@@ -5075,7 +5277,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5100,7 +5303,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5125,7 +5329,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 7
   },
   {
    "draft_id": 2,
@@ -5150,7 +5355,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5175,7 +5381,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5200,7 +5407,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5225,7 +5433,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5250,7 +5459,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5275,7 +5485,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5300,7 +5511,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 2
+   "points": 2,
+   "event_type_id": 12
   },
   {
    "draft_id": 2,
@@ -5325,7 +5537,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 21
   },
   {
    "draft_id": 2,
@@ -5350,7 +5563,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 4
+   "points": 4,
+   "event_type_id": 11
   },
   {
    "draft_id": 2,
@@ -5375,7 +5589,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 30
   },
   {
    "draft_id": 2,
@@ -5400,7 +5615,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 8,
-   "points": 8
+   "points": 8,
+   "event_type_id": 20
   },
   {
    "draft_id": 2,
@@ -5425,7 +5641,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 3,
-   "points": 3
+   "points": 3,
+   "event_type_id": 20
   },
   {
    "draft_id": 2,
@@ -5450,7 +5667,8 @@
    "other_castaway": null,
    "details": null,
    "quantity": 1,
-   "points": 0
+   "points": 0,
+   "event_type_id": 32
   }
  ],
  "rosters": [

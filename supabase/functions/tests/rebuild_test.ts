@@ -12,7 +12,7 @@ import { fixtureSeasons } from "./fixture-season.ts";
 const seasons = fixtureSeasons();
 
 // The rows as a sorted list of what makes each one that row
-const rowKeys = (rows: EventRow[]) => rows.map(r => JSON.stringify([r.castaway_id, r.event, r.other_castaway_id,
+const rowKeys = (rows: EventRow[]) => rows.map(r => JSON.stringify([r.castaway_id, r.event_type_id, r.other_castaway_id,
   r.advantage_id, r.tribe_id, Number(r.quantity ?? 1), r.details ?? null])).sort();
 
 // Whatever the rows, the rebuilt cards remake them: checked here card by card, apart from the rebuild's own check,

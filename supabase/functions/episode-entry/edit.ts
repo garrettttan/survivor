@@ -4,6 +4,7 @@
 // immunity next episode), so editing replays each later episode from its own cards, stored or rebuilt, against
 // the edited game, and reports what that changes in each.
 
+import { EVENT_TYPE } from "../_shared/event-types.ts";
 import type { EventRow } from "../_shared/replay.ts";
 import { cardRows, toEventRow, type Card, type CardRow, type SeasonData } from "./cards.ts";
 import { gameState, type GameState } from "./game.ts";
@@ -24,10 +25,11 @@ export interface Played {
   states: GameState[];                           // one more than cards: the last is the game after every card
 }
 
-/** A row as the page shows it: event type by name, advantage as an id (or a new one's name), and its points */
+/** A row as the page shows it: event type by id and name, advantage as an id (or a new one's name), and its points */
 export interface PageRow {
   castawayId: number;
-  eventType: string;
+  eventTypeId: number;
+  eventType: string;                             // its name, to show
   otherCastawayId: number | null;
   advantage: number | string | null;
   tribeId: number | null;
@@ -67,7 +69,7 @@ export function playEpisode(cards: Card[], episode: number, data: SeasonData, lo
   const cried = new Set<number>();               // crying counts once per castaway per episode
   cards.forEach((card, index) => {
     const { rows, errors } = cardRows(card, data, played.states[played.states.length - 1]);
-    for (const row of rows.filter(r => r.eventType.name === "Cried on camera")) {
+    for (const row of rows.filter(r => r.eventType.id === EVENT_TYPE.criedOnCamera)) {
       if (cried.has(row.castawayId)) errors.push(`${data.castawayById.get(row.castawayId)?.name} already cried this episode.`);
       cried.add(row.castawayId);
     }
@@ -120,7 +122,7 @@ export function playEdit(
 
 export function pageRow(r: CardRow): PageRow {
   return {
-    castawayId: r.castawayId, eventType: r.eventType.name, otherCastawayId: r.otherCastawayId,
+    castawayId: r.castawayId, eventTypeId: r.eventType.id, eventType: r.eventType.name, otherCastawayId: r.otherCastawayId,
     advantage: r.advantageId ?? r.newAdvantage, tribeId: r.tribeId, quantity: r.quantity, details: r.details,
     points: r.eventType.points * r.quantity,
   };
@@ -128,14 +130,14 @@ export function pageRow(r: CardRow): PageRow {
 
 function savedPageRow(e: EventRow): PageRow {
   return {
-    castawayId: e.castaway_id, eventType: e.event, otherCastawayId: e.other_castaway_id, advantage: e.advantage_id,
+    castawayId: e.castaway_id, eventTypeId: e.event_type_id, eventType: e.event, otherCastawayId: e.other_castaway_id, advantage: e.advantage_id,
     tribeId: e.tribe_id, quantity: Number(e.quantity ?? 1), details: e.details, points: Number(e.points),
   };
 }
 
 // Points aside, what makes a row the same row
 const rowKey = (r: PageRow) =>
-  JSON.stringify([r.castawayId, r.eventType, r.otherCastawayId, r.advantage, r.tribeId, r.quantity, r.details ?? null]);
+  JSON.stringify([r.castawayId, r.eventTypeId, r.otherCastawayId, r.advantage, r.tribeId, r.quantity, r.details ?? null]);
 
 /** The new rows not saved, and the saved rows not made again (a row made twice and saved once is added once) */
 export function rowChanges(rows: CardRow[], saved: EventRow[]): Changes {

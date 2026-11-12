@@ -8,7 +8,8 @@
 // cards always remake the episode; the fallbacks say where they couldn't be real cards.
 
 import type { EventRow } from "../_shared/replay.ts";
-import { cardRows, NOT_SAFE_SHOT, RECEIVED_NULLIFIED_VOTE, RECEIVED_VOTE, SAFE_SHOT, type Card, type CardRow, type SeasonData } from "./cards.ts";
+import { EVENT_TYPE as E, winOf } from "../_shared/event-types.ts";
+import { cardRows, type Card, type CardRow, type SeasonData } from "./cards.ts";
 import { gameState, type GameState } from "./game.ts";
 
 /** A saved row that became a custom card, because no card remade it */
@@ -84,12 +85,12 @@ export function rebuildSeason(
 
 // What makes a row the same row, saved or about to be (seq aside)
 function savedKey(r: EventRow): string {
-  return JSON.stringify([r.castaway_id, r.event, r.other_castaway_id, r.advantage_id, r.tribe_id,
+  return JSON.stringify([r.castaway_id, r.event_type_id, r.other_castaway_id, r.advantage_id, r.tribe_id,
     Number(r.quantity ?? 1), r.details ?? null]);
 }
 
 function cardKey(r: CardRow): string {
-  return JSON.stringify([r.castawayId, r.eventType.name, r.otherCastawayId, r.advantageId, r.tribeId,
+  return JSON.stringify([r.castawayId, r.eventType.id, r.otherCastawayId, r.advantageId, r.tribeId,
     r.quantity, r.details]);
 }
 
@@ -105,7 +106,7 @@ function remakes(card: Card, rows: EventRow[], data: SeasonData, game: GameState
 // A custom card that makes exactly this row (shape as in js/admin/admin-cards.js)
 function customCard(r: EventRow): Card {
   return {
-    type: "custom", eventType: r.event, castawayId: r.castaway_id, otherCastawayId: r.other_castaway_id,
+    type: "custom", eventTypeId: r.event_type_id, castawayId: r.castaway_id, otherCastawayId: r.other_castaway_id,
     advantage: r.advantage_id, tribeId: r.tribe_id, quantity: Number(r.quantity ?? 1), details: r.details ?? "",
   };
 }
@@ -115,11 +116,10 @@ function customCard(r: EventRow): Card {
 
 type Guess = { card: Card; rows: EventRow[] } | null;
 
-const EXITS: Record<string, string> = { "Medically evacuated": "medevac", "Quit": "quit", "Lost fire-making": "fire" };
-const VOTES = new Set(["Voted correctly", "Voted incorrectly", NOT_SAFE_SHOT, SAFE_SHOT]);
+const EXITS: Record<number, string> = { [E.medicallyEvacuated]: "medevac", [E.quit]: "quit", [E.lostFireMaking]: "fire" };
+const VOTES = new Set<number>([E.votedCorrectly, E.votedIncorrectly, E.shotNotSafe, E.shotSafe]);
 // The row each vote gives whoever it was for (right after the vote)
-const RECEIVED = new Set([RECEIVED_VOTE, RECEIVED_NULLIFIED_VOTE]);
-const WIN = /^Won (team|individual) (immunity|reward)( \(2nd place\))?$/;
+const RECEIVED = new Set<number>([E.receivedVote, E.receivedNullifiedVote]);
 
 function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Guess {
   const r = remaining[0];
@@ -136,61 +136,63 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
   const advantage = (fields: Card) => ({ type: "advantage", action: "found", castawayId: r.castaway_id, advantage: r.advantage_id,
     recipientId: null, targetId: null, changedOutcome: false, ...fields });
 
-  switch (r.event) {
-    case "Starting tribe":
-    case "Swapped tribes": {
-      const run = runOf(e => e.event === r.event);
+  switch (r.event_type_id) {
+    case E.startingTribe:
+    case E.swappedTribes: {
+      const run = runOf(e => e.event_type_id === r.event_type_id);
       const moves = Object.fromEntries(run.map(e => [e.castaway_id, e.tribe_id]));
-      return { card: tribeChange({ kind: r.event === "Starting tribe" ? "start" : "swap", moves }), rows: run };
+      return { card: tribeChange({ kind: r.event_type_id === E.startingTribe ? "start" : "swap", moves }), rows: run };
     }
-    case "Switched tribes":
+    case E.switchedTribes:
       return { card: tribeChange({ kind: "move", castawayId: r.castaway_id, tribeId: r.tribe_id }), rows: [r] };
-    case "Merged":
-      return { card: tribeChange({ kind: "merge", tribeId: r.tribe_id }), rows: runOf(e => e.event === "Merged") };
+    case E.merged:
+      return { card: tribeChange({ kind: "merge", tribeId: r.tribe_id }), rows: runOf(e => e.event_type_id === E.merged) };
 
-    case "Found advantage":
+    case E.foundAdvantage:
       return { card: advantage({ action: "found" }), rows: [r] };
-    case "Advantage expired":
+    case E.advantageExpired:
       return { card: advantage({ action: "expired" }), rows: [r] };
-    case "Gave away advantage":
-    case "Received advantage": {
+    case E.gaveAwayAdvantage:
+    case E.receivedAdvantage: {
       // The other half: the same advantage, between the same two castaways the other way round
-      const giving = r.event === "Gave away advantage";
-      const other = remaining.find(e => e.event === (giving ? "Received advantage" : "Gave away advantage") &&
+      const giving = r.event_type_id === E.gaveAwayAdvantage;
+      const other = remaining.find(e => e.event_type_id === (giving ? E.receivedAdvantage : E.gaveAwayAdvantage) &&
         e.advantage_id === r.advantage_id && e.castaway_id === r.other_castaway_id && e.other_castaway_id === r.castaway_id);
       const [giver, recipient] = giving ? [r.castaway_id, r.other_castaway_id] : [r.other_castaway_id, r.castaway_id];
       return { card: advantage({ action: "gave", castawayId: giver, recipientId: recipient }), rows: other ? [r, other] : [r] };
     }
-    case "Played advantage successfully":
-    case "Wasted advantage": {
+    case E.playedAdvantageSuccessfully:
+    case E.wastedAdvantage: {
       // Played on someone else: they have a Had advantage played for them row pointing back
-      const forThem = r.other_castaway_id === null ? undefined : remaining.find(e => e.event === "Had advantage played for them" &&
+      const forThem = r.other_castaway_id === null ? undefined : remaining.find(e => e.event_type_id === E.hadAdvantagePlayedForThem &&
         e.advantage_id === r.advantage_id && e.castaway_id === r.other_castaway_id && e.other_castaway_id === r.castaway_id);
       return {
-        card: advantage({ action: "played", targetId: r.other_castaway_id, changedOutcome: r.event === "Played advantage successfully" }),
+        card: advantage({ action: "played", targetId: r.other_castaway_id, changedOutcome: r.event_type_id === E.playedAdvantageSuccessfully }),
         rows: forThem ? [r, forThem] : [r],
       };
     }
 
-    case "Medically evacuated":
-    case "Quit":
-    case "Lost fire-making":
-      return { card: { type: "exit", reason: EXITS[r.event], castawayId: r.castaway_id }, rows: [r] };
-    case "Cried on camera":
+    case E.medicallyEvacuated:
+    case E.quit:
+    case E.lostFireMaking:
+      return { card: { type: "exit", reason: EXITS[r.event_type_id], castawayId: r.castaway_id }, rows: [r] };
+    case E.criedOnCamera:
       return { card: { type: "moment", kind: "cried", castawayId: r.castaway_id, note: "" }, rows: [r] };
-    case "Had an iconic moment":
+    case E.hadIconicMoment:
       return { card: { type: "moment", kind: "iconic", castawayId: r.castaway_id, note: r.details ?? "" }, rows: [r] };
 
-    case "Received a jury vote": {
-      const votes = runOf(e => e.event === "Received a jury vote");
-      const winner = remaining[votes.length]?.event === "Became Sole Survivor" ? [remaining[votes.length]] : [];
+    case E.receivedJuryVote: {
+      const votes = runOf(e => e.event_type_id === E.receivedJuryVote);
+      const winner = remaining[votes.length]?.event_type_id === E.soleSurvivor ? [remaining[votes.length]] : [];
       const card = { type: "ftc", votes: Object.fromEntries(votes.map(e => [e.other_castaway_id, e.castaway_id])) };
       return { card, rows: [...votes, ...winner] };
     }
   }
 
-  if (VOTES.has(r.event)) return tribalGuess(runOf(e => VOTES.has(e.event) || RECEIVED.has(e.event)), remaining, data, game);
-  if (WIN.test(r.event) || r.event === "Sat out of challenge" || r.event === "Brought on reward") {
+  if (VOTES.has(r.event_type_id)) {
+    return tribalGuess(runOf(e => VOTES.has(e.event_type_id) || RECEIVED.has(e.event_type_id)), remaining, data, game);
+  }
+  if (winOf(r.event_type_id) || r.event_type_id === E.satOutOfChallenge || r.event_type_id === E.broughtOnReward) {
     return challengeGuess(remaining);
   }
   return null;
@@ -205,16 +207,16 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
 // voted in pairs (its votes name a pair, not a castaway): such an episode always has its cards stored.
 function tribalGuess(run: EventRow[], remaining: EventRow[], data: SeasonData, game: GameState): Guess {
   const boot = remaining[run.length];
-  if (!boot || boot.event !== "Voted out") return null;
+  if (!boot || boot.event_type_id !== E.votedOut) return null;
   const tribeId = game.tribeOf[boot.castaway_id];
   if (tribeId === undefined) return null;
   const attendees = [...data.castawayById.keys()].filter(id => !game.out.includes(id) && game.tribeOf[id] === tribeId);
-  const votes = run.filter(e => VOTES.has(e.event));
-  const cast = new Map(votes.map(e => [e.castaway_id, e.event === NOT_SAFE_SHOT || e.event === SAFE_SHOT ? "shot" : e.other_castaway_id]));
+  const votes = run.filter(e => VOTES.has(e.event_type_id));
+  const cast = new Map(votes.map(e => [e.castaway_id, e.event_type_id === E.shotNotSafe || e.event_type_id === E.shotSafe ? "shot" : e.other_castaway_id]));
   const card = {
     type: "tribal", tribeId, outcome: "voted", bootId: boot.castaway_id,
     votes: Object.fromEntries(attendees.map(id => [id, cast.get(id) ?? "none"])),
-    safe: Object.fromEntries(votes.filter(e => e.event === SAFE_SHOT).map(e => [e.castaway_id, "shot"])),
+    safe: Object.fromEntries(votes.filter(e => e.event_type_id === E.shotSafe).map(e => [e.castaway_id, "shot"])),
   };
   return { card, rows: [...run, boot] };
 }
@@ -227,9 +229,9 @@ function challengeGuess(remaining: EventRow[]): Guess {
   let format: string | undefined, prize: string | undefined;
   let first: number | null | undefined, second: number | null | undefined;
   for (const e of remaining) {
-    const win = e.event.match(WIN);
+    const win = winOf(e.event_type_id);
     if (win) {
-      const [, f, p, place2] = win;
+      const { format: f, prize: p, second: place2 } = win;
       if ((format && (f !== format || p !== prize)) || (f === "individual" && first !== undefined)) break;
       if (f === "team" && !place2 && first !== undefined && e.tribe_id !== first) break;
       if (f === "team" && place2 && second !== undefined && e.tribe_id !== second) break;
@@ -238,7 +240,7 @@ function challengeGuess(remaining: EventRow[]): Guess {
       if (f === "individual") first = e.castaway_id;
       else if (place2) second = e.tribe_id;
       else first = e.tribe_id;
-    } else if (e.event !== "Sat out of challenge" && e.event !== "Brought on reward") {
+    } else if (e.event_type_id !== E.satOutOfChallenge && e.event_type_id !== E.broughtOnReward) {
       break;
     }
     rows.push(e);
@@ -247,8 +249,8 @@ function challengeGuess(remaining: EventRow[]): Guess {
   const card = {
     type: "challenge", prize, format: format === "team" ? "tribe" : "individual", first, second: second ?? null,
     teamCount: 2, teams: {},
-    satOut: rows.filter(e => e.event === "Sat out of challenge").map(e => e.castaway_id),
-    broughtOnReward: rows.filter(e => e.event === "Brought on reward").map(e => e.castaway_id),
+    satOut: rows.filter(e => e.event_type_id === E.satOutOfChallenge).map(e => e.castaway_id),
+    broughtOnReward: rows.filter(e => e.event_type_id === E.broughtOnReward).map(e => e.castaway_id),
   };
   return { card, rows };
 }

@@ -2,7 +2,8 @@
 // ones the episode was entered from, or rebuilt from its rows (see episode-entry/edit.ts episodeCards); their shapes
 // are listed in js/admin/admin-cards.js. Items name castaways and tribes by id, and advantages by name.
 
-import { SOLE_SURVIVOR, type Card, type SeasonData } from "../episode-entry/cards.ts";
+import { EVENT_TYPE } from "../_shared/event-types.ts";
+import type { Card, SeasonData } from "../episode-entry/cards.ts";
 
 /** A challenge's winners or runners-up: a tribe, or castaways (one for an individual win, a team's members for teams) */
 export type Side = { tribeId: number } | { castawayIds: number[] };
@@ -120,11 +121,12 @@ function ftc(card: Card): RecapItem {
 // A row no card describes. A winner whose jury votes weren't recorded (so no final Tribal card was rebuilt) is still
 // the winner.
 function custom(card: Card, data: SeasonData): RecapItem {
-  if (card.eventType === SOLE_SURVIVOR) return { type: "ftc", votes: [], winnerId: id(card.castawayId) };
-  const eventType = data.eventTypeByName.get(card.eventType);
+  const eventTypeId = id(card.eventTypeId);
+  if (eventTypeId === EVENT_TYPE.soleSurvivor) return { type: "ftc", votes: [], winnerId: id(card.castawayId) };
+  const eventType = eventTypeId === null ? undefined : data.eventTypeById.get(eventTypeId);
   const quantity = Number(card.quantity ?? 1) || 1;
   return {
-    type: "event", event: String(card.eventType ?? ""), category: eventType?.category ?? "Other",
+    type: "event", event: eventType?.name ?? "", category: eventType?.category ?? "Other",
     castawayId: id(card.castawayId), otherCastawayId: id(card.otherCastawayId),
     advantage: advantageName(card.advantage, data), tribeId: id(card.tribeId),
     details: card.details ? String(card.details) : null, points: (eventType?.points ?? 0) * quantity,
