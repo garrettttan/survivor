@@ -408,6 +408,10 @@ Deno.test("tribal: voting in pairs: a vote is for a pair, and the pair goes home
   assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), big, four).rows
     .filter(r => r.eventType.name.startsWith("Voted c") || r.eventType.name.startsWith("Voted i")).map(r => r.details),
     ["Cal & Dee", "Cal & Dee", "Ann & Bea", "Ann & Bea"]);
+  // ...by short name, as the site shows it: Cal's nickname
+  const nicknamed: SeasonData = { ...big, castawayById: new Map(big.castawayById) };
+  nicknamed.castawayById.set(3, { ...big.castawayById.get(3)!, name: "Calvin X", nickname: "Cal-Cal" });
+  assertEquals(cardRows(tribal({ votes: { 1: 3, 2: 4, 3: 1, 4: 2 } }), nicknamed, four).rows[0].details, "Cal-Cal & Dee");
   assertEquals(cardRows(tribal({ votes: { 1: 2, 2: 3, 3: 1, 4: 1 } }), big, four).errors,
     ["Ann can't vote for their own pair."]);
   assertEquals(cardRows(tribal({ pairs: { 1: 1, 2: 1, 3: 2 }, votes: { 1: 3, 2: 3, 3: 1, 4: 1 } }), big, four).errors,

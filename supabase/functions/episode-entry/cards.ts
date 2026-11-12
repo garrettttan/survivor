@@ -7,6 +7,7 @@
 
 import { EVENT_TYPE, WIN_TYPES } from "../_shared/event-types.ts";
 import type { EventRow } from "../_shared/replay.ts";
+import { shortNames } from "../_shared/short-names.ts";
 import type { GameState } from "./game.ts";
 
 export interface Castaway { id: number; firstName: string; lastName: string; name: string; nickname: string | null }
@@ -267,7 +268,7 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 //
 // `pairs` is set when the castaways were paired up: each still votes on their own, but for a pair, and a pair goes home.
 // It maps each castaway at Tribal to a pair number. A vote names any member of the pair it's for; its row carries the
-// pair's names in details (no other castaway, since it's for both). bootId is any member of the pair that went home:
+// pair's short names in details, as the site shows them ("Kilby & Kristin"; no other castaway, since it's for both). bootId is any member of the pair that went home:
 // each of them gets an exit row, and a vote for that pair is correct. Safety covers the whole pair: when one partner is
 // safe (their idol, their Shot in the Dark, immunity), neither can go home, and votes for the pair are nullified for
 // both. `safe` still lists only who was safe themselves (who played the idol or rolled).
@@ -292,7 +293,7 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   }
   if (paired) for (const id of attendees) if (!pairs.has(id)) errors.push(`Put ${name(data, id)} in a pair.`);
   const pairOf = (id: number) => paired && pairs.has(id) ? attendees.filter(a => pairs.get(a) === pairs.get(id)) : [id];
-  const pairName = (id: number) => pairOf(id).map(member => name(data, member)).join(" & ");
+  const pairName = (id: number) => pairOf(id).map(member => shortName(data, member)).join(" & ");
   const wentHome = bootId === null ? [] : pairOf(bootId);
 
   const safe = new Map(entries(card.safe));
@@ -418,6 +419,15 @@ function eventType(data: SeasonData, id: number, errors: string[]): EventType {
 function byName(a: string, b: string): number {
   const [x, y] = [a.toLowerCase(), b.toLowerCase()];
   return x < y ? -1 : x > y ? 1 : 0;
+}
+
+// A castaway's short name as the site shows it (_shared/short-names.ts), worked out once per season's data
+const shortNamesBySeason = new WeakMap<SeasonData, Map<string, string>>();
+function shortName(data: SeasonData, id: number): string {
+  let short = shortNamesBySeason.get(data);
+  if (!short) shortNamesBySeason.set(data, short = shortNames(data.castawayById.values()));
+  const full = name(data, id);
+  return short.get(full) ?? full;
 }
 
 function name(data: SeasonData, id: number): string {
