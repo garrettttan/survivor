@@ -46,12 +46,12 @@ export async function loadSeason(supabase: SupabaseClient, season: number): Prom
     maxEpisode: rowsOf(last)[0]?.episode ?? 0,
     castawayById: new Map(),
     tribeById: new Map(),
-    eventTypeByName: new Map(),
+    eventTypeById: new Map(),
     advantageById: new Map(),
   };
   data.castawayById = new Map(data.castaways.map(c => [c.id, c]));
   data.tribeById = new Map(data.tribes.map(t => [t.id, t]));
-  data.eventTypeByName = new Map(data.eventTypes.map(t => [t.name, t]));
+  data.eventTypeById = new Map(data.eventTypes.map(t => [t.id, t]));
   data.advantageById = new Map(data.advantages.map(a => [a.id, a]));
   return data;
 }

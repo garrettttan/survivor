@@ -12,6 +12,7 @@
 // From npm rather than jsr.io: fetching from jsr.io kept timing out while Supabase bundled the function
 import { withSupabase } from "npm:@supabase/server@1";
 import { jsonReplacer, replay, type CastawayState, type EventRow, type RosterRow } from "../_shared/replay.ts";
+import { EVENT_TYPE } from "../_shared/event-types.ts";
 import { parseScoring, type ScoringRow } from "./scoring.ts";
 
 // =====================================================================
@@ -162,9 +163,9 @@ export default {
     addGhosts(teamRows, infoByName);
     addTotalsAndRanks(infoByName);
 
-    // The season is merged once anyone has joined a tribe at the merge, and finished once it has a winner
+    // The season is merged once it has a merge row, and finished once it has a winner
     const allCastaways = [...castaways.values()];
-    const merged = allCastaways.some(c => c.tribes.some(t => t.startReason === "Merged"));
+    const merged = eventRows.some(e => e.event_type_id === EVENT_TYPE.merged);
     const finished = allCastaways.some(c => c.finish === "winner");
 
     // Each castaway's nickname (null for none), which the site shows in place of their first name

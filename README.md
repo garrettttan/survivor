@@ -79,7 +79,9 @@ and the season to show when the URL doesn't name one.
 The database stores **events** and computes everything else from them. An event row is one thing that happened to one
 castaway in one episode, in order (`seq`). It has an event type and can also carry a tribe, another castaway (for
 example, who they voted for), an advantage, a quantity and details. Event types include flags for when an event
-changes someone's tribe, ends their game, or gains or loses an advantage.
+changes someone's tribe, ends their game, or gains or loses an advantage. Code refers to an event type only by its id
+(`supabase/functions/_shared/event-types.ts`), never by its name, so an event type can be renamed freely. A new event
+type is inserted by a migration with a fixed id (`overriding system value`) and added to that file.
 
 Other tables: `castaways`, `tribes`, `advantages`, `event_types`, `scoring` (points per event type per season),
 `drafts`, `teams` (with a winner pick and a ghost count) and the rosters that link teams to castaways. The views

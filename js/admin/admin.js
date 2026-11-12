@@ -10,6 +10,8 @@ const adminSeason = Number(new URLSearchParams(location.search).get('season')) |
 const adminTitle = `Season ${adminSeason}`;
 
 const PREVIEW_DELAY_MS = 400;
+// Won individual immunity (event_types.id; supabase/functions/_shared/event-types.ts)
+const WON_INDIVIDUAL_IMMUNITY = 11;
 
 const entry = {
   userId: null,          // the admin the form was drawn for (auth events repeat; only a new user redraws)
@@ -303,7 +305,7 @@ function hideHolder() {
 function cardCtx(index) {
   const lastTribal = entry.cards.slice(0, index).map(c => c.type).lastIndexOf('tribal');
   const immune = (entry.preview?.rows || [])
-    .filter(r => r.card > lastTribal && r.card < index && r.eventType === 'Won individual immunity')
+    .filter(r => r.card > lastTribal && r.card < index && r.eventTypeId === WON_INDIVIDUAL_IMMUNITY)
     .map(r => r.castawayId);
   return { ...entry.ctx, game: gameBefore(index), immune };
 }

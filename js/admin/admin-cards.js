@@ -25,7 +25,7 @@
 //   moment       { kind: 'iconic'|'cried', castawayId, note }
 //   ftc          { votes: { [jurorId]: finalistId } } (the finalists are everyone still in the game at this card;
 //                anyone out who isn't listed wasn't on the jury)
-//   custom       { eventType, castawayId, otherCastawayId, advantage, tribeId, quantity, details }
+//   custom       { eventTypeId, castawayId, otherCastawayId, advantage, tribeId, quantity, details }
 // Every card also carries `type`. Keys starting with "_" are form-only: dropped by cardPayload(), and filled back in
 // by loadCard() when an entered episode's cards are opened.
 //
@@ -119,7 +119,7 @@ const CARD_TYPES = {
   ftc: { label: 'Final Tribal', blank: () => ({ votes: {} }), html: ftcHtml },
   custom: {
     label: 'Custom row',
-    blank: () => ({ eventType: null, castawayId: null, otherCastawayId: null, advantage: null, tribeId: null, quantity: null, details: '' }),
+    blank: () => ({ eventTypeId: null, castawayId: null, otherCastawayId: null, advantage: null, tribeId: null, quantity: null, details: '' }),
     html: rowFieldsHtml,
   },
 };
@@ -612,9 +612,9 @@ function ftcHtml(card, ctx) {
 // picked, in or out of the game.
 function rowFieldsHtml(row, ctx) {
   const types = [...ctx.eventTypes].sort((a, b) => a.name.localeCompare(b.name))
-    .map(t => [t.name, `${t.name} (${t.points > 0 ? '+' : ''}${fmt(t.points)})`]);
+    .map(t => [t.id, `${t.name} (${t.points > 0 ? '+' : ''}${fmt(t.points)})`]);
   return `
-    ${fieldHtml('Event type', selectHtml({ field: 'eventType' }, types, row.eventType))}
+    ${fieldHtml('Event type', selectHtml({ field: 'eventTypeId', num: true }, types, row.eventTypeId))}
     <div class="entry-row">
       ${fieldHtml('Castaway', castawaySelect('castawayId', allIds(ctx), row.castawayId, ctx))}
       ${fieldHtml('Other castaway', selectHtml({ field: 'otherCastawayId', num: true }, castawayPairs(allIds(ctx), ctx), row.otherCastawayId, 'None'))}

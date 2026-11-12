@@ -4,6 +4,8 @@
 //
 // Used by get-draft-data (the standings) and episode-entry (the game as the admin page sees it).
 
+import { EVENT_TYPE } from "./event-types.ts";
+
 // =====================================================================
 // Types
 // =====================================================================
@@ -22,7 +24,8 @@ export interface EventRow {
   castaway_first_name: string;
   castaway_last_name: string;
   category: string;
-  event: string;                                 // the event type's name, e.g. "Voted out"
+  event: string;                                 // the event type's name, e.g. "Voted out" (to show, never to match)
+  event_type_id: number;                         // the event type (_shared/event-types.ts)
   changes_tribe: boolean;                        // the row moves the castaway to `tribe`
   ends_game: boolean;                            // the row takes the castaway out of the game
   advantage_effect: "gain" | "lose" | null;      // the castaway starts or stops holding `advantage`
@@ -89,17 +92,12 @@ export interface CastawayState {
 // Helpers
 // =====================================================================
 
-// A castaway switching tribes on their own (not in a swap): always a tribe change by itself
-const SWITCHED_TRIBES = "Switched tribes";
-
-// The winner's row at the end of a season: once it's there, the season is finished
-const SOLE_SURVIVOR = "Became Sole Survivor";
-
 // Whether two back-to-back rows are part of the same swap: the same tribe-change event in the
-// same episode. A switch next to a swap, or two switches in a row, stay separate moves.
+// same episode. A switch (one castaway changing tribes on their own) next to a swap, or two switches in a row, stay
+// separate moves.
 function inSameBlock(a: EventRow, b: EventRow): boolean {
   return a.changes_tribe && b.changes_tribe && a.episode === b.episode &&
-    a.event === b.event && a.event !== SWITCHED_TRIBES;
+    a.event_type_id === b.event_type_id && a.event_type_id !== EVENT_TYPE.switchedTribes;
 }
 
 function eventRowToLogRow(event: EventRow): LogRow {
@@ -239,7 +237,8 @@ export function replay(events: EventRow[]): Map<number, CastawayState> {
       leaveTribe(c.id, e.episode);
     }
 
-    if (e.event === SOLE_SURVIVOR) winnerId = c.id;
+    // The winner's row: once it's there, the season is finished
+    if (e.event_type_id === EVENT_TYPE.soleSurvivor) winnerId = c.id;
 
     // Advantages: "gain" makes this castaway the holder; "lose" means nobody holds it
     if (e.advantage && e.advantage_effect === "gain") advantageToHolder.set(e.advantage, e.castaway_id);

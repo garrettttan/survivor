@@ -26,7 +26,7 @@ export async function addLegacyEventTypes(supabase: SupabaseClient, data: Season
   for (const t of types ?? []) {
     const scoring = (t.scoring as { points: number; season: number; draft_id: number | null }[])
       .find(s => s.season === data.season && s.draft_id === null);
-    data.eventTypeByName.set(t.name, {
+    data.eventTypeById.set(t.id, {
       id: t.id, category: t.category, name: t.name, changesTribe: t.changes_tribe, endsGame: t.ends_game,
       advantageEffect: t.advantage_effect, points: Number(scoring?.points ?? 0),
     });
