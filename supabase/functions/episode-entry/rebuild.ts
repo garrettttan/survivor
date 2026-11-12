@@ -198,20 +198,26 @@ function guessCard(remaining: EventRow[], data: SeasonData, game: GameState): Gu
 // No vote if they have none: a consensus after a deadlock leaves the deadlocked pair without votes. Either Shot in the
 // Dark row is a vote of "shot"; the safe one also marks them safe. Safety from immunity or an idol makes no row here,
 // so a rebuilt Tribal doesn't have it. A Voted out row with no votes before it isn't guessed as a Tribal, since its
-// votes were never recorded.
+// votes were never recorded. A second Voted out row right after, on the same tribe, is the boot's partner when a pair
+// went home: only then can a vote for someone else who went home have been correct.
 function tribalGuess(votes: EventRow[], remaining: EventRow[], data: SeasonData, game: GameState): Guess {
   const boot = remaining[votes.length];
   if (!boot || boot.event !== "Voted out") return null;
   const tribeId = game.tribeOf[boot.castaway_id];
   if (tribeId === undefined) return null;
   const attendees = [...data.castawayById.keys()].filter(id => !game.out.includes(id) && game.tribeOf[id] === tribeId);
+  const next = remaining[votes.length + 1];
+  const partner = next?.event === "Voted out" && game.tribeOf[next.castaway_id] === tribeId &&
+      votes.some(e => e.event === "Voted correctly" && e.other_castaway_id === next.castaway_id)
+    ? next : null;
   const cast = new Map(votes.map(e => [e.castaway_id, e.event === NOT_SAFE_SHOT || e.event === SAFE_SHOT ? "shot" : e.other_castaway_id]));
   const card = {
     type: "tribal", tribeId, outcome: "voted", bootId: boot.castaway_id,
+    ...(partner ? { partnerId: partner.castaway_id } : {}),
     votes: Object.fromEntries(attendees.map(id => [id, cast.get(id) ?? "none"])),
     safe: Object.fromEntries(votes.filter(e => e.event === SAFE_SHOT).map(e => [e.castaway_id, "shot"])),
   };
-  return { card, rows: [...votes, boot] };
+  return { card, rows: partner ? [...votes, boot, partner] : [...votes, boot] };
 }
 
 // One challenge: its winners (a tribe, with an optional 2nd place tribe, or one castaway), who sat out, and who was

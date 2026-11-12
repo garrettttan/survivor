@@ -14,7 +14,9 @@ export type RecapItem =
   | { type: "challenge"; prize: "immunity" | "reward" | "both"; format: "tribe" | "individual" | "teams";
       first: Side | null; second: Side | null; satOut: number[]; broughtOnReward: number[] }
   // Votes in the order the card lists them; a castaway who didn't vote isn't in it. Safe: who couldn't go home, and why.
+  // partnerId: who went home with the boot when a pair was voted out, else null.
   | { type: "tribal"; tribeId: number | null; outcome: "voted" | "rocks" | "consensus"; bootId: number | null;
+      partnerId: number | null;
       votes: { voterId: number; targetId: number | null; shot: boolean }[];
       safe: { castawayId: number; reason: "immunity" | "idol" | "shot" }[] }
   // played: targetId is who it was played on, null when they played it for themselves
@@ -75,7 +77,8 @@ function tribal(card: Card): RecapItem {
     .filter(([, reason]) => reason === "immunity" || reason === "idol" || reason === "shot")
     .map(([castawayId, reason]) => ({ castawayId, reason: reason as "immunity" | "idol" | "shot" }));
   return {
-    type: "tribal", tribeId: id(card.tribeId), outcome: card.outcome ?? "voted", bootId: id(card.bootId), votes, safe,
+    type: "tribal", tribeId: id(card.tribeId), outcome: card.outcome ?? "voted", bootId: id(card.bootId), partnerId: id(card.partnerId),
+    votes, safe,
   };
 }
 
