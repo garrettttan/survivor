@@ -254,10 +254,10 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 }
 
 // ── Tribal Council ───────────────────────────────────────────────────────────
-// A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote),
-// each followed by a row for whoever the vote was for, pointing back at the voter: Received a vote, or Received a
-// nullified vote when they were safe (an idol, Shot in the Dark or immunity), so the season's scoring can treat
-// the two differently. Then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
+// A Voted correctly or incorrectly row per final-round vote (pointing at who they voted for; none for No vote).
+// After all of them, a row for whoever each vote was for, pointing back at the voter, in order of the voter's name:
+// Received a vote, or Received a nullified vote when they were safe (an idol, Shot in the Dark or immunity), so the
+// season's scoring can treat the two differently. Then Voted out for whoever went home. Rocks: just Went home on rocks, no vote rows. A deadlock consensus is
 // recorded like a vote. Shot in the Dark (a vote of "shot") gives up the vote for one row: shotSafe if it saved them,
 // else shotNotSafe.
 //
@@ -301,6 +301,7 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   }
 
   const rows: CardRow[] = [];
+  const received: { voter: number; row: CardRow }[] = [];
   if (card.outcome !== "rocks") {
     const correct = eventType(data, EVENT_TYPE.votedCorrectly, errors);
     const incorrect = eventType(data, EVENT_TYPE.votedIncorrectly, errors);
@@ -324,11 +325,14 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
         // Everyone the vote was for (the whole pair, when voting in pairs) received it
         for (const member of pairOf(target)) {
           const type = eventType(data, safe.has(member) ? EVENT_TYPE.receivedNullifiedVote : EVENT_TYPE.receivedVote, errors);
-          rows.push(row(member, type, { otherCastawayId: voter }));
+          received.push({ voter, row: row(member, type, { otherCastawayId: voter }) });
         }
       }
     }
   }
+  // Received votes after every vote, by voter name (a stable sort: a pair's rows stay in pair order)
+  received.sort((a, b) => byName(name(data, a.voter), name(data, b.voter)));
+  rows.push(...received.map(r => r.row));
   const out = eventType(data, card.outcome === "rocks" ? EVENT_TYPE.wentHomeOnRocks : EVENT_TYPE.votedOut, errors);
   if (errors.length) return { rows: [], errors };
   for (const id of wentHome) rows.push(row(id, out));
@@ -399,6 +403,13 @@ function eventType(data: SeasonData, id: number, errors: string[]): EventType {
   const type = data.eventTypeById.get(id);
   if (!type) errors.push(`Event type ${id} is missing from the database.`);
   return type!;
+}
+
+// Names in alphabetical order, ignoring case. Compared by code point, not locale, so the order doesn't depend on the
+// runtime (the migration that reordered received votes sorts the same way: lower(name) COLLATE "C").
+function byName(a: string, b: string): number {
+  const [x, y] = [a.toLowerCase(), b.toLowerCase()];
+  return x < y ? -1 : x > y ? 1 : 0;
 }
 
 function name(data: SeasonData, id: number): string {
