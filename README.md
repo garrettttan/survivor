@@ -160,3 +160,6 @@ roll back when they finish.
 - **Site**: GitHub Pages serves the repo.
 - **Backend**: `supabase/config.toml` is set up for Supabase's GitHub integration. A push to `main` applies new
   migrations in `supabase/migrations/` and deploys the edge functions listed in that file.
+  The deploy stops ("Remote migration versions not found in local migrations directory") when the project's migration
+  history has a migration this folder doesn't. So make changes for anything outside this repo (another app's tables
+  on the same project) with plain SQL in the SQL editor, which records no migration, not as a migration.
