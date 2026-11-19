@@ -443,6 +443,59 @@ Deno.test("tribal: rocks takes no votes", () => {
   assertEquals(errorsOf({ type: "tribal", tribeId: 11, outcome: "rocks", bootId: 1, votes: {} }), ["Ann wasn't at this Tribal."]);
 });
 
+Deno.test("tribal: a lost coin flip sends the flipper home, and no one votes", () => {
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  const lost = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: null, votes: {},
+    safe: {}, pairs: {}, coinFlip: { castawayId: 2, won: false }, ...fields });
+  assertEquals(rowsOf(lost({}), red3), [["Bea", "Lost the coin flip", null]]);
+  assert(cardRows(lost({}), big, red3).rows[0].eventType.endsGame);
+  // No outcome needed; who went home can only be the flipper
+  assertEquals(rowsOf(lost({ outcome: null, bootId: 2 }), red3), [["Bea", "Lost the coin flip", null]]);
+  assertEquals(cardRows(lost({ votes: { 1: 3 } }), big, red3).errors, ["No one votes when the coin flip is lost; clear the votes."]);
+  assertEquals(cardRows(lost({ bootId: 3 }), big, red3).errors, ["Bea lost the coin flip, so Cal didn't go home."]);
+  assertEquals(cardRows(lost({ coinFlip: { castawayId: 4, won: false } }), big, red3).errors,
+    ["Dee wasn't at this Tribal, so can't have flipped the coin."]);
+  assertEquals(cardRows(lost({ coinFlip: { castawayId: 2 } }), big, red3).errors, ["Pick whether they called the coin flip right."]);
+});
+
+Deno.test("tribal: a won coin flip wins an idol and makes the flipper safe, then the tribe votes", () => {
+  const red3: GameState = { ...g, tribeOf: { ...g.tribeOf, 3: 10 } };
+  const won = (fields: Record<string, unknown>) => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 3,
+    votes: { 1: 3, 2: 3, 3: 2 }, safe: { 2: "coin" }, pairs: {},
+    coinFlip: { castawayId: 2, won: true, advantage: " Idol (coin flip) " }, ...fields });
+  // The flip comes first; Cal's vote for Bea is nullified
+  assertEquals(rowsOf(won({}), red3), [
+    ["Bea", "Won the coin flip", null], ["Ann", "Voted correctly", "Cal"], ["Bea", "Voted correctly", "Cal"],
+    ["Cal", "Voted incorrectly", "Bea"], ["Cal", "Received a vote", "Ann"], ["Cal", "Received a vote", "Bea"],
+    ["Bea", "Received a nullified vote", "Cal"], ["Cal", "Voted out", null],
+  ]);
+  // The row carries the new idol, so Bea holds it afterwards
+  const flipRow = cardRows(won({}), big, red3).rows[0];
+  assertEquals([flipRow.newAdvantage, flipRow.advantageId], ["Idol (coin flip)", null]);
+  const replayed = toEventRow(flipRow, big, 9, 1);
+  assertEquals([replayed.advantage, replayed.advantage_effect], ["Idol (coin flip)", "gain"]);
+  assertEquals(gameState([replayed], new Map(), new Map()).held[2], [{ id: null, name: "Idol (coin flip)" }]);
+
+  assertEquals(cardRows(won({ bootId: 2, votes: { 1: 2, 2: 3, 3: 2 } }), big, red3).errors,
+    ["Bea was safe with the coin flip, so didn't go home."]);
+  assertEquals(cardRows(won({ safe: {} }), big, red3).errors, ["Bea won the coin flip, so was safe with it."]);
+  assertEquals(cardRows(won({ safe: { 2: "coin", 1: "coin" } }), big, red3).errors, ["Ann didn't win the coin flip."]);
+  assertEquals(cardRows(won({ coinFlip: { castawayId: 2, won: true, advantage: " " } }), big, red3).errors,
+    ["Name the idol they won."]);
+  // The name has to be new: not a saved advantage's, nor one found earlier this episode
+  const withIdol: SeasonData = { ...big, advantageById: new Map([[200, { id: 200, name: "Idol (Coin Flip)" }]]) };
+  assertEquals(cardRows(won({}), withIdol, red3).errors,
+    ['This season already has an advantage named "Idol (coin flip)"; give the idol another name.']);
+  const heldNew: GameState = { ...red3, held: { 5: [{ id: null, name: "Idol (coin flip)" }] } };
+  assertEquals(cardRows(won({}), big, heldNew).errors,
+    ['This season already has an advantage named "Idol (coin flip)"; give the idol another name.']);
+  // Reopened after saving, the card names the idol the save created by id
+  const byId = cardRows(won({ coinFlip: { castawayId: 2, won: true, advantage: 200 } }), withIdol, red3);
+  assertEquals([byId.errors, byId.rows[0].advantageId, byId.rows[0].newAdvantage], [[], 200, null]);
+  assertEquals(cardRows(won({ coinFlip: { castawayId: 2, won: true, advantage: 200 } }), withIdol,
+    { ...red3, held: { 5: [{ id: 200, name: "Idol (Coin Flip)" }] } }).errors, ["Someone already holds Idol (Coin Flip)."]);
+});
+
 Deno.test("exit and moments", () => {
   assertEquals(rowsOf({ type: "exit", reason: "medevac", castawayId: 5 }), [["Eve", "Medically evacuated", null]]);
   assertEquals(errorsOf({ type: "exit", reason: "quit", castawayId: 8 }), ["Hal is already out of the game."]);

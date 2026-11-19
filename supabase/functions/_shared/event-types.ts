@@ -40,6 +40,8 @@ export const EVENT_TYPE = {
   shotSafe: 34,                                  // played Shot in the Dark, and it saved them
   receivedVote: 37,                              // a final-round vote was cast for them, and it counted
   receivedNullifiedVote: 38,                     // a final-round vote was cast for them, but they were safe
+  wonCoinFlip: 40,                               // called the coin flip right: safe at Tribal, and won an idol (the row carries it)
+  lostCoinFlip: 41,                              // called the coin flip wrong, and went home
 } as const;
 
 /** Challenge wins: format → prize → [1st place, 2nd place] (an individual challenge has no 2nd place) */

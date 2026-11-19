@@ -15,10 +15,13 @@
 //                  tribes: teamCount teams numbered from 1, teams = who was on each, first/second = team numbers;
 //                  anyone still in the game who isn't on a team sat out)
 //   tribal       { tribeId, votes: { [voterId]: targetId | 'none' | 'shot' }, outcome: 'voted'|'rocks'|'consensus', bootId,
-//                  safe: { [castawayId]: 'immunity' | 'idol' | 'shot' }, pairs: { [castawayId]: pairNumber } }
+//                  safe: { [castawayId]: 'immunity' | 'idol' | 'shot' | 'coin' }, pairs: { [castawayId]: pairNumber },
+//                  coinFlip: null | { castawayId, won, advantage } }
 //                  ('shot' as a vote = played Shot in the Dark instead of voting; safe = who couldn't go home, and why;
 //                  pairs = who was paired with whom when castaways voted in pairs, else empty: a vote, and bootId, then
-//                  name the pair's first member and stand for the whole pair)
+//                  name the pair's first member and stand for the whole pair; coinFlip = who flipped the coin and whether
+//                  they called it right: lost, they went home and no one voted, so votes, safe, pairs and bootId are
+//                  empty; won, they're safe ('coin') and won a new idol, `advantage` its name, or its id once saved)
 //   advantage    { action: 'found'|'gave'|'played'|'expired', castawayId, advantage, recipientId, targetId,
 //                  changedOutcome } (played: targetId = who it was played on, null when they played it for themselves)
 //   exit         { reason: 'medevac'|'quit'|'fire', castawayId }
@@ -32,6 +35,10 @@
 // A form is drawn from `ctx`: getEpisodeState's reply (castaways, tribes, advantages, eventTypes, …) with `game` set
 // to the GameState just before this card, plus `short`: Map of castaway id → short name. Cards are only changed by
 // their inputs (applyInput, with the same ctx), never while drawing.
+
+// A Tribal card's fields when no one flipped a coin, and the name a won coin flip's idol starts with (see tidyCoinFlip)
+const NO_COIN_FLIP = { coinFlip: null, _coinId: null, _coinResult: null, _coinIdol: null, _coinIdolId: null, _coinIdolFilled: false };
+const COIN_IDOL_NAME = 'Idol (coin flip)';
 
 const CARD_TYPES = {
   tribeChange: {
@@ -68,7 +75,8 @@ const CARD_TYPES = {
     blank: ctx => {
       const tribes = tribesInPlay(ctx);
       const card = { tribeId: tribes.length === 1 ? tribes[0].id : null, votes: {}, outcome: 'voted', bootId: null,
-        safe: {}, pairs: {}, _paired: false, _votesFor: null, _wentHomeFor: null, _immunityFilled: false };
+        safe: {}, pairs: {}, coinFlip: null, _paired: false, _votesFor: null, _wentHomeFor: null, _immunityFilled: false,
+        ...NO_COIN_FLIP };
       prefillImmunity(card, ctx);
       return card;
     },
@@ -79,20 +87,25 @@ const CARD_TYPES = {
       const pairs = card.pairs ?? {};
       const loaded = { ...card, pairs };
       return { pairs, _paired: Object.keys(pairs).length > 0, _votesFor: card.bootId,
-        _wentHomeFor: card.bootId === null ? null : wentHomeKey(loaded, card.bootId), safe: card.safe ?? {}, _immunityFilled: true };
+        _wentHomeFor: card.bootId === null ? null : wentHomeKey(loaded, card.bootId), safe: card.safe ?? {}, _immunityFilled: true,
+        ...loadCoinFlip(card.coinFlip) };
     },
     reset: { tribeId: { votes: {}, bootId: null, pairs: {}, safe: {}, _votesFor: null, _wentHomeFor: null,
-      _immunityFilled: false } },
+      _immunityFilled: false, ...NO_COIN_FLIP } },
     // Rocks takes no votes, so they're cleared (and filled in again if the outcome changes back). Only someone at
-    // this Tribal can be safe at it, and only someone who played Shot in the Dark can have been saved by it.
+    // this Tribal can be safe at it, and only someone who played Shot in the Dark can have been saved by it. A lost
+    // coin flip is the whole Tribal, so everything else is cleared; a won one makes the flipper safe.
     tidy: (card, ctx) => {
+      if (tidyCoinFlip(card, ctx)) return;
       tidyPairs(card, ctx);
       if (card.outcome === 'rocks') Object.assign(card, { votes: {}, _votesFor: null });
       else if (card.tribeId !== null) prefillVotes(card, membersOf(card.tribeId, ctx));
       prefillImmunity(card, ctx);
       const attendees = card.tribeId === null ? [] : membersOf(card.tribeId, ctx);
       card.safe = Object.fromEntries(Object.entries(card.safe || {}).filter(([id, reason]) =>
-        attendees.includes(Number(id)) && (reason !== 'shot' || card.votes[id] === 'shot')));
+        attendees.includes(Number(id)) && (reason !== 'shot' || card.votes[id] === 'shot') &&
+        (reason !== 'coin' || (card.coinFlip?.won === true && card.coinFlip.castawayId === Number(id)))));
+      if (card.coinFlip?.won === true) card.safe[card.coinFlip.castawayId] = 'coin';
     },
   },
   advantage: {
@@ -467,6 +480,80 @@ function pairGroups(attendees) {
     (_, i) => ({ id: i + 1, name: `Pair ${i + 1}`, color: PALETTE[i % PALETTE.length] }));
 }
 
+// ── Coin flip at Tribal ──────────────────────────────────────────────────────
+// Someone at Tribal flips a coin and calls it. The form keeps who (`_coinId`), how it went (`_coinResult`: 'won' or
+// 'lost') and the idol's name (`_coinIdol`; `_coinIdolId` is the idol a saved card won, while its name is unchanged),
+// and tidyCoinFlip() builds `coinFlip` from them (NO_COIN_FLIP, at the top, is none).
+
+// A saved card's coin flip, back in the form's fields
+function loadCoinFlip(flip) {
+  if (!flip) return NO_COIN_FLIP;
+  const advantage = flip.advantage ?? null;
+  return { coinFlip: flip, _coinId: flip.castawayId ?? null, _coinResult: flip.won === true ? 'won' : flip.won === false ? 'lost' : null,
+    _coinIdol: typeof advantage === 'string' ? advantage : null, _coinIdolId: typeof advantage === 'number' ? advantage : null,
+    _coinIdolFilled: true };
+}
+
+// The idol's name as the form shows it: as typed, or a saved idol's name
+function coinIdolName(card, ctx) {
+  if (card._coinIdolId !== null && card._coinIdol === null) return ctx.advantages.find(a => a.id === card._coinIdolId)?.name ?? '';
+  return card._coinIdol ?? '';
+}
+
+// "Idol (coin flip)", or "Idol (coin flip 2)", … when that name is taken in the season (saved, or found earlier in
+// this episode and not saved yet), since advantage names are unique
+function defaultCoinIdolName(ctx) {
+  const taken = new Set([...ctx.advantages, ...Object.values(ctx.game.held).flat()].map(a => a.name.toLowerCase()));
+  if (!taken.has(COIN_IDOL_NAME.toLowerCase())) return COIN_IDOL_NAME;
+  for (let n = 2; ; n++) {
+    const name = `Idol (coin flip ${n})`;
+    if (!taken.has(name.toLowerCase())) return name;
+  }
+}
+
+// Builds `coinFlip` from the form's fields. The idol's name is filled in once, when Won is first picked (the admin can
+// change it). A saved idol is sent by id while its name is unchanged. A lost flip clears the rest of the Tribal;
+// returns true then, so the usual tidying (votes, pairs, immunity) is skipped.
+function tidyCoinFlip(card, ctx) {
+  const attendees = card.tribeId === null ? [] : membersOf(card.tribeId, ctx);
+  if (card._coinId !== null && !attendees.includes(card._coinId)) Object.assign(card, NO_COIN_FLIP);
+  if (card._coinId === null) {
+    card.coinFlip = null;
+    return false;
+  }
+  if (card._coinResult === 'won' && !card._coinIdolFilled) {
+    card._coinIdol = defaultCoinIdolName(ctx);
+    card._coinIdolFilled = true;
+  }
+  const won = card._coinResult === 'won' ? true : card._coinResult === 'lost' ? false : null;
+  const savedIdol = ctx.advantages.find(a => a.id === card._coinIdolId);
+  const name = coinIdolName(card, ctx);
+  const advantage = savedIdol && name.trim() === savedIdol.name ? savedIdol.id : name;
+  card.coinFlip = { castawayId: card._coinId, won, ...(won === true && { advantage }) };
+  if (won !== false) return false;
+  Object.assign(card, { votes: {}, safe: {}, pairs: {}, bootId: null, _paired: false, _votesFor: null, _wentHomeFor: null,
+    _immunityFilled: false });
+  return true;
+}
+
+// The coin flip's inputs: who flipped (or no one), Won / Lost, and when won, the idol's name
+let coinChoiceGroups = 0;
+function coinFlipHtml(card, ctx, attendees) {
+  let html = fieldHtml('Coin flip', selectHtml({ field: '_coinId', num: true, rerender: true },
+    castawayPairs(attendees, ctx), card._coinId, 'No coin flip'));
+  if (card._coinId === null) return html;
+  const name = `coin-choice-${++coinChoiceGroups}`;
+  const pill = (value, label) => `<label class="entry-chip">
+      <input type="radio" name="${name}" value="${value}" data-field="_coinResult" data-rerender${card._coinResult === value ? ' checked' : ''}>
+      <span>${label}</span></label>`;
+  html += `<div class="entry-chips entry-shot-outcome">${pill('won', 'Called it (safe, wins an idol)')}${pill('lost', 'Called it wrong (goes home)')}</div>`;
+  if (card._coinResult === 'won') {
+    html += fieldHtml('Idol name', `<input class="entry-input" type="text" data-field="_coinIdol"
+      value="${escapeHtml(coinIdolName(card, ctx))}" placeholder="${escapeHtml(COIN_IDOL_NAME)}">`);
+  }
+  return html;
+}
+
 // Once the tribe at Tribal is known, whoever won individual immunity earlier in the episode (ctx.immune, since the
 // last Tribal) is marked safe with it. Only once, so unmarking someone sticks.
 function prefillImmunity(card, ctx) {
@@ -479,11 +566,17 @@ function prefillImmunity(card, ctx) {
 
 // Tribal Council: the tribe, how it ended, who went home, who was safe, and each castaway's final-round vote
 function tribalHtml(card, ctx) {
-  let html = groupHtml('Tribe', tribeChoicesHtml({ field: 'tribeId', num: true, rerender: true }, tribesInPlay(ctx), card.tribeId)) +
-    fieldHtml('Outcome', selectHtml({ field: 'outcome', rerender: true },
-      [['voted', 'Voted out'], ['rocks', 'Went home on rocks'], ['consensus', 'Deadlock consensus']], card.outcome, null));
-  if (card.tribeId === null) return html + '<p class="entry-hint">Pick the tribe to choose who went home and enter the votes.</p>';
+  let html = groupHtml('Tribe', tribeChoicesHtml({ field: 'tribeId', num: true, rerender: true }, tribesInPlay(ctx), card.tribeId));
+  const outcome = fieldHtml('Outcome', selectHtml({ field: 'outcome', rerender: true },
+    [['voted', 'Voted out'], ['rocks', 'Went home on rocks'], ['consensus', 'Deadlock consensus']], card.outcome, null));
+  if (card.tribeId === null) return html + outcome + '<p class="entry-hint">Pick the tribe to choose who went home and enter the votes.</p>';
   const attendees = membersOf(card.tribeId, ctx);
+  // A coin flip comes first; called wrong, the flipper goes home and there's nothing else to enter
+  html += coinFlipHtml(card, ctx, attendees);
+  if (card._coinId !== null && card._coinResult === 'lost') {
+    return html + `<p class="entry-hint">${escapeHtml(ctx.short.get(card._coinId))} goes home. No one votes.</p>`;
+  }
+  html += outcome;
   // Paired up: who's with whom, then the pair that went home, and votes for pairs
   const paired = card._paired;
   html += `<label class="entry-chip"><input type="checkbox"${attrs({ field: '_paired', rerender: true })}${paired ? ' checked' : ''}>

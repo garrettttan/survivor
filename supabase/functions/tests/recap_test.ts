@@ -59,7 +59,22 @@ Deno.test("a Tribal leaves out who didn't vote, marks Shot in the Dark, and list
       { voterId: 1, targetId: 5, shot: false }, { voterId: 2, targetId: 5, shot: false },
       { voterId: 4, targetId: null, shot: true }, { voterId: 5, targetId: 1, shot: false },
     ],
-    safe: [{ castawayId: 1, reason: "immunity" }, { castawayId: 6, reason: "idol" }],
+    safe: [{ castawayId: 1, reason: "immunity" }, { castawayId: 6, reason: "idol" }], coinFlip: null,
+  });
+});
+
+Deno.test("a Tribal with a coin flip: won, the flipper is safe and the idol is named; lost, they're the boot and no one votes", () => {
+  const [won, lost] = recapItems([
+    { type: "tribal", tribeId: 2, outcome: "voted", bootId: 5, votes: { "1": 5, "5": 1 }, safe: { "1": "coin" },
+      coinFlip: { castawayId: 1, won: true, advantage: "Idol (coin flip)" } },
+    { type: "tribal", tribeId: 2, outcome: "voted", bootId: null, votes: {}, safe: {},
+      coinFlip: { castawayId: 3, won: false } },
+  ], s51.data);
+  assertEquals(won.type === "tribal" && [won.safe, won.coinFlip],
+    [[{ castawayId: 1, reason: "coin" }], { castawayId: 1, won: true, advantage: "Idol (coin flip)" }]);
+  assertEquals(lost, {
+    type: "tribal", tribeId: 2, outcome: "voted", bootId: 3, pairs: [], votes: [], safe: [],
+    coinFlip: { castawayId: 3, won: false, advantage: null },
   });
 });
 

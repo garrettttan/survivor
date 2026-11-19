@@ -158,7 +158,10 @@ export function rowChanges(rows: CardRow[], saved: EventRow[]): Changes {
  */
 function withAdvantageIds(cards: Card[], data: SeasonData): Card[] {
   const idByName = new Map([...data.advantageById.values()].map(a => [a.name, a.id]));
-  return cards.map(card => typeof card.advantage === "string" && idByName.has(card.advantage.trim())
-    ? { ...card, advantage: idByName.get(card.advantage.trim()) }
-    : card);
+  const idOf = (value: unknown) => typeof value === "string" && idByName.has(value.trim()) ? idByName.get(value.trim()) : value;
+  return cards.map(card => {
+    // A won coin flip's idol, like a found advantage, was named; the save created it
+    if (card.coinFlip && typeof card.coinFlip === "object") card = { ...card, coinFlip: { ...card.coinFlip, advantage: idOf(card.coinFlip.advantage) } };
+    return typeof card.advantage === "string" && idByName.has(card.advantage.trim()) ? { ...card, advantage: idOf(card.advantage) } : card;
+  });
 }
