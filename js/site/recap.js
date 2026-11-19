@@ -77,7 +77,7 @@ function tribalGroupOf(item) {
 const RECAP_PRIZES = { reward: 'Reward challenge', immunity: 'Immunity challenge', both: 'Reward and immunity challenge' };
 const RECAP_EXITS = { medevac: 'was medically evacuated', quit: 'quit', fire: 'lost fire-making' };
 const RECAP_BOOTS = { voted: 'voted out', rocks: 'went home on a rock draw', consensus: 'voted out by consensus' };
-const RECAP_SAFE = { immunity: 'immunity', idol: 'idol', shot: 'Shot in the Dark' };
+const RECAP_SAFE = { immunity: 'immunity', idol: 'idol', shot: 'Shot in the Dark', coin: 'coin flip' };
 
 function challengeSideHtml(side, ctx) {
   if (!side) return '';
@@ -101,11 +101,21 @@ function tribalHtml(item, ctx) {
   const groupOf = tribalGroupOf(item);
   const safe = [...new Set(item.safe.map(s =>
     `${pairNames(groupOf(s.castawayId), ctx)} <span class="muted">(${RECAP_SAFE[s.reason]})</span>`))].join(', ');
-  const note = { rocks: 'Went to rocks', consensus: 'Decided by consensus' }[item.outcome];
+  const flip = item.coinFlip;
+  // A lost coin flip is the whole Tribal: no votes, so no outcome to note
+  const note = flip && !flip.won ? 'No vote' : { rocks: 'Went to rocks', consensus: 'Decided by consensus' }[item.outcome];
   return `<div class="recap-row"><div class="recap-label">${item.tribeId != null ? ctx.tribe(item.tribeId) : 'Votes'}</div>
     ${recapTally(votes, ctx, tribalGroupOf(item))}
-    ${recapLines([['Shot in the Dark', ctx.names(shots)], ['Safe', safe]])}
+    ${recapLines([['Coin flip', coinFlipHtml(flip, ctx)], ['Shot in the Dark', ctx.names(shots)], ['Safe', safe]])}
     ${note ? `<div class="recap-line muted">${note}</div>` : ''}</div>`;
+}
+
+// Who flipped the coin at Tribal and how it went: "Ann called it (won Idol (coin flip))", or "Ann called it wrong"
+function coinFlipHtml(flip, ctx) {
+  if (!flip || flip.castawayId == null) return '';
+  if (!flip.won) return `${ctx.name(flip.castawayId)} <span class="muted">(called it wrong)</span>`;
+  const idol = flip.advantage ? `won ${escapeHtml(flip.advantage)}` : 'won an idol';
+  return `${ctx.name(flip.castawayId)} <span class="muted">(called it, ${idol})</span>`;
 }
 
 // What a grouped row is labelled, this item's entry in it, and whether the entry is more than a name
@@ -168,6 +178,9 @@ function headlineLines(item, ctx) {
     case 'exit': return [`☠️ ${ctx.name(item.castawayId)} <span class="muted">${RECAP_EXITS[item.reason] || 'left the game'}</span>`];
     case 'tribal':
       // A pair that went home together shares one line
+      if (item.coinFlip && !item.coinFlip.won && item.bootId != null) {
+        return [`☠️ ${ctx.name(item.bootId)} <span class="muted">lost the coin flip</span>`];
+      }
       return item.bootId != null ? [`☠️ ${pairNames(tribalGroupOf(item)(item.bootId), ctx)} <span class="muted">${RECAP_BOOTS[item.outcome] || 'voted out'}</span>`] : [];
     case 'ftc': return item.winnerId != null ? [`🏆 ${ctx.name(item.winnerId)} won`] : [];
     case 'event':

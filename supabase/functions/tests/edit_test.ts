@@ -35,8 +35,8 @@ const data: SeasonData = {
   castawayById: new Map(NAMES.map((n, i) => [i + 1, { id: i + 1, firstName: n, lastName: "X", name: n, nickname: null }])),
   tribeById: new Map([[10, { id: 10, name: "Red", color: "#b91c1c" }], [11, { id: 11, name: "Blue", color: "#0284c7" }]]),
   eventTypeById: testTypes([E.startingTribe, E.wonTeamImmunity, E.satOutOfChallenge, E.votedCorrectly, E.votedIncorrectly,
-    E.votedOut, E.foundAdvantage, E.receivedVote, E.receivedNullifiedVote]
-    .map(id => testType(id, { advantageEffect: id === E.foundAdvantage ? "gain" : null, points: 1 }))),
+    E.votedOut, E.foundAdvantage, E.receivedVote, E.receivedNullifiedVote, E.wonCoinFlip]
+    .map(id => testType(id, { advantageEffect: id === E.foundAdvantage || id === E.wonCoinFlip ? "gain" : null, points: 1 }))),
   advantageById: new Map([[100, { id: 100, name: "Idol" }]]),
 };
 const lookups: Lookups = { tribeIdByName: new Map([["Red", 10], ["Blue", 11]]), advantageIdByName: new Map([["Idol", 100]]) };
@@ -90,4 +90,17 @@ Deno.test("stored cards are used as stored, with a new advantage now named by it
   assertEquals(cards.cards, [{ ...found, advantage: 100 }]);
   // Without stored cards, the episode is rebuilt from its rows
   assertEquals(episodeCards(2, events, new Map(), data, lookups).rebuilt, true);
+});
+
+Deno.test("a reopened coin flip names the idol it won by id, and saving it unchanged changes nothing", () => {
+  const flip = (advantage: string | number): Card => ({ type: "tribal", tribeId: 10, outcome: "voted", bootId: 2,
+    votes: { 1: 2, 2: 1 }, safe: { 1: "coin" }, pairs: {}, coinFlip: { castawayId: 1, won: true, advantage } });
+  // Saved, the idol it won is advantage 100 ("Idol")
+  const events = saved([start({ 1: 10, 2: 10, 3: 11, 4: 11 })], [flip(100)]);
+  const stored = new Map([[2, [flip("Idol")]]]);
+  const { cards } = episodeCards(2, events, stored, data, lookups);
+  assertEquals(cards, [flip(100)]);
+  const edit = playEdit(2, cards, events, stored, data, lookups);
+  assertEquals(edit.played.errors, []);
+  assertEquals(edit.changes, { added: [], removed: [] });
 });

@@ -272,14 +272,37 @@ function challengeRows(card: Card, data: SeasonData, game: GameState): Result {
 // each of them gets an exit row, and a vote for that pair is correct. Safety covers the whole pair: when one partner is
 // safe (their idol, their Shot in the Dark, immunity), neither can go home, and votes for the pair are nullified for
 // both. `safe` still lists only who was safe themselves (who played the idol or rolled).
-const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark" };
+//
+// `coinFlip` is set when someone at Tribal flipped a coin and called it: { castawayId, won, advantage } (advantage:
+// the new idol's name, or its id once the episode is saved). Lost: a Lost
+// the coin flip row is the whole Tribal (they go home, no one votes). Won: they're safe (`safe` marks them 'coin'),
+// and a Won the coin flip row carrying the new idol they won (`advantage`, its name) comes first; then the Tribal
+// goes on as usual.
+const SAFE_REASONS: Record<string, string> = { immunity: "immunity", idol: "an idol", shot: "Shot in the Dark", coin: "the coin flip" };
 
 function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   const errors: string[] = [];
   const tribeId = tribeInPlay(card.tribeId, "the tribe at Tribal", data, game, errors);
-  if (!["voted", "rocks", "consensus"].includes(card.outcome)) errors.push("Pick how it ended.");
-  if (tribeId === null || errors.length) return { rows: [], errors };
+  const flip = card.coinFlip ?? null;
+  // A lost coin flip has no outcome: no one votes
+  const outcomeOk = flip?.won === false || ["voted", "rocks", "consensus"].includes(card.outcome);
+  if (tribeId === null) {
+    if (!outcomeOk) errors.push("Pick how it ended.");
+    return { rows: [], errors };
+  }
   const attendees = membersOf(tribeId, data, game);
+  const flipRows: CardRow[] = [];
+  if (flip !== null) {
+    const flipper = idOrNull(flip.castawayId);
+    if (flipper === null) errors.push("Pick who flipped the coin.");
+    else if (!attendees.includes(flipper)) errors.push(`${name(data, flipper)} wasn't at this Tribal, so can't have flipped the coin.`);
+    if (typeof flip.won !== "boolean") errors.push("Pick whether they called the coin flip right.");
+    if (errors.length) return { rows: [], errors };
+    if (!flip.won) return lostCoinFlipRows(card, flipper!, data, errors);
+    flipRows.push(...wonCoinFlipRows(card, flipper!, data, game, errors));
+  }
+  if (!outcomeOk) errors.push("Pick how it ended.");
+  if (errors.length) return { rows: [], errors };
   const bootId = idOrNull(card.bootId);
   if (bootId === null) errors.push("Pick who went home.");
   else if (!attendees.includes(bootId)) errors.push(`${name(data, bootId)} wasn't at this Tribal.`);
@@ -297,9 +320,12 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   const wentHome = bootId === null ? [] : pairOf(bootId);
 
   const safe = new Map(entries(card.safe));
+  const flipper = flip === null ? null : idOrNull(flip.castawayId);
+  if (flipper !== null && safe.get(flipper) !== "coin") errors.push(`${name(data, flipper)} won the coin flip, so was safe with it.`);
   for (const [id, reason] of safe) {
     if (!attendees.includes(id)) errors.push(`${name(data, id)} wasn't at this Tribal, so can't be safe at it.`);
     else if (typeof reason !== "string" || !SAFE_REASONS[reason]) errors.push(`Pick why ${name(data, id)} was safe.`);
+    else if (reason === "coin" && id !== flipper) errors.push(`${name(data, id)} didn't win the coin flip.`);
     else if (wentHome.includes(id)) {
       errors.push(wentHome.length > 1
         ? `${name(data, id)} was safe with ${SAFE_REASONS[reason]}, so their pair didn't go home.`
@@ -309,7 +335,7 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   // Whether a castaway was safe: themselves, or (voting in pairs) through their partner
   const isSafe = (id: number) => pairOf(id).some(member => safe.has(member));
 
-  const rows: CardRow[] = [];
+  const rows: CardRow[] = [...flipRows];
   const received: { voter: number; row: CardRow }[] = [];
   if (card.outcome !== "rocks") {
     const correct = eventType(data, EVENT_TYPE.votedCorrectly, errors);
@@ -346,6 +372,45 @@ function tribalRows(card: Card, data: SeasonData, game: GameState): Result {
   if (errors.length) return { rows: [], errors };
   for (const id of wentHome) rows.push(row(id, out));
   return { rows, errors };
+}
+
+// Lost the coin flip: they go home, and that's the whole Tribal, so nothing else on the card can be filled in
+function lostCoinFlipRows(card: Card, flipper: number, data: SeasonData, errors: string[]): Result {
+  const votes = entries(card.votes).filter(([, target]) => target !== null && target !== undefined);
+  if (votes.length) errors.push("No one votes when the coin flip is lost; clear the votes.");
+  if (entries(card.safe).length) errors.push("No one is safe when the coin flip is lost; clear who was safe.");
+  if (entries(card.pairs).length) errors.push("A lost coin flip isn't voted in pairs; clear the pairs.");
+  const bootId = idOrNull(card.bootId);
+  if (bootId !== null && bootId !== flipper) errors.push(`${name(data, flipper)} lost the coin flip, so ${name(data, bootId)} didn't go home.`);
+  const lost = eventType(data, EVENT_TYPE.lostCoinFlip, errors);
+  if (errors.length) return { rows: [], errors };
+  return { rows: [row(flipper, lost)], errors };
+}
+
+// Won the coin flip: one row for the flipper, carrying the new idol they won. It's named, and created when the
+// episode saves; an entered episode reopened names it by id, since the save made it (no one may hold it yet).
+function wonCoinFlipRows(card: Card, flipper: number, data: SeasonData, game: GameState, errors: string[]): CardRow[] {
+  const advantage = card.coinFlip.advantage;
+  const won = eventType(data, EVENT_TYPE.wonCoinFlip, errors);
+  if (typeof advantage === "number") {
+    const idol = data.advantageById.get(advantage);
+    if (!idol) errors.push("That idol isn't in this season.");
+    else if (Object.values(game.held).flat().some(a => a.id === advantage)) errors.push(`Someone already holds ${idol.name}.`);
+    if (errors.length) return [];
+    return [row(flipper, won, { advantageId: advantage })];
+  }
+  const idol = typeof advantage === "string" ? advantage.trim() : "";
+  if (!idol) errors.push("Name the idol they won.");
+  else if (advantageNameTaken(idol, data, game)) errors.push(`This season already has an advantage named "${idol}"; give the idol another name.`);
+  if (errors.length) return [];
+  return [row(flipper, won, { newAdvantage: idol })];
+}
+
+// Whether a season's advantage, or one first found earlier this episode (not saved yet), already has this name
+function advantageNameTaken(advantageName: string, data: SeasonData, game: GameState): boolean {
+  const lower = advantageName.toLowerCase();
+  return [...data.advantageById.values()].some(a => a.name.toLowerCase() === lower) ||
+    Object.values(game.held).flat().some(a => a.name.toLowerCase() === lower);
 }
 
 // ── Exit, moments, Final Tribal ──────────────────────────────────────────────

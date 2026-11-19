@@ -20,17 +20,18 @@ export const TYPE_NAME: Record<number, string> = {
   [E.episodePoints]: "Episode points", [E.lostFireMaking]: "Lost fire-making", [E.switchedTribes]: "Switched tribes",
   [E.soleSurvivor]: "Became Sole Survivor", [E.shotNotSafe]: "Played Shot in the Dark (not safe)",
   [E.shotSafe]: "Played Shot in the Dark (safe)", [E.receivedVote]: "Received a vote",
-  [E.receivedNullifiedVote]: "Received a nullified vote",
+  [E.receivedNullifiedVote]: "Received a nullified vote", [E.wonCoinFlip]: "Won the coin flip",
+  [E.lostCoinFlip]: "Lost the coin flip",
 };
 
-const ENDS_GAME = new Set<number>([E.votedOut, E.wentHomeOnRocks, E.medicallyEvacuated, E.quit, E.lostFireMaking]);
+const ENDS_GAME = new Set<number>([E.votedOut, E.wentHomeOnRocks, E.medicallyEvacuated, E.quit, E.lostFireMaking, E.lostCoinFlip]);
 const CHANGES_TRIBE = new Set<number>([E.startingTribe, E.swappedTribes, E.switchedTribes, E.merged]);
 
 /** An event type as the card rules see it: ends the game or changes tribe as the real one does, and 0 points */
 export function testType(id: number, extra: Partial<EventType> = {}): EventType {
   return {
     id, category: "Test", name: TYPE_NAME[id], changesTribe: CHANGES_TRIBE.has(id), endsGame: ENDS_GAME.has(id),
-    advantageEffect: null, points: 0, ...extra,
+    advantageEffect: id === E.wonCoinFlip ? "gain" : null, points: 0, ...extra,
   };
 }
 

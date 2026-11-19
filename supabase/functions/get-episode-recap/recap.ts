@@ -16,11 +16,13 @@ export type RecapItem =
       first: Side | null; second: Side | null; satOut: number[]; broughtOnReward: number[] }
   // Votes in the order the card lists them; a castaway who didn't vote isn't in it. Safe: who couldn't go home, and why.
   // pairs: each pair's members when castaways voted in pairs (a vote for any member is for the whole pair, and the
-  // boot's whole pair went home), else empty.
+  // boot's whole pair went home), else empty. coinFlip: who flipped the coin and whether they called it right (and the
+  // idol they won), else null; a lost flip is the whole Tribal, so its bootId is the flipper and there are no votes.
   | { type: "tribal"; tribeId: number | null; outcome: "voted" | "rocks" | "consensus"; bootId: number | null;
       pairs: number[][];
       votes: { voterId: number; targetId: number | null; shot: boolean }[];
-      safe: { castawayId: number; reason: "immunity" | "idol" | "shot" }[] }
+      safe: { castawayId: number; reason: SafeReason }[];
+      coinFlip: { castawayId: number | null; won: boolean; advantage: string | null } | null }
   // played: targetId is who it was played on, null when they played it for themselves
   | { type: "advantage"; action: "found" | "gave" | "played" | "expired"; castawayId: number | null;
       advantage: string | null; recipientId: number | null; targetId: number | null; changedOutcome: boolean }
@@ -83,16 +85,26 @@ function pairsOf(card: Card): number[][] {
   return [...byPair].sort((a, b) => a[0] - b[0]).map(([, members]) => members);
 }
 
-function tribal(card: Card): RecapItem {
+type SafeReason = "immunity" | "idol" | "shot" | "coin";
+const SAFE_REASONS = new Set<unknown>(["immunity", "idol", "shot", "coin"]);
+
+function tribal(card: Card, data: SeasonData): RecapItem {
+  const flip = card.coinFlip
+    ? { castawayId: id(card.coinFlip.castawayId), won: card.coinFlip.won === true,
+        advantage: card.coinFlip.won === true ? advantageName(card.coinFlip.advantage, data) : null }
+    : null;
+  if (flip && !flip.won) {
+    return { type: "tribal", tribeId: id(card.tribeId), outcome: "voted", bootId: flip.castawayId, pairs: [], votes: [], safe: [], coinFlip: flip };
+  }
   const votes = entries(card.votes)
     .filter(([, target]) => target !== "none" && target !== null && target !== undefined)
     .map(([voterId, target]) => ({ voterId, targetId: target === "shot" ? null : id(target), shot: target === "shot" }));
   const safe = entries(card.safe)
-    .filter(([, reason]) => reason === "immunity" || reason === "idol" || reason === "shot")
-    .map(([castawayId, reason]) => ({ castawayId, reason: reason as "immunity" | "idol" | "shot" }));
+    .filter(([, reason]) => SAFE_REASONS.has(reason))
+    .map(([castawayId, reason]) => ({ castawayId, reason: reason as SafeReason }));
   return {
     type: "tribal", tribeId: id(card.tribeId), outcome: card.outcome ?? "voted", bootId: id(card.bootId), pairs: pairsOf(card),
-    votes, safe,
+    votes, safe, coinFlip: flip,
   };
 }
 
@@ -143,7 +155,7 @@ export function recapItems(cards: Card[], data: SeasonData): RecapItem[] {
         first: challengeSide(card, card.first), second: challengeSide(card, card.second),
         satOut: ids(card.satOut), broughtOnReward: ids(card.broughtOnReward),
       }];
-      case "tribal": return [tribal(card)];
+      case "tribal": return [tribal(card, data)];
       case "advantage": return [{
         type: "advantage", action: card.action, castawayId: id(card.castawayId),
         advantage: advantageName(card.advantage, data), recipientId: id(card.recipientId),
